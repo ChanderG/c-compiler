@@ -1,0 +1,7 @@
+*.pdf
+lex.yy.c
+y.tab.h
+y.tab.c
+*.o
+*.out
+*.swp
