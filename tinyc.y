@@ -5,13 +5,18 @@
 
   extern int yylex();  
   void yyerror(const char *s);
+  int yywrap(){
+    return 1;
+  }
 %}
 %union {
   char* sval;
+  int ival;
 }
 
 %token <sval> KEYWORD
 %token <sval> IDENTIFIER
+%token <ival> INTEGER_CONSTANT
 
 %%
 //rules section

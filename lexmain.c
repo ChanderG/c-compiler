@@ -11,6 +11,8 @@ int main(){
       printf("Identifier\n");
     else if (tok == KEYWORD)
       printf("Keyword\n");
+    else if (tok == INTEGER_CONSTANT)
+      printf("Integer-constant\n");
       
   }while (!feof(yyin));
   return 0;
