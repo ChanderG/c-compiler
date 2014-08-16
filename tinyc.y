@@ -10,6 +10,7 @@
   char* sval;
 }
 
+%token <sval> KEYWORD
 %token <sval> IDENTIFIER
 
 %%

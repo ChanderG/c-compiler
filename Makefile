@@ -8,7 +8,7 @@ y.tab.c y.tab.h: tinyc.y
 	yacc -dt tinyc.y
 y.tab.o: y.tab.c
 	g++ -c y.tab.c
-lexmain.o: lexmain.c
+lexmain.o: lexmain.c y.tab.h
 	g++ -c lexmain.c
 clean:
 	rm lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o lexmain.o
