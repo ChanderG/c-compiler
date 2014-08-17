@@ -10,3 +10,10 @@ Use the Makefile.
 ```
 make
 ```
+
+To test use the testrunner script:
+
+```
+./testrunner.sh
+```
+If there are no problems it will output nothing.
