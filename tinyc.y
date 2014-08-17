@@ -5,9 +5,9 @@
 
   extern int yylex();  
   void yyerror(const char *s);
-  int yywrap(){
-    return 1;
-  }
+  //int yywrap(){
+  //  return 0;
+  //}
 %}
 %union {
   char* sval;
@@ -17,6 +17,7 @@
 %token <sval> KEYWORD
 %token <sval> IDENTIFIER
 %token <ival> INTEGER_CONSTANT
+%token SIGN //not sure of value : cval??
 
 %%
 //rules section
