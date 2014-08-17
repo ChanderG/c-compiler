@@ -21,7 +21,9 @@
 %token <ival> INTEGER_CONSTANT
 %token <fval> FLOATING_CONSTANT
 %token <cval> CHARACTER_CONSTANT
-%token <cval> SIGN //not sure of value : cval??
+%token <sval> STRING_LITERAL
+%token <cval> SIGN 
+%token <cval> PUNCTUATOR 
 
 %%
 //rules section

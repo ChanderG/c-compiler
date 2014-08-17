@@ -14,6 +14,12 @@ make
 To test use the testrunner script:
 
 ```
-./testrunner.sh
+bash ./testrunner.sh
 ```
 If there are no problems it will output nothing.
+
+
+###In Pre-alpha:
+//In test mode: 
+//punctuator          \[|\+\+|/|\?|=|,|\]|(|{|} |\.|->|\*|\+|-|~|\!|%|<<|>>|<|>|<=|>=|:|;|\.\.\    .|\*=|/=|%=|\+=|-=|<<=|#|--|)|&|==|>>=|\!=|&=|\^|\||\^=|&&|\|\||\|=
+
