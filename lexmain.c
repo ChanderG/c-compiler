@@ -14,7 +14,8 @@ int main(int argc, char* argv[]){
     }
     yyin = inp;
   }
-  //yylex();
+  yylex();
+  /*
   do{
     int tok = yylex();
     if (tok == IDENTIFIER)
@@ -27,5 +28,6 @@ int main(int argc, char* argv[]){
       printf("Sign\n");
       
   }while (!feof(yyin));
+  */
   return 0;
 }
