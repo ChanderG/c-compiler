@@ -3,6 +3,8 @@
 extern int yylex();
 extern "C" FILE* yyin;
 
+//considers first argument as input file name
+
 int main(int argc, char* argv[]){
   argv++;
   argc--;
@@ -15,19 +17,5 @@ int main(int argc, char* argv[]){
     yyin = inp;
   }
   yylex();
-  /*
-  do{
-    int tok = yylex();
-    if (tok == IDENTIFIER)
-      printf("Identifier\n");
-    else if (tok == KEYWORD)
-      printf("Keyword\n");
-    else if (tok == INTEGER_CONSTANT)
-      printf("Integer-constant\n");
-    else if (tok == SIGN)
-      printf("Sign\n");
-      
-  }while (!feof(yyin));
-  */
   return 0;
 }

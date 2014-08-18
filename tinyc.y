@@ -5,9 +5,6 @@
 
   extern int yylex();  
   void yyerror(const char *s);
-  //int yywrap(){
-  //  return 0;
-  //}
 %}
 %union {
   char* sval;
