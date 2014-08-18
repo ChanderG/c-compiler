@@ -42,4 +42,51 @@ hello23
 /*hello*/
 /* hello ***/
 /* /* hello */ bye */
+//ChanderG chandergovind@gmail.com
 
+/*This is tinyC program.
+  The firt for my compiler.
+*/
+
+//#include<stdio.h>   preprocessing must be done separately.
+
+int main(){
+  char a = 'A';
+  printf("Hello, World!\n");   
+  return 0;
+}
+
+break
+case
+const
+continue
+default
+do
+double
+else
+enum
+extern
+float
+for
+goto
+if
+inline
+int
+long
+register
+restrict
+short
+signed
+sizeof
+static
+struct
+switch
+typedef
+union
+unsigned
+void
+volatile
+while
+_Bool
+_Complex
+_Imaginary    

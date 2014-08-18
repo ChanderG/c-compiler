@@ -16,7 +16,7 @@ fractional_constant [0-9]*\.{digit_sequence}|\.{digit_sequence}
 exponential_part    [e|E]{sign}?{digit_sequence}
 escape_seq          \'|\''|\\?|\\|\a|\b|\f|\n|\r|\t|\v
 c_char              [^'\\n\t ]|{escape_seq} 
-s_char              [^"\\n\t ]|{escape_seq}
+s_char              [^"]|{escape_seq}
 punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>|<=|>=|==|!=|^|\||&&|\|\||\?|:|;|\.\.\.|=|\*=|\/=|%=|\+=|-=|<<=|>>=|&=|^=|\|=|,|#
 
 %%
@@ -42,7 +42,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 {fractional_constant}{exponential_part}?|{digit_sequence}{exponential_part}       { cout << "FLOATING_CONSTANT" << endl;
                       //return FLOATING_CONSTANT;
 		    }  
-'{c_char}*'         { cout << "CHARACTER_CONSTANT" << endl;
+'{c_char}'         { cout << "CHARACTER_CONSTANT" << endl;
                       //return CHARACTER_CONSTANT;
 		    }  
 \"{s_char}*\"         { cout << "STRING_LITERAL" << endl;
