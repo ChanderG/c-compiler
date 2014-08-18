@@ -30,3 +30,16 @@ hello23
 ? : ; ...
 = *= /= %= += -= <<= >>= &= ^= |=
 , #
+//Hello
+// if {} for while &&
+/* And this is the masterpiece:
+    if(for&&while){
+
+       int a = 75;
+       int b = a * 4;
+    }
+*/
+/*hello*/
+/* hello ***/
+/* /* hello */ bye */
+

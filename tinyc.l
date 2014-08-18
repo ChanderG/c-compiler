@@ -20,6 +20,12 @@ s_char              [^"\\n\t ]|{escape_seq}
 punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>|<=|>=|==|!=|^|\||&&|\|\||\?|:|;|\.\.\.|=|\*=|\/=|%=|\+=|-=|<<=|>>=|&=|^=|\|=|,|#
 
 %%
+\/\*([^\*]|\*[^\/])*\*\/    { cout << "MULTI_LINE_COMMENT" << endl;
+                      //return MULTI_LINE_COMMENT;
+                    }  
+\/\/.*\n            { cout << "SINGLE_LINE_COMMENT" << endl;
+                      //return SINGLE_LINE_COMMENT;
+                    } 
 auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { cout << "KEYWORD" << endl;
                                                             //return KEYWORD;
 							  }

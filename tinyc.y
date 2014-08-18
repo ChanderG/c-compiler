@@ -24,6 +24,8 @@
 %token <sval> STRING_LITERAL
 %token <cval> SIGN 
 %token <cval> PUNCTUATOR 
+%token <sval> SINGLE_LINE_COMMENT
+%token <sval> MULTI_LINE_COMMENT
 
 %%
 //rules section

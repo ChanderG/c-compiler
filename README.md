@@ -21,3 +21,4 @@ If there are no problems it will output nothing.
 
 ###Issues
 * +/- are recogonized for signs and not for punctuators.
+* Character definition is wrong.
