@@ -16,7 +16,8 @@ fractional_constant [0-9]*\.{digit_sequence}|\.{digit_sequence}
 exponential_part    [e|E]{sign}?{digit_sequence}
 escape_seq          \'|\''|\\?|\\|\a|\b|\f|\n|\r|\t|\v
 c_char              [^'\\n\t ]|{escape_seq} 
-s_char              [^"\\n\t ]|{escape_seq} 
+s_char              [^"\\n\t ]|{escape_seq}
+punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>|<=|>=|==|!=|^|\||&&|\|\||\?|:|;|\.\.\.|=|\*=|\/=|%=|\+=|-=|<<=|>>=|&=|^=|\|=|,|#
 
 %%
 auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { cout << "KEYWORD" << endl;
@@ -36,10 +37,13 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
                       //return FLOATING_CONSTANT;
 		    }  
 '{c_char}*'         { cout << "CHARACTER_CONSTANT" << endl;
-                      return CHARACTER_CONSTANT;
+                      //return CHARACTER_CONSTANT;
 		    }  
-"{s_char}*"         { cout << "STRING_LITERAL" << endl;
-                      return STRING_LITERAL;
+\"{s_char}*\"         { cout << "STRING_LITERAL" << endl;
+                      //return STRING_LITERAL;
+		    }  
+{punctuator}        { cout << "PUNCTUATOR" << endl;
+                      //return PUNCTUATOR;
 		    }  
 [ \t\n]             ;    
-%%//.                   { /*cout << "WIP" << endl; */ return 0;}
+%%//.               { /*cout << "WIP" << endl; */ return 0;}

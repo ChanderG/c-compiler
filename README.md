@@ -19,7 +19,5 @@ bash ./testrunner.sh
 If there are no problems it will output nothing.
 
 
-###In Pre-alpha:
-//In test mode: 
-//punctuator          \[|\+\+|/|\?|=|,|\]|(|{|} |\.|->|\*|\+|-|~|\!|%|<<|>>|<|>|<=|>=|:|;|\.\.\    .|\*=|/=|%=|\+=|-=|<<=|#|--|)|&|==|>>=|\!=|&=|\^|\||\^=|&&|\|\||\|=
-
+###Issues
+* +/- are recogonized for signs and not for punctuators.
