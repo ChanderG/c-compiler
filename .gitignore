@@ -7,3 +7,4 @@ y.tab.c
 *.swp
 *.swo
 dist
+*.tar.gz
