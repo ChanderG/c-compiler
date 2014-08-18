@@ -5,5 +5,5 @@ y.tab.c
 *.o
 *.out
 *.swp
-
+*.swo
 dist

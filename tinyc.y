@@ -25,9 +25,8 @@
 %token <sval> MULTI_LINE_COMMENT
 
 %%
-//rules section
-token: IDENTIFIER
-       ;
+//rules section - empty for now
+token:  ;
 
 %%
 //main section - not required now
