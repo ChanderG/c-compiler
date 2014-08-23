@@ -20,36 +20,36 @@ s_char              [^"]|{escape_seq}
 punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>|<=|>=|==|!=|^|\||&&|\|\||\?|:|;|\.\.\.|=|\*=|\/=|%=|\+=|-=|<<=|>>=|&=|^=|\|=|,|#
 
 %%
-\/\*([^\*]|\*[^\/])*\*\/    { cout << "MULTI_LINE_COMMENT" << endl;
-                      //return MULTI_LINE_COMMENT;
-                    }  
-\/\/.*\n            { cout << "SINGLE_LINE_COMMENT" << endl;
-                      //return SINGLE_LINE_COMMENT;
+\/\*([^\*]|\*[^\/])*\*\/    {  //cout << "MULTI_LINE_COMMENT" << endl;
+                               return MULTI_LINE_COMMENT;
+                            }  
+\/\/.*\n            { //cout << "SINGLE_LINE_COMMENT" << endl;
+                      return SINGLE_LINE_COMMENT;
                     } 
-auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { cout << "KEYWORD" << endl;
-                                                            //return KEYWORD;
+auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { //cout << "KEYWORD" << endl;
+                                                            return KEYWORD;
 							  }
 
-[_a-zA-Z]+[0-9]*    { cout << "IDENTIFIER" << endl; 
-                      //return IDENTIFIER;
+[_a-zA-Z]+[0-9]*    { //cout << "IDENTIFIER" << endl; 
+                      return IDENTIFIER;
 		    }
-0|[1-9]+[0-9]*      { cout << "INTEGER_CONSTANT" << endl;  
-                      //return INTEGER_CONSTANT;
+0|[1-9]+[0-9]*      { //cout << "INTEGER_CONSTANT" << endl;  
+                      return INTEGER_CONSTANT;
 		    }
-{sign}              { cout << "SIGN" << endl;  
-                      //return SIGN; 
+{sign}              { //cout << "SIGN" << endl;  
+                      return SIGN; 
 		    }
-{fractional_constant}{exponential_part}?|{digit_sequence}{exponential_part}       { cout << "FLOATING_CONSTANT" << endl;
-                      //return FLOATING_CONSTANT;
+{fractional_constant}{exponential_part}?|{digit_sequence}{exponential_part}       { //cout << "FLOATING_CONSTANT" << endl;
+                      return FLOATING_CONSTANT;
 		    }  
-'{c_char}'         { cout << "CHARACTER_CONSTANT" << endl;
-                      //return CHARACTER_CONSTANT;
+'{c_char}'         { //cout << "CHARACTER_CONSTANT" << endl;
+                      return CHARACTER_CONSTANT;
 		    }  
-\"{s_char}*\"         { cout << "STRING_LITERAL" << endl;
-                      //return STRING_LITERAL;
+\"{s_char}*\"         { //cout << "STRING_LITERAL" << endl;
+                      return STRING_LITERAL;
 		    }  
-{punctuator}        { cout << "PUNCTUATOR" << endl;
-                      //return PUNCTUATOR;
+{punctuator}        { //cout << "PUNCTUATOR" << endl;
+                      return PUNCTUATOR;
 		    }  
 [ \t\n]             ;    
-%%//.               { /*cout << "WIP" << endl; */ return 0;}
+%%//.               { /*//cout << "WIP" << endl; */ return 0;}

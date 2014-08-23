@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include"y.tab.h"
-extern int yylex();
+extern int yyparse();
 extern "C" FILE* yyin;
 
 //considers first argument as input file name
@@ -16,6 +16,6 @@ int main(int argc, char* argv[]){
     }
     yyin = inp;
   }
-  yylex();
+  yyparse();
   return 0;
 }

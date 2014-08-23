@@ -25,8 +25,8 @@
 %token <sval> MULTI_LINE_COMMENT
 
 %%
-//rules section - empty for now
-token:  ;
+//rules section - for now printing correct is used
+token:  { cout << "Correct" << endl; };
 
 %%
 //main section - not required now
