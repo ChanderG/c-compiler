@@ -16,6 +16,8 @@ int main(int argc, char* argv[]){
     }
     yyin = inp;
   }
-  yyparse();
+  do{
+    yyparse();
+  }while(!feof(yyin));
   return 0;
 }

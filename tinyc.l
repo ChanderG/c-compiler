@@ -31,6 +31,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 							  }
 
 [_a-zA-Z]+[0-9]*    { //cout << "IDENTIFIER" << endl; 
+                      yylval.sval = strdup(yytext); 
                       return IDENTIFIER;
 		    }
 0|[1-9]+[0-9]*      { //cout << "INTEGER_CONSTANT" << endl;  
@@ -48,6 +49,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 \"{s_char}*\"         { //cout << "STRING_LITERAL" << endl;
                       return STRING_LITERAL;
 		    }  
+:                   { return COLON; }
 {punctuator}        { //cout << "PUNCTUATOR" << endl;
                       return PUNCTUATOR;
 		    }  
