@@ -26,6 +26,10 @@ punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>
 \/\/.*\n            { //cout << "SINGLE_LINE_COMMENT" << endl;
                       return SINGLE_LINE_COMMENT;
                     } 
+
+case                { return CASE; }
+default             { return DEFAULT; }
+		    
 auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { //cout << "KEYWORD" << endl;
                                                             return KEYWORD;
 							  }
@@ -50,6 +54,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
                       return STRING_LITERAL;
 		    }  
 :                   { return COLON; }
+;                   { return SEMI_COLON; }
 {punctuator}        { //cout << "PUNCTUATOR" << endl;
                       return PUNCTUATOR;
 		    }  

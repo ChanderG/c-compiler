@@ -1,1 +1,1 @@
-autom : bye
+auto : bye
