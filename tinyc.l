@@ -32,6 +32,7 @@ default             { return DEFAULT; }
 if                  { return IF; }
 else                { return ELSE; }
 switch              { return SWITCH; }
+for                 { return FOR; }
 while               { return WHILE; }
 do                  { return DO; }
 goto                { return GOTO; }
@@ -39,6 +40,31 @@ continue            { return CONTINUE; }
 break               { return BREAK; }
 return              { return RETURN; }
 		    
+extern              { return EXTERN; }
+static              { return STATIC; }
+auto                { return AUTO; }
+register            { return REGISTER; }
+
+void                { return VOID; }
+char                { return CHAR; }
+short               { return SHORT; }
+int                 { return INT; }
+long                { return LONG; }
+float               { return FLOAT; }
+double              { return DOUBLE; }
+signed              { return SIGNED; }
+unsigned            { return UNSIGNED; }
+_Bool               { return _BOOL; }
+_Complex            { return _COMPLEX; }
+_Imaginary          { return _IMAGINARY; }
+enum                { return ENUM; }
+const               { return CONST; }
+restrict            { return RESTRICT; }
+volatile            { return VOLATILE; }
+inline              { return INLINE; }
+static              { return STATIC; }
+
+
 auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { //cout << "KEYWORD" << endl;
                                                             return KEYWORD;
 							  }
@@ -64,10 +90,17 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 		    }  
 :                   { return COLON; }
 ;                   { return SEMI_COLON; }
-{                   { return CURLY_OPEN; }
-}                   { return CURLY_CLOSE; }
-(                   { return PARAN_OPEN; }
-)                   { return PARAN_CLOSE; }
+\{                  { return CURLY_OPEN; }
+\}                  { return CURLY_CLOSE; }
+\(                  { return PARAN_OPEN; }
+\)                  { return PARAN_CLOSE; }
+\,                  { return COMMA; }
+=                   { return EQUAL; }
+\[                  { return SQ_OPEN; }
+\]                  { return SQ_CLOSE; }  
+\*                  { return STAR; }  
+\.\.\.              { return ELIPSIS; } 
+\.                  { return DOT; } 
 {punctuator}        { //cout << "PUNCTUATOR" << endl;
                       return PUNCTUATOR;
 		    }  

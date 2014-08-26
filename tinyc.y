@@ -36,9 +36,12 @@
 %token PARAN_OPEN
 %token PARAN_CLOSE
 
+%token SQ_OPEN, SQ_CLOSE
+
 %token IF
 %token ELSE
 %token SWITCH
+%token FOR
 
 %token WHILE
 %token DO
@@ -48,6 +51,19 @@
 %token BREAK
 %token RETURN
 
+%token COMMA
+%token EQUAL
+
+%token EXTERN, STATIC, AUTO, REGISTER
+%token VOID , CHAR , SHORT , INT , LONG , FLOAT , DOUBLE , SIGNED , UNSIGNED, _BOOL, _COMPLEX, _IMAGINARY;
+
+%token ENUM
+
+%token CONST, RESTRICT, VOLATILE
+
+%token INLINE
+
+%token STAR, ELIPSIS, DOT
 
 %%
 //rules section - for now printing correct is used
@@ -171,6 +187,140 @@ jump_statement : GOTO IDENTIFIER SEMI_COLON
 constant_expression: {};
 
 
+//Section 2: Declarations
+
+declaration: declaration_specifiers init_declarator_list_opt
+             {}
+	     ;
+
+declaration_specifiers_opt: epsilon
+                            | declaration_specifiers
+                            { }
+			    ;
+
+declaration_specifiers: storage_class_specifier declaration_specifiers_opt
+                        {}
+			| type_specifier declaration_specifiers_opt
+			{}
+			| type_qualifier declaration_specifiers_opt
+                        {}
+			| function_specifier declaration_specifiers_opt
+                        {}
+			;
+
+init_declarator_list_opt: epsilon
+                          | init_declarator_list
+			  { }
+			  ;
+
+init_declarator_list: init_declarator
+                      {}
+		      |
+		      init_declarator_list COMMA init_declarator
+		      
+init_declarator: declarator
+                 {}
+		 | declarator EQUAL initializer
+
+storage_class_specifier: EXTERN
+                         {}
+			 | STATIC
+			 {}
+			 | AUTO
+			 {}
+			 | REGISTER
+			 {}
+			 ;
+
+type_specifier: VOID | CHAR | SHORT | INT | LONG | FLOAT | DOUBLE | SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
+
+specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
+                          | type_qualifier specifier_qualifier_list_opt
+
+specifier_qualifier_list_opt: epsilon | specifier_qualifier_list;
+
+enum_specifier: ENUM identifier_opt CURLY_OPEN enumerator_list  CURLY_CLOSE  
+                | ENUM identifier_opt CURLY_OPEN enumerator_list COMMA  CURLY_CLOSE  
+		| ENUM IDENTIFIER
+		;
+
+identifier_opt: epsilon | IDENTIFIER;
+
+enumerator_list: enumerator
+                 | enumerator_list COMMA enumerator
+
+enumerator: enumeration_constant
+            | enumeration_constant EQUAl constant_expression
+	    ;
+	    
+type_qualifier: CONST
+                | RESTRICT
+		| VOLATILE
+		;
+
+function_specifier: INLINE;
+
+declarator: pointer_opt direct_declarator;
+
+pointer_opt: epsilon| pointer;
+
+direct_declarator: IDENTIFIER
+                   | PARAN_OPEN declarator PARAN_CLOSE 
+		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
+		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE
+		   | direct_declarator SQ_OPEN type_qualifier_list STATIC assignment_expression SQ_CLOSE
+		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
+		   | direct_declarator PARAN_OPEN parameter_type_list PARAN_CLOSE
+		   | direct_declarator PARAN_OPEN identifier_list_opt PARAN_CLOSE
+
+
+type_qualifier_list_opt: epsilon | type_qualifier_list;
+assignment_expression_opt: epsilon | assignment_expression;
+identifier_list_opt: epsilon | identifier_list;
+
+pointer: STAR type_qualifier_list_opt
+         | STAR type_qualifier_list_opt pointer
+
+type_qualifier_list: type_qualifier
+                     | type_qualifier_list type_qualifier
+                     ;
+
+parameter_type_list: parameter_list
+                     | parameter_list COMMA ELIPSIS
+
+parameter_list: parameter_declaration
+                | parameter_list COMMA parameter_declaration
+		;
+
+parameter_declaration: declaration_specifiers declarator
+                       | declaration_specifiers
+		       ;
+
+identifier_list: identifier
+                 | identifier_list COMMA identifier
+		 ;
+
+type_name: specifier_qualifier_list;
+
+initializer: assignment_expression 
+             | CURLY_OPEN initializer_list CURLY_CLOSE
+	     | CURLY_OPEN initializer_list COMMA CURLY_CLOSE
+	     ;
+
+initializer_list: designation_opt initializer
+                  | initializer_list COMMA designation_opt initializer
+
+designation_opt: epsilon | designation;
+
+designation: designator_list EQUAL;
+
+designator_list: designator 
+                 | designator_list designator
+		 ;
+
+designator: SQ_OPEN constant_expression SQ_CLOSE
+            | DOT IDENTIFIER
+	    ;
 
 %%
 //main section - not required now
