@@ -26,10 +26,28 @@
 
 %token COLON
 %token SEMI_COLON
+
 %token CASE
 %token DEFAULT
+
 %token CURLY_OPEN
 %token CURLY_CLOSE
+
+%token PARAN_OPEN
+%token PARAN_CLOSE
+
+%token IF
+%token ELSE
+%token SWITCH
+
+%token WHILE
+%token DO
+
+%token GOTO
+%token CONTINUE
+%token BREAK
+%token RETURN
+
 
 %%
 //rules section - for now printing correct is used
@@ -113,6 +131,7 @@ block_item: statement
 	    | declaration
 	    {}
 	    ;
+
 expression_statement: expression_opt SEMI_COLON
                       {}
 		      ;
@@ -122,16 +141,32 @@ expression_opt: epsilon
 		{}
 		;
 
-		
+selection_statement : IF PARAN_OPEN expression PARAN_CLOSE statement
+                      {} 
+		      | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
+                      {}
+		      | SWITCH PARAN_CLOSE expression PARAN_CLOSE statement
+		      {}
+		      ;
+iteration_statement : WHILE PARAN_OPEN expression PARAN_CLOSE statement
+                      {} 
+		      | DO statement WHILE PARAN_OPEN expression PARAN_CLOSE SEMI_COLON
+		      {}
+		      | FOR PARAN_OPEN expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
+		      { }
+		      | FOR PARAN_OPEN declaration SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
+		      {}
+		      ;
 
-/*
-selection_statement :{} ;
-iteration_statement :{} ;
-jump_statement :{} ;
-*/
-
-
-
+jump_statement : GOTO IDENTIFIER SEMI_COLON
+                 {} 
+		 | CONTINUE SEMI_COLON
+		 {}
+		 | BREAK SEMI_COLON
+		 {}
+		 | RETURN expression_opt SEMI_COLON
+		 {}
+		 ;
 
 constant_expression: {};
 
