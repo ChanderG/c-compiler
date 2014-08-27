@@ -63,6 +63,7 @@ restrict            { return RESTRICT; }
 volatile            { return VOLATILE; }
 inline              { return INLINE; }
 static              { return STATIC; }
+sizeof              { return SIZEOF; }
 
 
 auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|restrict|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|_Bool|_Complex|_Imaginary         { //cout << "KEYWORD" << endl;
@@ -101,6 +102,27 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 \*                  { return STAR; }  
 \.\.\.              { return ELIPSIS; } 
 \.                  { return DOT; } 
+->                  { return DEREF; } 
+\+\+                { return INC; } 
+--                  { return DEC; } 
+&                   { return AND; } 
+\+                  { return PLUS; } 
+-                   { return MINUS; } 
+~                   { return TILDE; } 
+!                   { return EX; } 
+/                   { return BY; }
+%                   { return MOD; } 
+<<                  { return SL; } 
+>>                  { return SR; } 
+<                   { return LT; } 
+>                   { return GT; } 
+<=                  { return LTE; } 
+>=                  { return GTE; } 
+==                  { return E; } 
+!=                  { return NE; } 
+^                   { return CAP; } 
+\|                  { return OR; }
+?                   { return Q; }
 {punctuator}        { //cout << "PUNCTUATOR" << endl;
                       return PUNCTUATOR;
 		    }  

@@ -38,21 +38,10 @@
 
 %token SQ_OPEN, SQ_CLOSE
 
-%token IF
-%token ELSE
-%token SWITCH
-%token FOR
-
-%token WHILE
-%token DO
-
-%token GOTO
-%token CONTINUE
-%token BREAK
-%token RETURN
-
-%token COMMA
-%token EQUAL
+%token IF ELSE SWITCH FOR
+%token WHILE DO
+%token GOTO CONTINUE BREAK RETURN
+%token COMMA EQUAL
 
 %token EXTERN, STATIC, AUTO, REGISTER
 %token VOID , CHAR , SHORT , INT , LONG , FLOAT , DOUBLE , SIGNED , UNSIGNED, _BOOL, _COMPLEX, _IMAGINARY;
@@ -64,6 +53,23 @@
 %token INLINE
 
 %token STAR, ELIPSIS, DOT
+
+%token DEREF
+
+%token INC DEC
+%token SIZEOF
+
+%token PLUS MINUS TILDE EX
+
+%token AND OR
+
+%token BY MOD
+%token SL SR
+%token LT GT LTE GTE E NE
+
+%token CAP
+
+%token Q
 
 %%
 //rules section - for now printing correct is used
@@ -321,6 +327,113 @@ designator_list: designator
 designator: SQ_OPEN constant_expression SQ_CLOSE
             | DOT IDENTIFIER
 	    ;
+
+primary_expression: IDENTIFIER | constant | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
+
+constant:  INTEGER_CONSTANT | FLOATING_CONSTANT | CHARACTER_CONSTANT;
+
+postfix_expression: primary_expression 
+                   |
+		   postfix_expression SQ_OPEN expression SQ_CLOSE
+		   |
+		   postfix_expression PARAN_OPEN argument_expression_list_opt PARAN_CLOSE
+		   |
+                   postfix_expression DOT IDENTIFIER
+		   | 
+		   postfix_expression DEREF IDENTIFIER
+		   | 
+		   postfix_expression INC
+                   | 
+		   postfix_expression DEC
+		   | 
+		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
+		   |
+		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMAN CURLY_CLOSE
+		   ;
+
+argument_expression_list_opt: epsilon | argument_expression_list;
+
+argument_expression_list: assignment_expression
+                          | argument_expression_list COMMA assignment_expression
+			  ;
+
+unary_expression: postfix_expression 
+                  | INC unary_expression
+		  | DEC unary_expression
+		  | unary_operator cast_expression
+		  | SIZEOF unary_expression
+		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE
+		  ;
+
+unary_operator: AND | STAR | PLUS | MINUS | TILDE | EX;
+
+cast_expression: unary_expression
+                 | PARAN_OPEN type_name PARAN_CLOSE cast_expression
+		 ;
+
+multiplicative_expression: cast_expression
+                           | multiplicative_expression STAR cast_expression
+			   | multiplicative_expression BY cast_expression
+			   | multiplicative_expression MOD cast_expression
+			   ;
+
+additive_expression: multiplicative_expression
+                     | additive_expression PLUS multiplicative_expression
+		     | additive_expression MINUS multiplicative_expression
+		     ;
+
+shift_expression: additive_expression
+                  | shift_expression SL additive_expression
+		  | shift_expression SR additive_expression
+		  ;
+
+relational_expression: shift_expression
+                       | relational_expression LT shift_expression
+                       | relational_expression GT shift_expression
+                       | relational_expression LTE shift_expression
+                       | relational_expression GTE shift_expression
+		       ;
+
+equality_expression: relational_expression
+                     | equality_expression E relational_expression
+		     | equality_expression NE relational_expression
+		     ;
+
+and_expression: equality_expression
+                | and_expression AND equality_expression
+		;
+
+exclusive_or_expression: and_expression
+               | exclusive_or_expression CAP equality_expression
+	       ;
+
+inclusive_or_expression: exclusive_or_expression
+                         | inclusive_or_expression OR exclusive_or_expression
+			 ;
+
+logical_and_expression: inclusive_or_expression
+                        | logical_and_expression AND AND inclusive_or_expression
+			;
+
+logical_or_expression: logical_and_expression 
+                       | logical_or_expression OR OR logical_and_expression
+		       ;
+
+conditional_expression: logical_or_expression
+                        | logical_or_expression Q expression COLON conditional_expression
+			;
+
+assignment_expression: conditional_expression 
+                       | unary_expression assignment_operator assignment_expression
+		       ;
+
+assignment_operator: EQUAL | STAR EQUAL | BY EQUAL | MOD EQUAL | PLUS EQUAL | MINUS EQUAL | SL EQUAL | SR EQUAL | AND EQUAL | CAP EQUAL | OR EQUAL;
+
+expression: assignment_expression
+            | expression COMMAN assignment_expression
+	    ;
+
+constant_expression: conditional_expression;
 
 %%
 //main section - not required now
