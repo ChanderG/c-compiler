@@ -1,2 +1,3 @@
 1. iteration_statement fourth for statement : added a ;
 2. All double operator implementation may fail. Check it.
+3. Using enumeration constant as IDENTIFIER.

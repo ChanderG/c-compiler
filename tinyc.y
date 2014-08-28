@@ -36,23 +36,23 @@
 %token PARAN_OPEN
 %token PARAN_CLOSE
 
-%token SQ_OPEN, SQ_CLOSE
+%token SQ_OPEN SQ_CLOSE
 
 %token IF ELSE SWITCH FOR
 %token WHILE DO
 %token GOTO CONTINUE BREAK RETURN
 %token COMMA EQUAL
 
-%token EXTERN, STATIC, AUTO, REGISTER
-%token VOID , CHAR , SHORT , INT , LONG , FLOAT , DOUBLE , SIGNED , UNSIGNED, _BOOL, _COMPLEX, _IMAGINARY;
+%token EXTERN STATIC AUTO REGISTER
+%token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED _BOOL _COMPLEX _IMAGINARY
 
 %token ENUM
 
-%token CONST, RESTRICT, VOLATILE
+%token CONST RESTRICT VOLATILE
 
 %token INLINE
 
-%token STAR, ELIPSIS, DOT
+%token STAR ELIPSIS DOT
 
 %token DEREF
 
@@ -74,7 +74,6 @@
 %%
 //rules section - for now printing correct is used
 
-/*
 translation_unit: external_declaration 
                   { cout << "Correct" << endl; }
                   | translation_unit external_declaration
@@ -104,25 +103,18 @@ declaration_list : declaration
 		   { }
 		   ;
 
-*/
-program: labeled_statement
-         { }
-	 | program labeled_statement 
-	 { }
-	 ;
-
 statement : labeled_statement
             { }
-	   // | compound_statement
-	   // { }
-	   // | expression_statement
-	   // { }
-	   // | selection_statement
-	   // { }
-           // | iteration_statement
-	   // { }
-           // | jump_statement
-	   // { }
+	    | compound_statement
+	    { }
+	    | expression_statement
+	    { }
+	    | selection_statement
+	    { }
+            | iteration_statement
+	    { }
+            | jump_statement
+	    { }
             ; 
 
 
@@ -256,9 +248,11 @@ enumerator_list: enumerator
                  | enumerator_list COMMA enumerator
 
 enumerator: enumeration_constant
-            | enumeration_constant EQUAl constant_expression
+            | enumeration_constant EQUAL constant_expression
 	    ;
 	    
+enumeration_constant: IDENTIFIER;
+
 type_qualifier: CONST
                 | RESTRICT
 		| VOLATILE
@@ -302,8 +296,8 @@ parameter_declaration: declaration_specifiers declarator
                        | declaration_specifiers
 		       ;
 
-identifier_list: identifier
-                 | identifier_list COMMA identifier
+identifier_list: IDENTIFIER
+                 | identifier_list COMMA IDENTIFIER
 		 ;
 
 type_name: specifier_qualifier_list;
@@ -348,7 +342,7 @@ postfix_expression: primary_expression
 		   | 
 		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
 		   |
-		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMAN CURLY_CLOSE
+		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE
 		   ;
 
 argument_expression_list_opt: epsilon | argument_expression_list;
@@ -430,7 +424,7 @@ assignment_expression: conditional_expression
 assignment_operator: EQUAL | STAR EQUAL | BY EQUAL | MOD EQUAL | PLUS EQUAL | MINUS EQUAL | SL EQUAL | SR EQUAL | AND EQUAL | CAP EQUAL | OR EQUAL;
 
 expression: assignment_expression
-            | expression COMMAN assignment_expression
+            | expression COMMA assignment_expression
 	    ;
 
 constant_expression: conditional_expression;

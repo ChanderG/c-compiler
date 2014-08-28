@@ -97,7 +97,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 \)                  { return PARAN_CLOSE; }
 \,                  { return COMMA; }
 =                   { return EQUAL; }
-\[                  { return SQ_OPEN; }
+[\[]                { return SQ_OPEN; }
 \]                  { return SQ_CLOSE; }  
 \*                  { return STAR; }  
 \.\.\.              { return ELIPSIS; } 
@@ -110,19 +110,19 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 -                   { return MINUS; } 
 ~                   { return TILDE; } 
 !                   { return EX; } 
-/                   { return BY; }
+\/                  { return BY; }
 %                   { return MOD; } 
-<<                  { return SL; } 
+[<<]                { return SL; } 
 >>                  { return SR; } 
-<                   { return LT; } 
+[<]                 { return LT; } 
 >                   { return GT; } 
-<=                  { return LTE; } 
+[<=]                { return LTE; } 
 >=                  { return GTE; } 
 ==                  { return E; } 
 !=                  { return NE; } 
-^                   { return CAP; } 
+[\^]                { return CAP; } 
 \|                  { return OR; }
-?                   { return Q; }
+[\?]                { return Q; }
 {punctuator}        { //cout << "PUNCTUATOR" << endl;
                       return PUNCTUATOR;
 		    }  
