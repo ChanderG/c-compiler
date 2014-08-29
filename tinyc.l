@@ -2,6 +2,11 @@
 
 Right now the idea is to match the token but instead print out the caugth type instead of returning.
 
+
+{punctuator}        { //cout << "PUNCTUATOR" << endl;
+                      return PUNCTUATOR;
+		    }  
+
 */
 
 %{
@@ -123,8 +128,19 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 [\^]                { return CAP; } 
 \|                  { return OR; }
 [\?]                { return Q; }
-{punctuator}        { //cout << "PUNCTUATOR" << endl;
-                      return PUNCTUATOR;
-		    }  
+[&&]                { return ANDAND; }
+[\|\|]              { return OROR; }
+[\*=]               { return STAREQUAL; }
+[/=]                { return BYEQUAL; }
+[%=]                { return MODEQUAL; }
+[/+=]               { return PLUSEQUAL; }
+[-=]                { return MINUSEQUAL; }
+[<<=]               { return SLEQUAL; }
+[>>=]               { return SREQUAL; }
+[&=]                { return ANDEQUAL; }
+[\^=]               { return CAPEQUAL; }
+[\|=]               { return OREQUAL; }
+
+
 [ \t\n]             ;    
 %%//.               { /*//cout << "WIP" << endl; */ return 0;}

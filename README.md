@@ -18,11 +18,12 @@ bash ./testrunner.sh
 ```
 If there are no problems it will output nothing.
 
-The build script is to wrestle the same code into a format required bu my university.
+The build script is to wrestle the same code into a format required by my university.
+
+The y.output file is created when the -v flag is used with debug option. The file helps a lot to remove shift/reduce conflicts. Just open the file with a text editor.
 
 ###Issues
-* +/- are recogonized for signs and not for punctuators.
-
+Many issues remain.
 
 ###Build through:
 

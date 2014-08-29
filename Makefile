@@ -5,7 +5,7 @@ lex.yy.c: tinyc.l y.tab.h
 lex.yy.o: lex.yy.c
 	g++ -c lex.yy.c
 y.tab.c y.tab.h: tinyc.y
-	yacc -dt tinyc.y
+	yacc -dtv tinyc.y
 y.tab.o: y.tab.c
 	g++ -c y.tab.c
 main.o: lexmain.c y.tab.h

@@ -20,7 +20,7 @@
 %token <cval> CHARACTER_CONSTANT
 %token <sval> STRING_LITERAL
 %token <cval> SIGN 
-%token <cval> PUNCTUATOR 
+//%token <cval> PUNCTUATOR 
 %token <sval> SINGLE_LINE_COMMENT
 %token <sval> MULTI_LINE_COMMENT
 
@@ -68,8 +68,21 @@
 %token LT GT LTE GTE E NE
 
 %token CAP
-
 %token Q
+%token ANDAND OROR
+%token STAREQUAL BYEQUAL MODEQUAL PLUSEQUAL MINUSEQUAL SLEQUAL SREQUAL ANDEQUAL CAPEQUAL OREQUAL
+
+//associativity rules
+
+%nonassoc LOWER_THAN_ELSE
+%nonassoc  ELSE
+
+//takes care of just the binary operators
+%left PLUS MINUS
+%left STAR RIGHT
+%nonassoc UPLUS UMINUS
+%nonassoc USTAR
+%nonassoc U
 
 %%
 //rules section - for now printing correct is used
@@ -93,7 +106,6 @@ function_definition : declaration_specifiers declarator declaration_list_opt com
 declaration_list_opt : declaration_list 
                        { }
 		       | epsilon
-		       { }
 		       ;
 epsilon : ;   //epsilon transition
 
@@ -126,6 +138,9 @@ labeled_statement : IDENTIFIER COLON statement
 		    { cout << "labeled_statement" << endl; }
 		    ;
 
+//This block w/ epsilon has been replaced by one without, but no change is observed.
+
+/*
 compound_statement : CURLY_OPEN block_item_list_opt CURLY_CLOSE 
                      {};
 
@@ -133,6 +148,16 @@ block_item_list_opt: epsilon
                      | block_item_list
 		     { }
 		     ;
+*/
+
+//start
+compound_statement : CURLY_OPEN block_item_list CURLY_CLOSE 
+                     {}
+		     |
+                     CURLY_OPEN CURLY_CLOSE 
+                     {}
+		     ;
+//ends
 
 block_item_list: block_item
                  {}
@@ -155,7 +180,7 @@ expression_opt: epsilon
 		{}
 		;
 
-selection_statement : IF PARAN_OPEN expression PARAN_CLOSE statement
+selection_statement : IF PARAN_OPEN expression PARAN_CLOSE statement %prec LOWER_THAN_ELSE
                       {} 
 		      | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
                       {}
@@ -242,7 +267,7 @@ enum_specifier: ENUM identifier_opt CURLY_OPEN enumerator_list  CURLY_CLOSE
 		| ENUM IDENTIFIER
 		;
 
-identifier_opt: epsilon | IDENTIFIER;
+identifier_opt: IDENTIFIER | epsilon;
 
 enumerator_list: enumerator
                  | enumerator_list COMMA enumerator
@@ -264,6 +289,7 @@ declarator: pointer_opt direct_declarator;
 
 pointer_opt: epsilon| pointer;
 
+/*
 direct_declarator: IDENTIFIER
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
@@ -272,7 +298,21 @@ direct_declarator: IDENTIFIER
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
 		   | direct_declarator PARAN_OPEN parameter_type_list PARAN_CLOSE
 		   | direct_declarator PARAN_OPEN identifier_list_opt PARAN_CLOSE
+		   ;
+*/
+//
+direct_declarator: IDENTIFIER
+                   | PARAN_OPEN declarator PARAN_CLOSE 
+		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
+		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE
+		   | direct_declarator SQ_OPEN type_qualifier_list STATIC assignment_expression SQ_CLOSE
+		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
+		   | direct_declarator PARAN_OPEN param_or_identi PARAN_CLOSE
+		   ;
 
+param_or_identi: parameter_type_list | identifier_list_opt;
+
+//
 
 type_qualifier_list_opt: epsilon | type_qualifier_list;
 assignment_expression_opt: epsilon | assignment_expression;
@@ -354,7 +394,7 @@ argument_expression_list: assignment_expression
 unary_expression: postfix_expression 
                   | INC unary_expression
 		  | DEC unary_expression
-		  | unary_operator cast_expression
+		  | unary_operator cast_expression %prec U
 		  | SIZEOF unary_expression
 		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE
 		  ;
@@ -406,11 +446,11 @@ inclusive_or_expression: exclusive_or_expression
 			 ;
 
 logical_and_expression: inclusive_or_expression
-                        | logical_and_expression AND AND inclusive_or_expression
+                        | logical_and_expression ANDAND inclusive_or_expression
 			;
 
 logical_or_expression: logical_and_expression 
-                       | logical_or_expression OR OR logical_and_expression
+                       | logical_or_expression OROR logical_and_expression
 		       ;
 
 conditional_expression: logical_or_expression
@@ -421,7 +461,7 @@ assignment_expression: conditional_expression
                        | unary_expression assignment_operator assignment_expression
 		       ;
 
-assignment_operator: EQUAL | STAR EQUAL | BY EQUAL | MOD EQUAL | PLUS EQUAL | MINUS EQUAL | SL EQUAL | SR EQUAL | AND EQUAL | CAP EQUAL | OR EQUAL;
+assignment_operator: EQUAL | STAREQUAL | BYEQUAL | MODEQUAL | PLUSEQUAL | MINUSEQUAL | SLEQUAL | SREQUAL | ANDEQUAL | CAPEQUAL | OREQUAL;
 
 expression: assignment_expression
             | expression COMMA assignment_expression
