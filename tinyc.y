@@ -13,16 +13,15 @@
   float fval;
 }
 
-%token <sval> KEYWORD
 %token <sval> IDENTIFIER
 %token <ival> INTEGER_CONSTANT
 %token <fval> FLOATING_CONSTANT
 %token <cval> CHARACTER_CONSTANT
 %token <sval> STRING_LITERAL
-%token <cval> SIGN 
-//%token <cval> PUNCTUATOR 
 %token <sval> SINGLE_LINE_COMMENT
 %token <sval> MULTI_LINE_COMMENT
+
+%token WS
 
 %token COLON
 %token SEMI_COLON
@@ -88,7 +87,7 @@
 //rules section - for now printing correct is used
 
 translation_unit: external_declaration 
-                  { cout << "Correct" << endl; }
+                  { }
                   | translation_unit external_declaration
 		  { }
 		  ;
@@ -96,7 +95,7 @@ translation_unit: external_declaration
 external_declaration : function_definition
                        { }
 		       | declaration
-		       { }
+		       { cout << "Declaration" << endl; }
 		       ;
 
 function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
@@ -212,14 +211,11 @@ constant_expression: {};
 
 //Section 2: Declarations
 
-declaration: declaration_specifiers init_declarator_list_opt
+declaration: declaration_specifiers init_declarator_list_opt SEMI_COLON
              {}
 	     ;
 
-declaration_specifiers_opt: epsilon
-                            | declaration_specifiers
-                            { }
-			    ;
+declaration_specifiers_opt:  declaration_specifiers | epsilon;
 
 declaration_specifiers: storage_class_specifier declaration_specifiers_opt
                         {}
@@ -231,6 +227,7 @@ declaration_specifiers: storage_class_specifier declaration_specifiers_opt
                         {}
 			;
 
+
 init_declarator_list_opt: epsilon
                           | init_declarator_list
 			  { }
@@ -240,37 +237,35 @@ init_declarator_list: init_declarator
                       {}
 		      |
 		      init_declarator_list COMMA init_declarator
+		      ;
 		      
-init_declarator: declarator
+init_declarator: declarator  
                  {}
 		 | declarator EQUAL initializer
+		 ;
 
-storage_class_specifier: EXTERN
-                         {}
-			 | STATIC
-			 {}
-			 | AUTO
-			 {}
-			 | REGISTER
-			 {}
-			 ;
+storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
 
 type_specifier: VOID | CHAR | SHORT | INT | LONG | FLOAT | DOUBLE | SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
 
 specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
                           | type_qualifier specifier_qualifier_list_opt
+			  ;
 
 specifier_qualifier_list_opt: epsilon | specifier_qualifier_list;
 
-enum_specifier: ENUM identifier_opt CURLY_OPEN enumerator_list  CURLY_CLOSE  
-                | ENUM identifier_opt CURLY_OPEN enumerator_list COMMA  CURLY_CLOSE  
+enum_specifier: ENUM identifier_opt CURLY_CLOSE  
+                | ENUM identifier_opt_w_comma CURLY_CLOSE  
 		| ENUM IDENTIFIER
 		;
 
-identifier_opt: IDENTIFIER | epsilon;
+identifier_opt: IDENTIFIER CURLY_OPEN enumerator_list | epsilon CURLY_OPEN enumerator_list;
+
+identifier_opt_w_comma: IDENTIFIER CURLY_OPEN enumerator_list COMMA | epsilon CURLY_OPEN enumerator_list COMMA;
 
 enumerator_list: enumerator
                  | enumerator_list COMMA enumerator
+		 ;
 
 enumerator: enumeration_constant
             | enumeration_constant EQUAL constant_expression
@@ -278,10 +273,7 @@ enumerator: enumeration_constant
 	    
 enumeration_constant: IDENTIFIER;
 
-type_qualifier: CONST
-                | RESTRICT
-		| VOLATILE
-		;
+type_qualifier: CONST | RESTRICT | VOLATILE;
 
 function_specifier: INLINE;
 
@@ -318,8 +310,8 @@ type_qualifier_list_opt: epsilon | type_qualifier_list;
 assignment_expression_opt: epsilon | assignment_expression;
 identifier_list_opt: epsilon | identifier_list;
 
-pointer: STAR type_qualifier_list_opt
-         | STAR type_qualifier_list_opt pointer
+pointer: STAR type_qualifier_list_opt pointer_opt;
+       //  | STAR type_qualifier_list_opt pointer
 
 type_qualifier_list: type_qualifier
                      | type_qualifier_list type_qualifier
@@ -327,6 +319,7 @@ type_qualifier_list: type_qualifier
 
 parameter_type_list: parameter_list
                      | parameter_list COMMA ELIPSIS
+		     ;
 
 parameter_list: parameter_declaration
                 | parameter_list COMMA parameter_declaration
@@ -349,6 +342,7 @@ initializer: assignment_expression
 
 initializer_list: designation_opt initializer
                   | initializer_list COMMA designation_opt initializer
+		  ;
 
 designation_opt: epsilon | designation;
 
@@ -382,8 +376,7 @@ postfix_expression: primary_expression
 		   | 
 		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
 		   |
-		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE
-		   ;
+		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE;
 
 argument_expression_list_opt: epsilon | argument_expression_list;
 
@@ -396,7 +389,7 @@ unary_expression: postfix_expression
 		  | DEC unary_expression
 		  | unary_operator cast_expression %prec U
 		  | SIZEOF unary_expression
-		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE
+		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE %prec U
 		  ;
 
 unary_operator: AND | STAR | PLUS | MINUS | TILDE | EX;
@@ -472,7 +465,8 @@ constant_expression: conditional_expression;
 %%
 //main section - not required now
 void yyerror(const char *s) {
-  cout << "ERROR" << endl;
+  //cout << "ERROR" << endl;
+  cout << s << endl;
   // might as well halt now:
-  exit(-1);
+  //exit(-1);
 }
