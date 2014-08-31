@@ -26,11 +26,61 @@ punctuator          \[|\]|\(|\)|\{|\}|\.|->|\+\+|--|&|\*|\+|-|~|!|\/|%|<<|>>|<|>
 
 %%
 \/\*([^\*]|\*[^\/])*\*\/    {  //cout << "MULTI_LINE_COMMENT" << endl;
-                               return MULTI_LINE_COMMENT;
+                               //return MULTI_LINE_COMMENT;
+			       //We do not return any token so as to not affect the parsing.
                             }  
 \/\/.*\n            { //cout << "SINGLE_LINE_COMMENT" << endl;
-                      return SINGLE_LINE_COMMENT;
+                      // return SINGLE_LINE_COMMENT;
+			       //We do not return any token so as to not affect the parsing.
                     } 
+
+:                   { return COLON; }
+;                   { return SEMI_COLON; }
+\{                  { return CURLY_OPEN; }
+\}                  { return CURLY_CLOSE; }
+\(                  { return PARAN_OPEN; }
+\)                  { return PARAN_CLOSE; }
+\,                  { return COMMA; }
+=                   { return EQUAL; }
+[\[]                { return SQ_OPEN; }
+\]                  { return SQ_CLOSE; }  
+\*                  { return STAR; }  
+\.\.\.              { return ELIPSIS; } 
+\.                  { return DOT; } 
+->                  { return DEREF; } 
+\+                  { return PLUS; } 
+\+\+                { return INC; } 
+--                  { return DEC; } 
+&                   { return AND; } 
+-                   { return MINUS; } 
+~                   { return TILDE; } 
+!                   { return EX; } 
+\/                  { return BY; }
+%                   { return MOD; } 
+&&                  { return ANDAND; }
+\<                  { return LT; } 
+\<\<                { return SL; } 
+>>                  { return SR; } 
+>                   { return GT; } 
+\<=                 { return LTE; } 
+>=                  { return GTE; } 
+==                  { return E; } 
+!=                  { return NE; } 
+[\^]                { return CAP; } 
+\|                  { return OR; }
+[\?]                { return Q; }
+\|\|                { return OROR; }
+\*=                 { return STAREQUAL; }
+\/=                 { return BYEQUAL; }
+%=                  { return MODEQUAL; }
+\+=                 { return PLUSEQUAL; }
+-=                  { return MINUSEQUAL; }
+\<\<=               { return SLEQUAL; }
+>>=                 { return SREQUAL; }
+&=                  { return ANDEQUAL; }
+\^=                 { return CAPEQUAL; }
+\|=                 { return OREQUAL; }
+
 
 case                { return CASE; }
 default             { return DEFAULT; }
@@ -86,53 +136,6 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
 \"{s_char}*\"         { //cout << "STRING_LITERAL" << endl;
                       return STRING_LITERAL;
 		    }  
-:                   { return COLON; }
-;                   { return SEMI_COLON; }
-\{                  { return CURLY_OPEN; }
-\}                  { return CURLY_CLOSE; }
-\(                  { return PARAN_OPEN; }
-\)                  { return PARAN_CLOSE; }
-\,                  { return COMMA; }
-=                   { return EQUAL; }
-[\[]                { return SQ_OPEN; }
-\]                  { return SQ_CLOSE; }  
-\*                  { return STAR; }  
-\.\.\.              { return ELIPSIS; } 
-\.                  { return DOT; } 
-->                  { return DEREF; } 
-\+                  { return PLUS; } 
-\+\+                { return INC; } 
---                  { return DEC; } 
-&                   { return AND; } 
--                   { return MINUS; } 
-~                   { return TILDE; } 
-!                   { return EX; } 
-\/                  { return BY; }
-%                   { return MOD; } 
-[<<]                { return SL; } 
->>                  { return SR; } 
-[<]                 { return LT; } 
->                   { return GT; } 
-[<=]                { return LTE; } 
->=                  { return GTE; } 
-==                  { return E; } 
-!=                  { return NE; } 
-[\^]                { return CAP; } 
-\|                  { return OR; }
-[\?]                { return Q; }
-[&&]                { return ANDAND; }
-[\|\|]              { return OROR; }
-[\*=]               { return STAREQUAL; }
-[/=]                { return BYEQUAL; }
-[%=]                { return MODEQUAL; }
-[/+=]               { return PLUSEQUAL; }
-[-=]                { return MINUSEQUAL; }
-[<<=]               { return SLEQUAL; }
-[>>=]               { return SREQUAL; }
-[&=]                { return ANDEQUAL; }
-[\^=]               { return CAPEQUAL; }
-[\|=]               { return OREQUAL; }
-
 '{c_char}'         { //cout << "CHARACTER_CONSTANT" << endl;
                       return CHARACTER_CONSTANT;
 		    }  
