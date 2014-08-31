@@ -130,11 +130,14 @@ statement : labeled_statement
 
 
 labeled_statement : IDENTIFIER COLON statement
-                    { cout << "labeled_statement" << endl; }
+                    { //cout << "labeled_statement" << endl;
+		    }
 		    | CASE constant_expression COLON statement 
-		    { cout << "labeled_statement" << endl; }
+		    { //cout << "labeled_statement" << endl;
+		    }
 		    | DEFAULT COLON statement
-		    { cout << "labeled_statement" << endl; }
+		    { //cout << "labeled_statement" << endl;
+		    }
 		    ;
 
 //This block w/ epsilon has been replaced by one without, but no change is observed.

@@ -21,7 +21,7 @@ TEST:
 To run the test file manually use:
 
 make
-./a.out < tests/ass3_12CS30011_test.c
+./a.out ass4_12CS30011_test.c
 
 
 It does not print anything out if everything is fine.

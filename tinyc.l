@@ -128,15 +128,18 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
                       return IDENTIFIER;
 		    }
 0|[1-9]+[0-9]*      { //cout << "INTEGER_CONSTANT" << endl;  
+                      yylval.ival = atoi(yytext);
                       return INTEGER_CONSTANT;
 		    }
 {fractional_constant}{exponential_part}?|{digit_sequence}{exponential_part}       { //cout << "FLOATING_CONSTANT" << endl;
                       return FLOATING_CONSTANT;
 		    }  
 \"{s_char}*\"         { //cout << "STRING_LITERAL" << endl;
+                      yylval.sval = strdup(yytext); 
                       return STRING_LITERAL;
 		    }  
 '{c_char}'         { //cout << "CHARACTER_CONSTANT" << endl;
+                      yylval.cval =  yytext[1];
                       return CHARACTER_CONSTANT;
 		    }  
 
