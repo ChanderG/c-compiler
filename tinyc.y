@@ -95,7 +95,8 @@ translation_unit: external_declaration
 external_declaration : function_definition
                        { }
 		       | declaration
-		       { cout << "Declaration" << endl; }
+		       { //cout << "Declaration" << endl;
+		       }
 		       ;
 
 function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
@@ -186,7 +187,7 @@ selection_statement : IF PARAN_OPEN expression PARAN_CLOSE statement %prec LOWER
                       {} 
 		      | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
                       {}
-		      | SWITCH PARAN_CLOSE expression PARAN_CLOSE statement
+		      | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
 		      {}
 		      ;
 iteration_statement : WHILE PARAN_OPEN expression PARAN_CLOSE statement

@@ -56,7 +56,7 @@ Grammar
 
    29 selection_statement: IF PARAN_OPEN expression PARAN_CLOSE statement
    30                    | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
-   31                    | SWITCH PARAN_CLOSE expression PARAN_CLOSE statement
+   31                    | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
 
    32 iteration_statement: WHILE PARAN_OPEN expression PARAN_CLOSE statement
    33                    | DO statement WHILE PARAN_OPEN expression PARAN_CLOSE SEMI_COLON
@@ -322,7 +322,7 @@ CASE (268) 18
 DEFAULT (269) 19
 CURLY_OPEN (270) 20 21 78 79 80 81 122 123 147 148
 CURLY_CLOSE (271) 20 21 75 76 122 123 147 148
-PARAN_OPEN (272) 29 30 32 33 34 35 95 100 136 142 147 148 158 166
+PARAN_OPEN (272) 29 30 31 32 33 34 35 95 100 136 142 147 148 158 166
 PARAN_CLOSE (273) 29 30 31 32 33 34 35 95 100 136 142 147 148 158 166
 SQ_OPEN (274) 96 97 98 99 131 141
 SQ_CLOSE (275) 96 97 98 99 131 141
@@ -3563,9 +3563,9 @@ state 187
 
 state 188
 
-   31 selection_statement: SWITCH . PARAN_CLOSE expression PARAN_CLOSE statement
+   31 selection_statement: SWITCH . PARAN_OPEN expression PARAN_CLOSE statement
 
-    PARAN_CLOSE  shift, and go to state 272
+    PARAN_OPEN  shift, and go to state 272
 
 
 state 189
@@ -4719,7 +4719,7 @@ state 271
 
 state 272
 
-   31 selection_statement: SWITCH PARAN_CLOSE . expression PARAN_CLOSE statement
+   31 selection_statement: SWITCH PARAN_OPEN . expression PARAN_CLOSE statement
 
     IDENTIFIER          shift, and go to state 81
     INTEGER_CONSTANT    shift, and go to state 82
@@ -5388,7 +5388,7 @@ state 308
 
 state 309
 
-   31 selection_statement: SWITCH PARAN_CLOSE expression . PARAN_CLOSE statement
+   31 selection_statement: SWITCH PARAN_OPEN expression . PARAN_CLOSE statement
   211 expression: expression . COMMA assignment_expression
 
     PARAN_CLOSE  shift, and go to state 329
@@ -5593,7 +5593,7 @@ state 328
 
 state 329
 
-   31 selection_statement: SWITCH PARAN_CLOSE expression PARAN_CLOSE . statement
+   31 selection_statement: SWITCH PARAN_OPEN expression PARAN_CLOSE . statement
 
     IDENTIFIER          shift, and go to state 183
     INTEGER_CONSTANT    shift, and go to state 82
@@ -5901,7 +5901,7 @@ state 338
 
 state 339
 
-   31 selection_statement: SWITCH PARAN_CLOSE expression PARAN_CLOSE statement .
+   31 selection_statement: SWITCH PARAN_OPEN expression PARAN_CLOSE statement .
 
     $default  reduce using rule 31 (selection_statement)
 
