@@ -11,4 +11,4 @@ y.tab.o: y.tab.c
 main.o: lexmain.c y.tab.h
 	g++ -c lexmain.c -o main.o
 clean:
-	rm lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o main.o a.out
+	rm lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o main.o a.out y.output
