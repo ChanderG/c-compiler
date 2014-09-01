@@ -52,9 +52,17 @@ void Auto(int a, int b){
   for(count = 2;count < a;count++) b++ ;
   for(count = 2;count < a;count++){
     sum -= count - a;
-    int temp = b; 
+    unsigned temp = b; 
     b = sum;
     sum = temp;
+  }
+  
+  int i,j;
+  for(i = 0;i < 100;i++){
+    for(j = 0;j < i;j++){
+      printf("Hello #%d", i+j); 
+      if(i%j == 7) continue; 
+    }
   }
 
   //goto set
@@ -67,7 +75,7 @@ void Auto(int a, int b){
 }
 
 float switch_case(int a){
-  int b;
+  signed b;
   switch(a){
     case 1: b = 0; break;  
   }
@@ -110,13 +118,29 @@ void while_test(){
   }  
 }
 
-void do_while_test(){
+void inline do_while_test(){
   do{
     test();
     tick++;
   }while(tick < 35);  
 
   //little used do_while syntax
-  int i;
+  short i;
   do i++; while (i < 5);
+}
+
+_Complex pointer_arithmetic(){
+  int *c;
+  _Bool b = 3;      //this does not even make any sense. 
+  //Kept here to show limits of parser specification 
+  c = &b; 
+  cout << c -> val;  //same of this
+  cin >> c.val;      // as of this 
+    
+  int a,b;
+  int c = a & b;
+  int c = a | b;
+  int c = a ^ b;
+
+  int c = (a>b)?a:b;
 }
