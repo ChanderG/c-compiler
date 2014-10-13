@@ -8,7 +8,7 @@ y.tab.c y.tab.h: tinyc.y
 	yacc -dtv tinyc.y
 y.tab.o: y.tab.c
 	g++ -c y.tab.c
-main.o: lexmain.c y.tab.h
+main.o: lexmain.c y.tab.h lexmain.h
 	g++ -c lexmain.c -o main.o
 clean:
 	rm -rf dist lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o main.o a.out y.output

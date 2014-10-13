@@ -35,4 +35,7 @@ Use the git commit 3cf95113ded98f8b2fdc6b7d43db9b10ab28d6ee to go to lexer porti
 Starting phase 3: M/c independent translation
 Use the git commit 78d5e0883bf800b863cbc2e746a13cc05dd4b228 to go to parser portion.
 
+###UNderstanding the growth
+
+From the third stage onwards, the file "growth.md" documents the progress in a more thorough manner. It has commit by commit explanation.
 

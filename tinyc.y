@@ -250,7 +250,11 @@ init_declarator: declarator
 
 storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
 
-type_specifier: VOID | CHAR | SHORT | INT | LONG | FLOAT | DOUBLE | SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
+type_specifier: VOID | CHAR | SHORT |
+                INT 
+		{ //next
+		}
+		| LONG | FLOAT | DOUBLE | SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
 
 specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
                           | type_qualifier specifier_qualifier_list_opt
@@ -360,7 +364,10 @@ designator: SQ_OPEN constant_expression SQ_CLOSE
             | DOT IDENTIFIER
 	    ;
 
-primary_expression: IDENTIFIER | constant | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
+//Section 1: Expressions
+primary_expression: IDENTIFIER
+                    { cout << $1 << endl; }
+		    | constant | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
 
 constant:  INTEGER_CONSTANT | FLOATING_CONSTANT | CHARACTER_CONSTANT;
 

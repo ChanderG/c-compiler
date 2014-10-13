@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include"lexmain.h"
 #include"y.tab.h"
 extern int yyparse();
 extern "C" FILE* yyin;
