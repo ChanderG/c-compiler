@@ -5,12 +5,23 @@
 
   extern int yylex();  
   void yyerror(const char *s);
+
+  #include"lexmain.h"
+
+  #include<cstring>  //for strdup
+ 
 %}
 %union {
   char* sval;
   char cval;
   int ival;
   float fval;
+
+  struct ts_ {    // for type_specifier
+    char *type;
+    int width;
+  } ts; 
+
 }
 
 %token <sval> IDENTIFIER
@@ -20,6 +31,8 @@
 %token <sval> STRING_LITERAL
 %token <sval> SINGLE_LINE_COMMENT
 %token <sval> MULTI_LINE_COMMENT
+
+%type <ts> type_specifier
 
 %token WS
 
@@ -83,10 +96,15 @@
 %nonassoc USTAR
 %nonassoc U
 
+
+
 %%
 //rules section - for now printing correct is used
 
-translation_unit: external_declaration 
+translation_unit: { cout << "Symboltable created" << endl; 
+                    symboltable global;
+		  }
+		  external_declaration 
                   { }
                   | translation_unit external_declaration
 		  { }
@@ -221,14 +239,11 @@ declaration: declaration_specifiers init_declarator_list_opt SEMI_COLON
 
 declaration_specifiers_opt:  declaration_specifiers | epsilon;
 
-declaration_specifiers: storage_class_specifier declaration_specifiers_opt
-                        {}
-			| type_specifier declaration_specifiers_opt
+declaration_specifiers: //storage_class_specifier declaration_specifiers_opt
+			type_specifier declaration_specifiers_opt
 			{}
-			| type_qualifier declaration_specifiers_opt
-                        {}
-			| function_specifier declaration_specifiers_opt
-                        {}
+	                //| type_qualifier declaration_specifiers_opt
+			//| function_specifier declaration_specifiers_opt
 			;
 
 
@@ -248,13 +263,17 @@ init_declarator: declarator
 		 | declarator EQUAL initializer
 		 ;
 
-storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
+//storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
 
-type_specifier: VOID | CHAR | SHORT |
+type_specifier: VOID | CHAR | // SHORT |
                 INT 
 		{ //next
+                  $$.type = strdup("integer"); $$.width = 4; 
 		}
-		| LONG | FLOAT | DOUBLE | SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
+		|// LONG | FLOAT |
+		DOUBLE 
+		//| SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
+                ; 
 
 specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
                           | type_qualifier specifier_qualifier_list_opt
@@ -262,10 +281,12 @@ specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
 
 specifier_qualifier_list_opt: epsilon | specifier_qualifier_list;
 
+/*
 enum_specifier: ENUM identifier_opt CURLY_CLOSE  
                 | ENUM identifier_opt_w_comma CURLY_CLOSE  
 		| ENUM IDENTIFIER
 		;
+*/
 
 identifier_opt: IDENTIFIER CURLY_OPEN enumerator_list | epsilon CURLY_OPEN enumerator_list;
 
@@ -281,26 +302,14 @@ enumerator: enumeration_constant
 	    
 enumeration_constant: IDENTIFIER;
 
-type_qualifier: CONST | RESTRICT | VOLATILE;
+//type_qualifier: CONST | RESTRICT | VOLATILE;
 
-function_specifier: INLINE;
+//function_specifier: INLINE;
 
 declarator: pointer_opt direct_declarator;
 
 pointer_opt: epsilon| pointer;
 
-/*
-direct_declarator: IDENTIFIER
-                   | PARAN_OPEN declarator PARAN_CLOSE 
-		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
-		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE
-		   | direct_declarator SQ_OPEN type_qualifier_list STATIC assignment_expression SQ_CLOSE
-		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
-		   | direct_declarator PARAN_OPEN parameter_type_list PARAN_CLOSE
-		   | direct_declarator PARAN_OPEN identifier_list_opt PARAN_CLOSE
-		   ;
-*/
-//
 direct_declarator: IDENTIFIER
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
@@ -312,7 +321,6 @@ direct_declarator: IDENTIFIER
 
 param_or_identi: parameter_type_list | identifier_list_opt;
 
-//
 
 type_qualifier_list_opt: epsilon | type_qualifier_list;
 assignment_expression_opt: epsilon | assignment_expression;
