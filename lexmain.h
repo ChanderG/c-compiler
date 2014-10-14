@@ -19,4 +19,13 @@ class symboltable{
   }
 };
 
+struct ts_ {    // for type_specifier
+  char *type;
+  int width;
+}; 
 
+struct ts_2 {    // for type_specifier
+  char *type;
+  int width;
+  int offset;
+};

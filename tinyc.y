@@ -10,18 +10,17 @@
 
   #include<cstring>  //for strdup
  
+  //global point of contact for current type,size etc in declarations
+  struct ts_2 ts_global;
+
 %}
 %union {
-  char* sval;
+  char *sval;
   char cval;
   int ival;
   float fval;
 
-  struct ts_ {    // for type_specifier
-    char *type;
-    int width;
-  } ts; 
-
+  struct ts_ ts; // for type-specifier
 }
 
 %token <sval> IDENTIFIER
@@ -110,11 +109,11 @@ translation_unit: { cout << "Symboltable created" << endl;
 		  { }
 		  ;
 
+//now external declaration only involves functions, no variables Sec2.4 of reqmts
 external_declaration : function_definition
                        { }
-		       | declaration
-		       { //cout << "Declaration" << endl;
-		       }
+		       //| declaration
+		       // {} 
 		       ;
 
 function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
@@ -132,6 +131,8 @@ declaration_list : declaration
 		   | declaration_list declaration
 		   { }
 		   ;
+
+//Section 3:  Statements
 
 statement : labeled_statement
             { }
@@ -232,11 +233,23 @@ constant_expression: {};
 
 
 //Section 2: Declarations
+//Open to change
 
-declaration: declaration_specifiers init_declarator_list_opt SEMI_COLON
-             {}
+declaration: {
+               ts_global.offset = 0;
+             }
+             type_specifier
+	     {
+	       ts_global.type = strdup($2.type);
+	       ts_global.width = $2.width;
+	     }
+	     init_declarator_list_opt SEMI_COLON
+             {
+               cout << "test";    
+	     }
 	     ;
 
+//open to misuse
 declaration_specifiers_opt:  declaration_specifiers | epsilon;
 
 declaration_specifiers: //storage_class_specifier declaration_specifiers_opt
@@ -245,7 +258,6 @@ declaration_specifiers: //storage_class_specifier declaration_specifiers_opt
 	                //| type_qualifier declaration_specifiers_opt
 			//| function_specifier declaration_specifiers_opt
 			;
-
 
 init_declarator_list_opt: epsilon
                           | init_declarator_list
@@ -265,6 +277,8 @@ init_declarator: declarator
 
 //storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
 
+
+
 type_specifier: VOID | CHAR | // SHORT |
                 INT 
 		{ //next
@@ -276,7 +290,7 @@ type_specifier: VOID | CHAR | // SHORT |
                 ; 
 
 specifier_qualifier_list: type_specifier specifier_qualifier_list_opt
-                          | type_qualifier specifier_qualifier_list_opt
+                          //| type_qualifier specifier_qualifier_list_opt
 			  ;
 
 specifier_qualifier_list_opt: epsilon | specifier_qualifier_list;
@@ -286,7 +300,6 @@ enum_specifier: ENUM identifier_opt CURLY_CLOSE
                 | ENUM identifier_opt_w_comma CURLY_CLOSE  
 		| ENUM IDENTIFIER
 		;
-*/
 
 identifier_opt: IDENTIFIER CURLY_OPEN enumerator_list | epsilon CURLY_OPEN enumerator_list;
 
@@ -301,8 +314,9 @@ enumerator: enumeration_constant
 	    ;
 	    
 enumeration_constant: IDENTIFIER;
+*/
 
-//type_qualifier: CONST | RESTRICT | VOLATILE;
+type_qualifier: CONST | RESTRICT | VOLATILE;
 
 //function_specifier: INLINE;
 
@@ -311,6 +325,9 @@ declarator: pointer_opt direct_declarator;
 pointer_opt: epsilon| pointer;
 
 direct_declarator: IDENTIFIER
+                   {
+                     cout << ts_global.type << " " << $1; 
+		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
 		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE

@@ -10,6 +10,7 @@ Right now the idea is to match the token but instead print out the caugth type i
 */
 
 %{
+  #include"lexmain.h"
   #include"y.tab.h"
   #include<iostream>
   using namespace std;

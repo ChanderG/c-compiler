@@ -5,3 +5,6 @@ Testing the waters mainly. Creating structure for coming work. lexmain.h added f
 
 ###After b68cf55b63554d02166b47503be1ef7e7fc32308
 Created structure of symbol table, solved problem of type of non-terminals, have one rule prototype, commented out some bloated part. Need to figure out a way to keep the code cleaner.
+
+###After
+Going with a global storage for declaration tree approach.

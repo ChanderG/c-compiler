@@ -39,3 +39,6 @@ Use the git commit 78d5e0883bf800b863cbc2e746a13cc05dd4b228 to go to parser port
 
 From the third stage onwards, the file "growth.md" documents the progress in a more thorough manner. It has commit by commit explanation.
 
+###Note to Self
+To clear job, excessive clearing has been used from b68cf55b63554d02166b47503be1ef7e7fc32308 onwards. Use phase 2 end commit / parser portion, to get stuff back.
+
