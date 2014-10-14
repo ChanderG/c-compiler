@@ -131,7 +131,9 @@ function_definition : declaration_specifiers declarator declaration_list_opt com
 		      ;
 */
 
-function_definition : { cout << "fn" << endl; } 
+function_definition : { cout << "fn" << endl; 
+                        ts_global.offset = 0;
+                      } 
                       type_specifier IDENTIFIER PARAN_OPEN PARAN_CLOSE compound_statement
                      
 		      ;
@@ -252,8 +254,7 @@ constant_expression: {};
 //Open to change
 
 declaration: {
-               cout << "Dec\n";
-               ts_global.offset = 0;
+               //cout << "Dec\n";  
              }
              type_specifier
 	     {
@@ -296,13 +297,21 @@ init_declarator: declarator
 
 
 
-type_specifier: VOID | CHAR | // SHORT |
+type_specifier: VOID |
+                CHAR 
+		{
+                  $$.type = strdup("char"); $$.width = 1; 
+		}
+		| // SHORT |
                 INT 
 		{ //next
-                  $$.type = strdup("integer"); $$.width = 4; 
+                  $$.type = strdup("int"); $$.width = 4; 
 		}
 		|// LONG | FLOAT |
 		DOUBLE 
+		{
+                  $$.type = strdup("double"); $$.width = 8; 
+		}
 		//| SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
                 ; 
 
@@ -343,8 +352,8 @@ pointer_opt: epsilon| pointer;
 
 direct_declarator: IDENTIFIER
                    {
-                     cout << ts_global.type << " " << $1 << endl; 
-                     //location of adding var'b to st  
+		     //add variable to symbol table
+		     //will get messed up if a varible of same name exists already
 		     global.update($1, ts_global.type, ts_global.width, ts_global.offset);
 		     ts_global.offset += ts_global.width; 
 		   }

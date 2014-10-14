@@ -14,3 +14,6 @@ Now the function main has been fixed to help continue with declaration. Also, th
 
 ###After a03ae696cade8cd00bc8b1d9648bb24ec28ece92
 Worries are on the static nature of symbol table. Also types are being represented as strings. Added necessary functions in symboltable, migrated c to fully cpp.
+
+###After 20a2131c0a108da0639804287d491df9b680cb77
+Moved offset initializer to function top. Mind you functions means only main. Also it just struck that the global symbol table means one level above. Mind you, have not found out how to manage multiple symbol tables.And accessing the right table from the right location. Added char and double w/ hardcoded size values.

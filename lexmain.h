@@ -22,6 +22,7 @@ class symboltable{
   }
   
   int lookup(char *name);
+
   void update(char *name, char *type, int size, int offset); 
   void print();
 };
