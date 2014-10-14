@@ -100,13 +100,15 @@
 %%
 //rules section - for now printing correct is used
 
-translation_unit: { cout << "Symboltable created" << endl; 
-                    symboltable global;
+program: {  cout << "Symboltable created" << endl; 
+                    symboltable global;} translation_unit ;
+
+translation_unit: external_declaration 
+                  { //cout << "a";
 		  }
-		  external_declaration 
-                  { }
                   | translation_unit external_declaration
-		  { }
+		  { // cout << "External declaration found";
+		  }
 		  ;
 
 //now external declaration only involves functions, no variables Sec2.4 of reqmts
@@ -115,11 +117,16 @@ external_declaration : function_definition
 		       //| declaration
 		       // {} 
 		       ;
-
+/*// temporarily over-ridden for simplification
 function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
-                      { } 
+                      { cout << "fn" << endl; } 
 		      ;
+*/
 
+function_definition : { cout << "fn" << endl; } 
+                      type_specifier IDENTIFIER PARAN_OPEN PARAN_CLOSE compound_statement
+                     
+		      ;
 declaration_list_opt : declaration_list 
                        { }
 		       | epsilon
@@ -134,7 +141,7 @@ declaration_list : declaration
 
 //Section 3:  Statements
 
-statement : labeled_statement
+statement :  labeled_statement
             { }
 	    | compound_statement
 	    { }
@@ -174,7 +181,7 @@ block_item_list_opt: epsilon
 
 //start
 compound_statement : CURLY_OPEN block_item_list CURLY_CLOSE 
-                     {}
+                     {cout << "stmt" << endl;}
 		     |
                      CURLY_OPEN CURLY_CLOSE 
                      {}
@@ -236,6 +243,7 @@ constant_expression: {};
 //Open to change
 
 declaration: {
+               cout << "Dec\n";
                ts_global.offset = 0;
              }
              type_specifier
@@ -245,7 +253,7 @@ declaration: {
 	     }
 	     init_declarator_list_opt SEMI_COLON
              {
-               cout << "test";    
+               cout << "test\n";    
 	     }
 	     ;
 
@@ -326,7 +334,7 @@ pointer_opt: epsilon| pointer;
 
 direct_declarator: IDENTIFIER
                    {
-                     cout << ts_global.type << " " << $1; 
+                     cout << ts_global.type << " " << $1 << endl; 
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
@@ -391,7 +399,8 @@ designator: SQ_OPEN constant_expression SQ_CLOSE
 
 //Section 1: Expressions
 primary_expression: IDENTIFIER
-                    { cout << $1 << endl; }
+                    { //cout << $1 << endl; 
+		    }
 		    | constant | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
 
 constant:  INTEGER_CONSTANT | FLOATING_CONSTANT | CHARACTER_CONSTANT;
