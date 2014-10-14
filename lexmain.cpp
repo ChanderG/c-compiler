@@ -1,4 +1,8 @@
+#include<iostream>
+using namespace std;
+
 #include<stdio.h>
+
 #include"lexmain.h"
 #include"y.tab.h"
 extern int yyparse();
@@ -17,13 +21,22 @@ int symboltable :: lookup(char *name){
   return last-1; 
 }
 
-void symboltable :: update(int no, char *name, int size, int offset){
-  if (no >= last) cout << "Error";
-  st[no].name = strdup(name);
+void symboltable :: update(char *name, char *type, int size, int offset){
+  int no = lookup(name);
+  st[no].type = strdup(type);
   st[no].size = size;
   st[no].offset = offset;
 }
 
+void symboltable :: print(){
+  cout << "Contents of Symbol table" << endl;
+  cout << "Name " << "Type " << "Size " << "Offset" << endl;
+  for (int i=0;i<last;i++){
+    cout << st[i].name << " " << st[i].type << " " << st[i].size <<  " " << st[i].offset;
+    cout << endl;
+  }
+  cout << "END OF SYMBOL TABLE" << endl;
+}
 //considers first argument as input file name
 
 int main(int argc, char* argv[]){

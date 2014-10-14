@@ -1,5 +1,5 @@
 //Hi, simple test file.
 void main(){
-  int a;
+  int a,b;
   //a = x + y;
 }

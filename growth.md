@@ -11,3 +11,6 @@ Going with a global storage for declaration tree approach.
 
 ###After 6b25a9a19303acc2aafd236f35b4dcfeeab8d0c5
 Now the function main has been fixed to help continue with declaration. Also, the declaration on first line of function is NOT going to be done.Started adding functions to the symbol table class for lookup and update. Moved all definitions from header to c/cpp file.Note that file is still a c file but has class stuff inside.
+
+###After a03ae696cade8cd00bc8b1d9648bb24ec28ece92
+Worries are on the static nature of symbol table. Also types are being represented as strings. Added necessary functions in symboltable, migrated c to fully cpp.

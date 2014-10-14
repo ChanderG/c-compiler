@@ -12,6 +12,7 @@
  
   //global point of contact for current type,size etc in declarations
   struct ts_2 ts_global;
+  symboltable global;
 
 %}
 %union {
@@ -100,8 +101,15 @@
 %%
 //rules section - for now printing correct is used
 
-program: {  cout << "Symboltable created" << endl; 
-                    symboltable global;} translation_unit ;
+program: {
+           cout << "Start of program" << endl;
+	 } 
+	 translation_unit 
+	 {
+	   global.print();
+           cout << "End of program" << endl;
+	 }
+	 ;
 
 translation_unit: external_declaration 
                   { //cout << "a";
@@ -337,6 +345,8 @@ direct_declarator: IDENTIFIER
                    {
                      cout << ts_global.type << " " << $1 << endl; 
                      //location of adding var'b to st  
+		     global.update($1, ts_global.type, ts_global.width, ts_global.offset);
+		     ts_global.offset += ts_global.width; 
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 

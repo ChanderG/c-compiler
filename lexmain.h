@@ -3,6 +3,7 @@
 typedef struct symtabentry {
   char *name;
   int value;
+  char *type;
   int size;
   int offset;
 } symboltableentry;
@@ -21,8 +22,8 @@ class symboltable{
   }
   
   int lookup(char *name);
-  void update(int no, char *name, int size, int offset); 
-
+  void update(char *name, char *type, int size, int offset); 
+  void print();
 };
 
 struct ts_ {    // for type_specifier
