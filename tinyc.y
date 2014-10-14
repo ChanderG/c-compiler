@@ -181,7 +181,8 @@ block_item_list_opt: epsilon
 
 //start
 compound_statement : CURLY_OPEN block_item_list CURLY_CLOSE 
-                     {cout << "stmt" << endl;}
+                     { //cout << "stmt" << endl;
+		     }
 		     |
                      CURLY_OPEN CURLY_CLOSE 
                      {}
@@ -253,7 +254,7 @@ declaration: {
 	     }
 	     init_declarator_list_opt SEMI_COLON
              {
-               cout << "test\n";    
+               //cout << "test\n";    
 	     }
 	     ;
 
@@ -335,6 +336,7 @@ pointer_opt: epsilon| pointer;
 direct_declarator: IDENTIFIER
                    {
                      cout << ts_global.type << " " << $1 << endl; 
+                     //location of adding var'b to st  
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 

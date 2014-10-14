@@ -9,7 +9,9 @@ typedef struct symtabentry {
 
 #define SYMBOLTABLE_SIZE 25
 
+//right now implemented as an array
 class symboltable{
+
   symboltableentry st[SYMBOLTABLE_SIZE];
   int last;
 
@@ -17,6 +19,10 @@ class symboltable{
   symboltable(){
     last = 0;
   }
+  
+  int lookup(char *name);
+  void update(int no, char *name, int size, int offset); 
+
 };
 
 struct ts_ {    // for type_specifier

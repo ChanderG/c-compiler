@@ -10,4 +10,4 @@ Created structure of symbol table, solved problem of type of non-terminals, have
 Going with a global storage for declaration tree approach.
 
 ###After 6b25a9a19303acc2aafd236f35b4dcfeeab8d0c5
-Now the function main has been fixed to help continue with declaration. Also, the declaration on first line of function is NOT going to be done.
+Now the function main has been fixed to help continue with declaration. Also, the declaration on first line of function is NOT going to be done.Started adding functions to the symbol table class for lookup and update. Moved all definitions from header to c/cpp file.Note that file is still a c file but has class stuff inside.

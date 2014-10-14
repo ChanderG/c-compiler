@@ -4,6 +4,26 @@
 extern int yyparse();
 extern "C" FILE* yyin;
 
+#include<cstring>
+
+int symboltable :: lookup(char *name){
+  for(int i = 0;i< last;i++){
+    if(strcmp(st[i].name, name) == 0)
+      return i;
+  }
+  //creating a new entry
+  st[last].name = strdup(name); 
+  last++;
+  return last-1; 
+}
+
+void symboltable :: update(int no, char *name, int size, int offset){
+  if (no >= last) cout << "Error";
+  st[no].name = strdup(name);
+  st[no].size = size;
+  st[no].offset = offset;
+}
+
 //considers first argument as input file name
 
 int main(int argc, char* argv[]){
