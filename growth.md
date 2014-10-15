@@ -26,5 +26,8 @@ Done: implemented nested table functionality. Working for main.
 ###After c450fe3063865f1aa14eb8c37c4f0133eb4119f6
 Attempting to print for expressions. Now added id and const to E. Assumed const to be an integer for now.
 
-###After Added id and num to exp
+###After - Added id and num to exp
 Formatted Symbol table printing to ease matters.
+
+###After - Formatted ST printout
+Time to get the quads out.Going to use a class, underlying array as a vector.

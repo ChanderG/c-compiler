@@ -1,4 +1,5 @@
 //File for global function prototypes and data structures
+#include<vector>
 
 typedef struct symtabentry {
   char *name;
@@ -50,3 +51,27 @@ struct ts_2 {    // for global value type_specifier
 struct exp_ {  //for expressions
   char *loc;   // as discussed in class
 };  
+
+//Quad management structures
+enum opcode {OP_PLUS, OP_MINUS}; 
+
+typedef union {
+  char* var;
+  int num;
+} argtype;  
+
+typedef struct quad_ {
+ opcode op;
+ argtype arg1;
+ argtype arg2;
+ argtype res;
+} quad;
+
+class QuadArray{
+  std::vector<quad> q;
+
+  public:
+  QuadArray(){
+    
+  }
+};
