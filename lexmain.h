@@ -16,10 +16,12 @@ class symboltable{
 
   symboltableentry st[SYMBOLTABLE_SIZE];
   int last;
+  int templast;
 
   public:
   symboltable(){
     last = 0;
+    templast = 0;
   }
   
   int lookup(char *name);
@@ -30,6 +32,8 @@ class symboltable{
 
   void update(char *name, char *type, int size, int offset); 
   void print();
+
+  char* gentemp();
 };
 
 struct ts_ {    // for type_specifier
@@ -37,8 +41,12 @@ struct ts_ {    // for type_specifier
   int width;
 }; 
 
-struct ts_2 {    // for type_specifier
+struct ts_2 {    // for global value type_specifier
   char *type;
   int width;
   int offset;
 };
+
+struct exp_ {  //for expressions
+  char *loc;   // as discussed in class
+};  

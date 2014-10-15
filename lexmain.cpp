@@ -50,6 +50,21 @@ void symboltable :: print(){
   cout << "END OF SYMBOL TABLE" << endl;
 }
 
+char* symboltable :: gentemp(){
+  char* tmp = new char[5];
+  sprintf(tmp, "$t%d",templast);
+
+  //Assuming only integer temporaries
+  st[last].name = strdup(tmp);
+  st[last].type = strdup("Temp");
+  st[last].size = 4;
+  st[last].offset = st[last-1].offset + 4;
+  last++;
+
+  templast++;
+  return tmp;
+}
+
 //considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;

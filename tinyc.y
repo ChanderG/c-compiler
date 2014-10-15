@@ -23,6 +23,8 @@
   float fval;
 
   struct ts_ ts; // for type-specifier
+
+  struct exp_ exp; // for expressions
 }
 
 %token <sval> IDENTIFIER
@@ -34,6 +36,8 @@
 %token <sval> MULTI_LINE_COMMENT
 
 %type <ts> type_specifier
+%type <exp> primary_expression
+%type <ival> constant //for now
 
 %token WS
 
@@ -428,11 +432,22 @@ designator: SQ_OPEN constant_expression SQ_CLOSE
 
 //Section 1: Expressions
 primary_expression: IDENTIFIER
-                    { //cout << $1 << endl; 
+                    {
+                      $$.loc = $1; 		      
+		      cout << $$.loc << endl;
 		    }
-		    | constant | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
+		    | constant 
+		    {
+                      $$.loc = current->gentemp();
+		      cout << $$.loc << " = " << $1 << endl;
+		    }
+		    | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
 
-constant:  INTEGER_CONSTANT | FLOATING_CONSTANT | CHARACTER_CONSTANT;
+constant:  INTEGER_CONSTANT 
+           { 
+	     $$ = $1;
+           }
+           | FLOATING_CONSTANT | CHARACTER_CONSTANT;
 
 postfix_expression: primary_expression 
                    |
@@ -528,7 +543,8 @@ assignment_expression: conditional_expression
                        | unary_expression assignment_operator assignment_expression
 		       ;
 
-assignment_operator: EQUAL | STAREQUAL | BYEQUAL | MODEQUAL | PLUSEQUAL | MINUSEQUAL | SLEQUAL | SREQUAL | ANDEQUAL | CAPEQUAL | OREQUAL;
+assignment_operator: EQUAL 
+                     | STAREQUAL | BYEQUAL | MODEQUAL | PLUSEQUAL | MINUSEQUAL | SLEQUAL | SREQUAL | ANDEQUAL | CAPEQUAL | OREQUAL;
 
 expression: assignment_expression
             | expression COMMA assignment_expression

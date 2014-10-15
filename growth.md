@@ -22,3 +22,6 @@ Moved offset initializer to function top. Mind you functions means only main. Al
 Now going to create the multiple symbol table arch.The idea is to have a current symbol table pointer with the global pointer. So when the function header is read, we create the function entry in global st and make current pt to it. When function body is done, bring current pointer back to global.  
 
 Done: implemented nested table functionality. Working for main.
+
+###After c450fe3063865f1aa14eb8c37c4f0133eb4119f6
+Attempting to print for expressions. Now added id and const to E. Assumed const to be an integer for now.
