@@ -17,3 +17,8 @@ Worries are on the static nature of symbol table. Also types are being represent
 
 ###After 20a2131c0a108da0639804287d491df9b680cb77
 Moved offset initializer to function top. Mind you functions means only main. Also it just struck that the global symbol table means one level above. Mind you, have not found out how to manage multiple symbol tables.And accessing the right table from the right location. Added char and double w/ hardcoded size values.
+
+###After c59b44d48f5347aab8a0e745290ccd468e551387
+Now going to create the multiple symbol table arch.The idea is to have a current symbol table pointer with the global pointer. So when the function header is read, we create the function entry in global st and make current pt to it. When function body is done, bring current pointer back to global.  
+
+Done: implemented nested table functionality. Working for main.

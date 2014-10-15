@@ -13,6 +13,7 @@
   //global point of contact for current type,size etc in declarations
   struct ts_2 ts_global;
   symboltable global;
+  symboltable *current;
 
 %}
 %union {
@@ -103,10 +104,11 @@
 
 program: {
            cout << "Start of program" << endl;
+	   current  = &global;
 	 } 
 	 translation_unit 
 	 {
-	   global.print();
+	   current->print();
            cout << "End of program" << endl;
 	 }
 	 ;
@@ -126,16 +128,22 @@ external_declaration : function_definition
 		       // {} 
 		       ;
 /*// temporarily over-ridden for simplification
-function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
-                      { cout << "fn" << endl; } 
+
 		      ;
 */
 
 function_definition : { cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 
-                      type_specifier IDENTIFIER PARAN_OPEN PARAN_CLOSE compound_statement
-                     
+                      type_specifier IDENTIFIER PARAN_OPEN PARAN_CLOSE
+		      {
+                        current = global.updatef($3, "func", 0, ts_global.offset);
+		      }
+		      compound_statement
+		      {
+			current->print();
+                        current = &global;  
+		      }
 		      ;
 declaration_list_opt : declaration_list 
                        { }
@@ -354,7 +362,7 @@ direct_declarator: IDENTIFIER
                    {
 		     //add variable to symbol table
 		     //will get messed up if a varible of same name exists already
-		     global.update($1, ts_global.type, ts_global.width, ts_global.offset);
+		     current->update($1, ts_global.type, ts_global.width, ts_global.offset);
 		     ts_global.offset += ts_global.width; 
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 

@@ -6,6 +6,7 @@ typedef struct symtabentry {
   char *type;
   int size;
   int offset;
+  class symboltable *nestedTable;
 } symboltableentry;
 
 #define SYMBOLTABLE_SIZE 25
@@ -22,6 +23,10 @@ class symboltable{
   }
   
   int lookup(char *name);
+
+  //going to set a pointer to the nested table if it exists and null else
+  //meant to be used carefully
+  symboltable* updatef(char *name, char *type, int size, int offset);
 
   void update(char *name, char *type, int size, int offset); 
   void print();

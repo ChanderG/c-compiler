@@ -26,10 +26,22 @@ void symboltable :: update(char *name, char *type, int size, int offset){
   st[no].type = strdup(type);
   st[no].size = size;
   st[no].offset = offset;
+  st[no].nestedTable = NULL;
+}
+
+//for functions
+symboltable* symboltable :: updatef(char *name, char *type, int size, int offset){
+  int no = lookup(name);
+  st[no].type = strdup(type);
+  st[no].size = size;
+  st[no].offset = offset;
+  //add other fields here
+  st[no].nestedTable = new symboltable;
+  return st[no].nestedTable;
 }
 
 void symboltable :: print(){
-  cout << "Contents of Symbol table" << endl;
+  cout << "START OF SYMBOL TABLE" << endl;
   cout << "Name " << "Type " << "Size " << "Offset" << endl;
   for (int i=0;i<last;i++){
     cout << st[i].name << " " << st[i].type << " " << st[i].size <<  " " << st[i].offset;
@@ -37,8 +49,8 @@ void symboltable :: print(){
   }
   cout << "END OF SYMBOL TABLE" << endl;
 }
-//considers first argument as input file name
 
+//considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;
   argc--;
