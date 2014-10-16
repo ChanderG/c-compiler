@@ -135,8 +135,8 @@ void QuadArray :: emit(argtype res, argtype arg1){
   q.push_back(entry);
 }
 
-void QuadArray :: print(){
-  cout << "QUAD ARRAY STARTS" << endl;
+void QuadArray :: printTable(){
+  cout << "****************QUAD ARRAY STARTS*****************" << endl;
   cout << setw(10) << "INDEX"; 
   cout << setw(10) << "op";
   cout << setw(10) << "arg 1";
@@ -145,13 +145,17 @@ void QuadArray :: print(){
   cout << endl;
   for(int i=0;i<q.size();i++){
     cout << setw(10) << i;
-    //cout << setw(10) << q[i].opToString;
-    //cout << setw(10) << q[i].arg1ToString;
-    //cout << setw(10) << q[i].arg2ToString;
-    //cout << setw(10) << q[i].resToString;
-    //cout << endl;
+    cout << setw(10) << q[i].opToString();
+    cout << setw(10) << q[i].arg1ToString();
+    cout << setw(10) << q[i].arg2ToString();
+    cout << setw(10) << q[i].resToString();
+    cout << endl;
   }
-  cout << "QUAD ARRAY ENDS" << endl;
+  cout << "*****************QUAD ARRAY ENDS******************" << endl;
+}
+
+void QuadArray :: print(){
+  cout << "Generated Code: " << endl;
 }
 
 //considers first argument as input file name

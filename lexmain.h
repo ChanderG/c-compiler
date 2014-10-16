@@ -82,6 +82,8 @@ class QuadArray{
   void emit(argtype res, argtype arg1, opcode op);
   void emit(argtype res, argtype arg1);
 
-  //Printing the entire quad array
+  //Printing the entire quad array in table format
+  void printTable();
+  //in code form
   void print();
 };

@@ -31,3 +31,6 @@ Formatted Symbol table printing to ease matters.
 
 ###After - Formatted ST printout
 Time to get the quads out.Going to use a class, underlying array as a vector. To manage the argtypes aka entries in the quad table, wanted to use boost::variant type. Settling with simple char* and atoi to get numbers out.
+
+###After quad string functions not working
+Now the errors have been corrected. Also the function is used to see the TAC in tabular form.One more function - print - is needed to print in the code format.Right now though the quad is fully ready.

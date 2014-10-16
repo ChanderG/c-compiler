@@ -115,7 +115,7 @@ program: {
 	 translation_unit 
 	 {
 	   current->print();
-	   qa.print();
+	   qa.printTable();
            cout << "End of program" << endl;
 	 }
 	 ;
