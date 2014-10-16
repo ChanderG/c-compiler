@@ -79,10 +79,10 @@ char* symboltable :: gentemp(){
 char* quad :: opToString(){
   char* opString = new char[2];
   switch(op){
-    case OP_NULL: strcpy(opString, " ");break;
+    case OP_NULL: strcpy(opString, "");break;
     case OP_PLUS: strcpy(opString, "+");break;
     case OP_MINUS: strcpy(opString, "+");break;
-    default: strcpy(opString, " ");break;
+    default: strcpy(opString, "");break;
   } 
   return opString;
 }
@@ -90,7 +90,7 @@ char* quad :: opToString(){
 char* quad :: arg1ToString(){
   if(arg1 == NULL){
     char* arg1String = new char[2];
-    strcpy(arg1String, " ");
+    strcpy(arg1String, "");
     return arg1String;
   }
   else{
@@ -101,7 +101,7 @@ char* quad :: arg1ToString(){
 char* quad :: arg2ToString(){
   if(arg2 == NULL){
     char* arg2String = new char[2];
-    strcpy(arg2String, " ");
+    strcpy(arg2String, "");
     return arg2String;
   }
   else{
@@ -112,12 +112,25 @@ char* quad :: arg2ToString(){
 char* quad :: resToString(){
   if(res == NULL){
     char* resString = new char[2];
-    strcpy(resString, " ");
+    strcpy(resString, "");
     return resString;
   }
   else{
     return res;
   }  
+}
+
+char* quad :: toString(){
+  char* quadString = new char[15];
+  strcpy(quadString, resToString());
+  strcat(quadString, " = ");
+  strcat(quadString, arg1ToString());
+  strcat(quadString, " ");
+  strcat(quadString, opToString());
+  strcat(quadString, " ");
+  strcat(quadString, arg2ToString());
+  strcat(quadString, ";");
+  return quadString;
 }
 
 void QuadArray :: emit(argtype res, argtype arg1, opcode op, argtype arg2){
@@ -155,7 +168,13 @@ void QuadArray :: printTable(){
 }
 
 void QuadArray :: print(){
+  cout << endl;
   cout << "Generated Code: " << endl;
+  for(int i=0;i<q.size();i++){
+    cout << "L" << i << " : " << q[i].toString() << endl;
+  }
+  cout << "End of generated code" << endl;
+  cout << endl;
 }
 
 //considers first argument as input file name

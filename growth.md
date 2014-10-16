@@ -34,3 +34,6 @@ Time to get the quads out.Going to use a class, underlying array as a vector. To
 
 ###After quad string functions not working
 Now the errors have been corrected. Also the function is used to see the TAC in tabular form.One more function - print - is needed to print in the code format.Right now though the quad is fully ready.
+
+###After Corrected printTable function
+Created code for printing TAC in form of a program.

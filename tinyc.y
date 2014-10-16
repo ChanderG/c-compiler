@@ -116,6 +116,7 @@ program: {
 	 {
 	   current->print();
 	   qa.printTable();
+	   qa.print();
            cout << "End of program" << endl;
 	 }
 	 ;

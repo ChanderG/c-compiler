@@ -67,6 +67,7 @@ typedef struct quad_ {
   char* arg1ToString();
   char* arg2ToString();
   char* resToString();
+  char* toString();
 } quad;
 
 class QuadArray{
