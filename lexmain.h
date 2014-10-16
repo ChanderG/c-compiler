@@ -53,25 +53,35 @@ struct exp_ {  //for expressions
 };  
 
 //Quad management structures
-enum opcode {OP_PLUS, OP_MINUS}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS}; 
 
-typedef union {
-  char* var;
-  int num;
-} argtype;  
+typedef char* argtype;
 
 typedef struct quad_ {
- opcode op;
- argtype arg1;
- argtype arg2;
- argtype res;
+  opcode op;
+  argtype arg1;
+  argtype arg2;
+  argtype res;
+
+  char* opToString();
+  char* arg1ToString();
+  char* arg2ToString();
+  char* resToString();
 } quad;
 
 class QuadArray{
-  std::vector<quad> q;
+  std::vector<quad> q; //the array itself
 
   public:
   QuadArray(){
-    
+    q.clear();    
   }
+
+  //adding a new entry to the quad array
+  void emit(argtype res, argtype arg1, opcode op, argtype arg2);
+  void emit(argtype res, argtype arg1, opcode op);
+  void emit(argtype res, argtype arg1);
+
+  //Printing the entire quad array
+  void print();
 };

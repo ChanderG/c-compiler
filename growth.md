@@ -30,4 +30,4 @@ Attempting to print for expressions. Now added id and const to E. Assumed const 
 Formatted Symbol table printing to ease matters.
 
 ###After - Formatted ST printout
-Time to get the quads out.Going to use a class, underlying array as a vector.
+Time to get the quads out.Going to use a class, underlying array as a vector. To manage the argtypes aka entries in the quad table, wanted to use boost::variant type. Settling with simple char* and atoi to get numbers out.

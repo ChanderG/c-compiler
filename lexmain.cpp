@@ -75,6 +75,85 @@ char* symboltable :: gentemp(){
   return tmp;
 }
 
+
+char* quad :: opToString(){
+  char* opString = new char[2];
+  switch(op){
+    case OP_NULL: strcpy(opString, " ");break;
+    case OP_PLUS: strcpy(opString, "+");break;
+    case OP_MINUS: strcpy(opString, "+");break;
+    default: strcpy(opString, " ");break;
+  } 
+  return opString;
+}
+
+char* quad :: arg1ToString(){
+  if(arg1 == NULL){
+    char* arg1String = new char[2];
+    strcpy(arg1String, " ");
+    return arg1String;
+  }
+  else{
+    return arg1;
+  }  
+}
+
+char* quad :: arg2ToString(){
+  if(arg2 == NULL){
+    char* arg2String = new char[2];
+    strcpy(arg2String, " ");
+    return arg2String;
+  }
+  else{
+    return arg2;
+  }  
+}
+
+char* quad :: resToString(){
+  if(res == NULL){
+    char* resString = new char[2];
+    strcpy(resString, " ");
+    return resString;
+  }
+  else{
+    return res;
+  }  
+}
+
+void QuadArray :: emit(argtype res, argtype arg1, opcode op, argtype arg2){
+  quad entry = { op, arg1, arg2, res}; 
+  q.push_back(entry);
+}
+
+void QuadArray :: emit(argtype res, argtype arg1, opcode op){
+  quad entry = { op, arg1, NULL, res}; 
+  q.push_back(entry);
+}
+
+void QuadArray :: emit(argtype res, argtype arg1){
+  quad entry = { OP_NULL, arg1, NULL, res}; 
+  q.push_back(entry);
+}
+
+void QuadArray :: print(){
+  cout << "QUAD ARRAY STARTS" << endl;
+  cout << setw(10) << "INDEX"; 
+  cout << setw(10) << "op";
+  cout << setw(10) << "arg 1";
+  cout << setw(10) << "arg 2";
+  cout << setw(10) << "result";
+  cout << endl;
+  for(int i=0;i<q.size();i++){
+    cout << setw(10) << i;
+    //cout << setw(10) << q[i].opToString;
+    //cout << setw(10) << q[i].arg1ToString;
+    //cout << setw(10) << q[i].arg2ToString;
+    //cout << setw(10) << q[i].resToString;
+    //cout << endl;
+  }
+  cout << "QUAD ARRAY ENDS" << endl;
+}
+
 //considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;

@@ -12,8 +12,10 @@
  
   //global point of contact for current type,size etc in declarations
   struct ts_2 ts_global;
-  symboltable global;
-  symboltable *current;
+  symboltable global;      //the outermost symbol table
+  symboltable *current;    // pointer to the current table
+
+  QuadArray qa;
 
 %}
 %union {
@@ -113,6 +115,7 @@ program: {
 	 translation_unit 
 	 {
 	   current->print();
+	   qa.print();
            cout << "End of program" << endl;
 	 }
 	 ;
@@ -440,6 +443,9 @@ primary_expression: IDENTIFIER
 		    {
                       $$.loc = current->gentemp();
 		      cout << $$.loc << " = " << $1 << endl;
+		      argtype a1 = new char[5];
+		      sprintf(a1, "%d",$1);
+		      qa.emit($$.loc, a1);
 		    }
 		    | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
 
