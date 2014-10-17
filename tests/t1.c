@@ -6,5 +6,6 @@ void main(){
   double g,h;
   x = 2;
   y = 5;
+  a = x*y;
   //a = x + y;
 }

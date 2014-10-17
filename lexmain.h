@@ -53,7 +53,7 @@ struct exp_ {  //for expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT}; 
 
 typedef char* argtype;
 
@@ -63,6 +63,7 @@ typedef struct quad_ {
   argtype arg2;
   argtype res;
 
+  //toString operation for each item and the whole quad too
   char* opToString();
   char* arg1ToString();
   char* arg2ToString();

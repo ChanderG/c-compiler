@@ -81,7 +81,8 @@ char* quad :: opToString(){
   switch(op){
     case OP_NULL: strcpy(opString, "");break;
     case OP_PLUS: strcpy(opString, "+");break;
-    case OP_MINUS: strcpy(opString, "+");break;
+    case OP_MINUS: strcpy(opString, "-");break;
+    case OP_MULT: strcpy(opString, "*");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -120,6 +121,7 @@ char* quad :: resToString(){
   }  
 }
 
+//converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
   strcpy(quadString, resToString());
@@ -129,7 +131,7 @@ char* quad :: toString(){
   strcat(quadString, opToString());
   strcat(quadString, " ");
   strcat(quadString, arg2ToString());
-  strcat(quadString, ";");
+  //strcat(quadString, ";");
   return quadString;
 }
 
@@ -148,6 +150,7 @@ void QuadArray :: emit(argtype res, argtype arg1){
   q.push_back(entry);
 }
 
+//print the quad array in a tabular form
 void QuadArray :: printTable(){
   cout << "****************QUAD ARRAY STARTS*****************" << endl;
   cout << setw(10) << "INDEX"; 
@@ -167,6 +170,8 @@ void QuadArray :: printTable(){
   cout << "*****************QUAD ARRAY ENDS******************" << endl;
 }
 
+
+//print the generated code
 void QuadArray :: print(){
   cout << endl;
   cout << "Generated Code: " << endl;

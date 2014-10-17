@@ -37,3 +37,9 @@ Now the errors have been corrected. Also the function is used to see the TAC in 
 
 ###After Corrected printTable function
 Created code for printing TAC in form of a program.
+
+
+###After Added tac printing in code format
+Introducing multiplication finally. Mind you assignment has not yet been introduced, so the t1.c produces a strange result. The whole cascading expressions thing has been handled by chaining up the first rules. Also removed the semicolon from end of generated TAC.
+
+Mind you, all functions support only the amount implemented till then. This is agile.

@@ -38,8 +38,12 @@
 %token <sval> MULTI_LINE_COMMENT
 
 %type <ts> type_specifier
-%type <exp> primary_expression
 %type <ival> constant //for now
+%type <exp> primary_expression
+%type <exp> postfix_expression
+%type <exp> unary_expression
+%type <exp> cast_expression
+%type <exp> multiplicative_expression
 
 %token WS
 
@@ -435,6 +439,8 @@ designator: SQ_OPEN constant_expression SQ_CLOSE
 	    ;
 
 //Section 1: Expressions
+
+
 primary_expression: IDENTIFIER
                     {
                       $$.loc = $1; 		      
@@ -457,6 +463,9 @@ constant:  INTEGER_CONSTANT
            | FLOATING_CONSTANT | CHARACTER_CONSTANT;
 
 postfix_expression: primary_expression 
+                   {
+                     $$.loc = $1.loc; 
+		   }
                    |
 		   postfix_expression SQ_OPEN expression SQ_CLOSE
 		   |
@@ -481,6 +490,9 @@ argument_expression_list: assignment_expression
 			  ;
 
 unary_expression: postfix_expression 
+                  {
+                    $$.loc = $1.loc; 
+		  }
                   | INC unary_expression
 		  | DEC unary_expression
 		  | unary_operator cast_expression %prec U
@@ -491,11 +503,24 @@ unary_expression: postfix_expression
 unary_operator: AND | STAR | PLUS | MINUS | TILDE | EX;
 
 cast_expression: unary_expression
+		 {
+		   $$.loc = $1.loc; 
+		 }
                  | PARAN_OPEN type_name PARAN_CLOSE cast_expression
 		 ;
 
 multiplicative_expression: cast_expression
+			   {
+			     $$.loc = $1.loc; 
+			   }
                            | multiplicative_expression STAR cast_expression
+			   {
+			     $$.loc = current->gentemp();
+			     //cout << $$.loc << " = " << $1 << endl;
+			     //argtype a1 = new char[5];
+			     //sprintf(a1, "%d",$1);
+			     qa.emit($$.loc, $1.loc, OP_MULT, $3.loc);
+			   }   
 			   | multiplicative_expression BY cast_expression
 			   | multiplicative_expression MOD cast_expression
 			   ;
