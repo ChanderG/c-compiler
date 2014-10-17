@@ -53,7 +53,7 @@ struct exp_ {  //for expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER}; 
 
 typedef char* argtype;
 

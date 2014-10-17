@@ -43,3 +43,6 @@ Created code for printing TAC in form of a program.
 Introducing multiplication finally. Mind you assignment has not yet been introduced, so the t1.c produces a strange result. The whole cascading expressions thing has been handled by chaining up the first rules. Also removed the semicolon from end of generated TAC.
 
 Mind you, all functions support only the amount implemented till then. This is agile.
+
+###After Added multiplication expression
+Some clean up.Also added div, mod.And plus, minus in expressions.

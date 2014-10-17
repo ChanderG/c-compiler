@@ -7,5 +7,7 @@ void main(){
   x = 2;
   y = 5;
   a = x*y;
-  //a = x + y;
+  a = x / y;
+  a = x + y;
+  a = x - y;
 }

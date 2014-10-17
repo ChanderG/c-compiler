@@ -15,7 +15,7 @@
   symboltable global;      //the outermost symbol table
   symboltable *current;    // pointer to the current table
 
-  QuadArray qa;
+  QuadArray qa;            //global array of quads holding structure
 
 %}
 %union {
@@ -44,6 +44,8 @@
 %type <exp> unary_expression
 %type <exp> cast_expression
 %type <exp> multiplicative_expression
+%type <exp> additive_expression
+%type <exp> shift_expression
 
 %token WS
 
@@ -444,12 +446,10 @@ designator: SQ_OPEN constant_expression SQ_CLOSE
 primary_expression: IDENTIFIER
                     {
                       $$.loc = $1; 		      
-		      cout << $$.loc << endl;
 		    }
 		    | constant 
 		    {
                       $$.loc = current->gentemp();
-		      cout << $$.loc << " = " << $1 << endl;
 		      argtype a1 = new char[5];
 		      sprintf(a1, "%d",$1);
 		      qa.emit($$.loc, a1);
@@ -516,21 +516,40 @@ multiplicative_expression: cast_expression
                            | multiplicative_expression STAR cast_expression
 			   {
 			     $$.loc = current->gentemp();
-			     //cout << $$.loc << " = " << $1 << endl;
-			     //argtype a1 = new char[5];
-			     //sprintf(a1, "%d",$1);
 			     qa.emit($$.loc, $1.loc, OP_MULT, $3.loc);
 			   }   
 			   | multiplicative_expression BY cast_expression
+			   {
+			     $$.loc = current->gentemp();
+			     qa.emit($$.loc, $1.loc, OP_BY, $3.loc);
+			   }   
 			   | multiplicative_expression MOD cast_expression
+			   {
+			     $$.loc = current->gentemp();
+			     qa.emit($$.loc, $1.loc, OP_PER, $3.loc);
+			   }   
 			   ;
 
 additive_expression: multiplicative_expression
+		     {
+		       $$.loc = $1.loc; 
+		     }
                      | additive_expression PLUS multiplicative_expression
+		     {
+		       $$.loc = current->gentemp();
+		       qa.emit($$.loc, $1.loc, OP_PLUS, $3.loc);
+		     }   
 		     | additive_expression MINUS multiplicative_expression
+		     {
+		       $$.loc = current->gentemp();
+		       qa.emit($$.loc, $1.loc, OP_MINUS, $3.loc);
+		     }   
 		     ;
 
 shift_expression: additive_expression
+		  {
+		    $$.loc = $1.loc; 
+		  }
                   | shift_expression SL additive_expression
 		  | shift_expression SR additive_expression
 		  ;

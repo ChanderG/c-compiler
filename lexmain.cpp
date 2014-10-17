@@ -83,6 +83,8 @@ char* quad :: opToString(){
     case OP_PLUS: strcpy(opString, "+");break;
     case OP_MINUS: strcpy(opString, "-");break;
     case OP_MULT: strcpy(opString, "*");break;
+    case OP_BY: strcpy(opString, "/");break;
+    case OP_PER: strcpy(opString, "%");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
