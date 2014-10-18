@@ -46,3 +46,6 @@ Mind you, all functions support only the amount implemented till then. This is a
 
 ###After Added multiplication expression
 Some clean up.Also added div, mod.And plus, minus in expressions.
+
+###After Added more binops;cleaned up a bit
+Going for assignment expression by considering all expression types as a new type with only loc. The Boolean capability is being ignored now.

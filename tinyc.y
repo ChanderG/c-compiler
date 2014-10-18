@@ -27,6 +27,7 @@
   struct ts_ ts; // for type-specifier
 
   struct exp_ exp; // for expressions
+  struct bexp_ bexp; // for boolean expressions
 }
 
 %token <sval> IDENTIFIER
@@ -39,6 +40,7 @@
 
 %type <ts> type_specifier
 %type <ival> constant //for now
+
 %type <exp> primary_expression
 %type <exp> postfix_expression
 %type <exp> unary_expression
@@ -46,6 +48,17 @@
 %type <exp> multiplicative_expression
 %type <exp> additive_expression
 %type <exp> shift_expression
+
+%type <bexp> relational_expression
+%type <bexp> equality_expression
+%type <bexp> and_expression
+%type <bexp> exclusive_or_expression
+%type <bexp> inclusive_or_expression
+%type <bexp> logical_and_expression
+%type <bexp> logical_or_expression
+%type <bexp> conditional_expression
+
+%type <exp> assignment_expression
 
 %token WS
 
@@ -555,6 +568,9 @@ shift_expression: additive_expression
 		  ;
 
 relational_expression: shift_expression
+		       {
+			 $$.loc = $1.loc; 
+		       }
                        | relational_expression LT shift_expression
                        | relational_expression GT shift_expression
                        | relational_expression LTE shift_expression
@@ -562,36 +578,68 @@ relational_expression: shift_expression
 		       ;
 
 equality_expression: relational_expression
+		     {
+		       $$.loc = $1.loc; 
+		     }
                      | equality_expression E relational_expression
 		     | equality_expression NE relational_expression
 		     ;
 
 and_expression: equality_expression
+	        {
+		  $$.loc = $1.loc; 
+	        }
                 | and_expression AND equality_expression
 		;
 
 exclusive_or_expression: and_expression
-               | exclusive_or_expression CAP equality_expression
-	       ;
+			 {
+			   $$.loc = $1.loc; 
+			 }
+                         | exclusive_or_expression CAP equality_expression
+	                 ;
 
 inclusive_or_expression: exclusive_or_expression
+			 {
+			   $$.loc = $1.loc; 
+			 }
                          | inclusive_or_expression OR exclusive_or_expression
 			 ;
 
 logical_and_expression: inclusive_or_expression
+			{
+			  $$.loc = $1.loc; 
+		        }
                         | logical_and_expression ANDAND inclusive_or_expression
 			;
 
 logical_or_expression: logical_and_expression 
+		       {
+		       	 $$.loc = $1.loc; 
+		       }
                        | logical_or_expression OROR logical_and_expression
 		       ;
 
 conditional_expression: logical_or_expression
+			{
+			  $$.loc = $1.loc; 
+		        }
                         | logical_or_expression Q expression COLON conditional_expression
 			;
 
 assignment_expression: conditional_expression 
+		       {
+		         //conversion function to be used here
+		       }
                        | unary_expression assignment_operator assignment_expression
+	               {
+		         qa.emit($1.loc, $3.loc);
+		         //the value of the expression itself
+			 //$$.loc = current->gentemp();
+			 //argtype a1 = new char[5];
+			 //sprintf(a1, "%d",$1);
+			 //qa.emit($$.loc, a1);
+		       }
 		       ;
 
 assignment_operator: EQUAL 

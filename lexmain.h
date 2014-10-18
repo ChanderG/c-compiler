@@ -52,6 +52,10 @@ struct exp_ {  //for expressions
   char *loc;   // as discussed in class
 };  
 
+struct bexp_ {  //for boolean expressions
+  char *loc;   // the optional thingy.
+};  
+
 //Quad management structures
 enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER}; 
 
