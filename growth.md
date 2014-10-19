@@ -71,3 +71,9 @@ Added simillar expressions for >,<=, >=, ==, !=.
 ###After Added other relop bool exp
 Added backpatch function.Merge function. && exp taken care of. 
 
+Two concerns : 
+-using char* instead of string.
+-multiple char-arrays point to same location in memory, instead of using strdup
+
+###After Boolean exp && done
+Added ||.

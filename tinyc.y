@@ -701,7 +701,12 @@ logical_or_expression: logical_and_expression
 		       {
 		       	 $$.loc = $1.loc; 
 		       }
-                       | logical_or_expression OROR logical_and_expression
+                       | logical_or_expression OROR M logical_and_expression
+		       {
+		 	 qa.backpatch($1.falselist, $3);  
+			 $$.truelist = merge($1.truelist, $4.truelist);
+			 $$.falselist =  $4.falselist;
+		       }
 		       ;
 
 conditional_expression: logical_or_expression

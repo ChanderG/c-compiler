@@ -25,5 +25,6 @@ void main(){
 
   //(a<=x) && (a>=x) ;
   a < x && a > x;
+  a < x || a > x;
 
 }
