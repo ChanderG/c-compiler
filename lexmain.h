@@ -103,6 +103,9 @@ class QuadArray{
   
   //returns the next instr
   int nextinstr();
+
+  //backpatch function
+  void backpatch(std::list<int>*, int);
 };
 
 //for seeing type of the operator in unary_expressions
@@ -110,3 +113,6 @@ enum unary_op { UN_PLUS, UN_MINUS};
 
 //global makelist function 
 std::list<int> *makelist(int); 
+
+//global merge function for list pointers - actually creates a new list
+std::list<int> *merge(std::list<int>* ,std::list<int>*);

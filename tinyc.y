@@ -691,7 +691,9 @@ logical_and_expression: inclusive_or_expression
 		        }
                         | logical_and_expression ANDAND M inclusive_or_expression
 			{
-
+                          qa.backpatch($1.truelist, $3);  
+			  $$.truelist = $4.truelist;
+			  $$.falselist = merge($1.falselist, $4.falselist); 
 			}
 			;
 

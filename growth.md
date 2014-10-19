@@ -68,3 +68,6 @@ Start from making boolean from relational operators. Added emit function for got
 ###After first boolean exp with reqd functions
 Added simillar expressions for >,<=, >=, ==, !=.
 
+###After Added other relop bool exp
+Added backpatch function.Merge function. && exp taken care of. 
+

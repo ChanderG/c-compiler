@@ -226,10 +226,10 @@ void QuadArray :: print(){
   cout << endl;
 }
 
+//next instr
 int QuadArray :: nextinstr(){
   return q.size();
 }
-
 
 //global makelist function 
 list<int> *makelist(int i){
@@ -238,6 +238,29 @@ list<int> *makelist(int i){
   return newlist;
 }
 
+//backpatch every quad referred in list with the label ins
+void QuadArray :: backpatch(list<int>* somelist, int ins){
+  argtype ins_ = new char[5];
+  sprintf(ins_, "%d", ins);
+  for(std::list<int>::iterator it = somelist->begin();it != somelist->end();it++){
+    q[*it].res = strdup(ins_);// ins_;
+  }
+}
+
+//merge function
+//copies each element manually
+list<int> *merge(list<int>* a,list<int>* b){
+  list<int> *c = new list<int>();
+  //for safety going to copy each and every value
+  //optimize later if possible
+  for(std::list<int>::iterator it = a->begin();it != a->end();it++){
+    c->push_back(*it);
+  }  
+  for(std::list<int>::iterator it = b->begin();it != b->end();it++){
+    c->push_back(*it);
+  }  
+  return c;
+}
 
 /****************************************************************************/
 //considers first argument as input file name
