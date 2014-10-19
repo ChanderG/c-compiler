@@ -531,10 +531,8 @@ unary_expression: postfix_expression
                     switch($1){
 		      case UN_PLUS: $$.loc = $2.loc; break;
 		      case UN_MINUS: { $$.loc = current->gentemp();
-				     argtype n1 = new char[5];
-				     sprintf(n1, "%d",-1);
-				     qa.emit($$.loc, $2.loc, OP_MULT, n1);
-				     break;
+				       qa.emit($$.loc, $2.loc, OP_MINUS);
+				       break;
 				     }
 		      default: break;	     
 		    }                    

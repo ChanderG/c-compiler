@@ -126,13 +126,21 @@ char* quad :: resToString(){
 //converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
-  strcpy(quadString, resToString());
-  strcat(quadString, " = ");
-  strcat(quadString, arg1ToString());
-  strcat(quadString, " ");
-  strcat(quadString, opToString());
-  strcat(quadString, " ");
-  strcat(quadString, arg2ToString());
+  if (arg2 == NULL){ //unary operators
+    strcpy(quadString, resToString());
+    strcat(quadString, " = ");
+    strcat(quadString, opToString());
+    strcat(quadString, arg1ToString());
+  }
+  else {
+    strcpy(quadString, resToString());
+    strcat(quadString, " = ");
+    strcat(quadString, arg1ToString());
+    strcat(quadString, " ");
+    strcat(quadString, opToString());
+    strcat(quadString, " ");
+    strcat(quadString, arg2ToString());
+  }
   //strcat(quadString, ";");
   return quadString;
 }
@@ -142,6 +150,7 @@ void QuadArray :: emit(argtype res, argtype arg1, opcode op, argtype arg2){
   q.push_back(entry);
 }
 
+//unary operators
 void QuadArray :: emit(argtype res, argtype arg1, opcode op){
   quad entry = { op, arg1, NULL, res}; 
   q.push_back(entry);

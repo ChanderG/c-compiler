@@ -55,3 +55,7 @@ Added inc, dec operators.
 
 ###After Added ++ and -- 
 Added unary + and -
+
+###After added u + and -
+Simplified unary operator handling, changed printing method too.
+
