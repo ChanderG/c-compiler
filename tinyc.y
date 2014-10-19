@@ -60,9 +60,12 @@
 %type <bexp> conditional_expression
 
 %type <exp> assignment_expression
-
 %type <unop> unary_operator
+%type <ival> M
 
+
+
+//tokens
 %token WS
 
 %token COLON
@@ -646,7 +649,10 @@ logical_and_expression: inclusive_or_expression
 			{
 			  $$.loc = $1.loc; 
 		        }
-                        | logical_and_expression ANDAND inclusive_or_expression
+                        | logical_and_expression ANDAND M inclusive_or_expression
+			{
+
+			}
 			;
 
 logical_or_expression: logical_and_expression 
@@ -684,6 +690,13 @@ expression: assignment_expression
 	    ;
 
 constant_expression: conditional_expression;
+
+//Grammar augmentations
+//M just as an integer value representing the instr discussed in class.Repn an instruction number
+M : {
+      $$ = qa.nextinstr(); 
+    }
+    ;
 
 %%
 //main section - not required now

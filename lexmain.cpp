@@ -145,6 +145,7 @@ char* quad :: toString(){
   return quadString;
 }
 
+//main binary operators
 void QuadArray :: emit(argtype res, argtype arg1, opcode op, argtype arg2){
   quad entry = { op, arg1, arg2, res}; 
   q.push_back(entry);
@@ -156,6 +157,7 @@ void QuadArray :: emit(argtype res, argtype arg1, opcode op){
   q.push_back(entry);
 }
 
+//for copy assignment operation
 void QuadArray :: emit(argtype res, argtype arg1){
   quad entry = { OP_NULL, arg1, NULL, res}; 
   q.push_back(entry);
@@ -193,6 +195,10 @@ void QuadArray :: print(){
   cout << endl;
 }
 
+int QuadArray :: nextinstr(){
+  return q.size();
+}
+
 //considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;
@@ -210,3 +216,4 @@ int main(int argc, char* argv[]){
   }while(!feof(yyin));
   return 0;
 }
+

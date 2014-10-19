@@ -59,3 +59,6 @@ Added unary + and -
 ###After added u + and -
 Simplified unary operator handling, changed printing method too.
 
+###After Corrected unary -
+Working on &&. Added M transition. Going to use std::list for the lists. Need to add addiional classes of instructions in quad. Need to refine the printing method for code.
+

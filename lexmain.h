@@ -84,14 +84,17 @@ class QuadArray{
   }
 
   //adding a new entry to the quad array
-  void emit(argtype res, argtype arg1, opcode op, argtype arg2);
-  void emit(argtype res, argtype arg1, opcode op);
-  void emit(argtype res, argtype arg1);
+  void emit(argtype res, argtype arg1, opcode op, argtype arg2);  //binary
+  void emit(argtype res, argtype arg1, opcode op);                //unary
+  void emit(argtype res, argtype arg1);                           //copy assignment
 
   //Printing the entire quad array in table format
   void printTable();
   //in code form
   void print();
+  
+  //returns the next instr
+  int nextinstr();
 };
 
 //for seeing type of the operator in unary_expressions
