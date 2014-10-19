@@ -116,3 +116,8 @@ std::list<int> *makelist(int);
 
 //global merge function for list pointers - actually creates a new list
 std::list<int> *merge(std::list<int>* ,std::list<int>*);
+
+//for statements
+struct s_{
+  std::list<int>* nextlist;
+};   

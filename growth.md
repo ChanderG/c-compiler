@@ -77,3 +77,6 @@ Two concerns :
 
 ###After Boolean exp && done
 Added ||.
+
+###After Added || exp
+Question of type of expression. Right now just going with if loc == NULL. Starting work on if statements now.Cleaned code in statement section up a bit. IF code given, but not recogonized.

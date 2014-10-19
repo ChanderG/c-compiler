@@ -253,12 +253,14 @@ list<int> *merge(list<int>* a,list<int>* b){
   list<int> *c = new list<int>();
   //for safety going to copy each and every value
   //optimize later if possible
-  for(std::list<int>::iterator it = a->begin();it != a->end();it++){
-    c->push_back(*it);
-  }  
-  for(std::list<int>::iterator it = b->begin();it != b->end();it++){
-    c->push_back(*it);
-  }  
+  if (a != NULL)
+    for(std::list<int>::iterator it = a->begin();it != a->end();it++){
+      c->push_back(*it);
+    }  
+  if (b != NULL)
+    for(std::list<int>::iterator it = b->begin();it != b->end();it++){
+      c->push_back(*it);
+    }  
   return c;
 }
 

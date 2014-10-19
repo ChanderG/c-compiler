@@ -29,6 +29,7 @@
   struct exp_ exp; // for expressions
   struct bexp_ bexp; // for boolean expressions
   unary_op unop;
+  struct s_ s;    //for statements of all kind
 }
 
 %token <sval> IDENTIFIER
@@ -59,11 +60,17 @@
 %type <bexp> logical_or_expression
 %type <bexp> conditional_expression
 
-%type <exp> assignment_expression
+%type <bexp> assignment_expression
+%type <bexp> expression
 %type <unop> unary_operator
 %type <ival> M
 
-
+%type <s> statement
+%type <s> selection_statement
+%type <s> expression_statement
+%type <s> block_item
+%type <s> block_item_list
+%type <s> compound_statement
 
 //tokens
 %token WS
@@ -161,7 +168,7 @@ external_declaration : function_definition
 		       // {} 
 		       ;
 /*// temporarily over-ridden for simplification
-
+function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
 		      ;
 */
 
@@ -195,11 +202,17 @@ declaration_list : declaration
 statement :  labeled_statement
             { }
 	    | compound_statement
-	    { }
+	    {
+	      $$ = $1;
+	    }
 	    | expression_statement
-	    { }
+	    {
+	      $$.nextlist = NULL;
+	    }
 	    | selection_statement
-	    { }
+	    {  
+	      $$ = $1;
+	    }
             | iteration_statement
 	    { }
             | jump_statement
@@ -218,42 +231,41 @@ labeled_statement : IDENTIFIER COLON statement
 		    }
 		    ;
 
-//This block w/ epsilon has been replaced by one without, but no change is observed.
-
-/*
-compound_statement : CURLY_OPEN block_item_list_opt CURLY_CLOSE 
-                     {};
-
-block_item_list_opt: epsilon
-                     | block_item_list
-		     { }
-		     ;
-*/
-
-//start
 compound_statement : CURLY_OPEN block_item_list CURLY_CLOSE 
                      { //cout << "stmt" << endl;
+		       $$ = $2;
 		     }
 		     |
                      CURLY_OPEN CURLY_CLOSE 
-                     {}
+                     {
+		       $$.nextlist = NULL;
+		     }
 		     ;
-//ends
 
 block_item_list: block_item
-                 {}
+                 {
+		   $$ = $1;
+		 }
 		 | block_item_list block_item
-		 {}
+		 {
+		   $$.nextlist = merge($1.nextlist, $2.nextlist);
+		 }
 		 ;
 
 block_item: statement 
-            {}
+            {
+	      $$ = $1;
+	    }
 	    | declaration
-	    {}
+	    {
+	      $$.nextlist = NULL;
+	    }
 	    ;
 
 expression_statement: expression_opt SEMI_COLON
-                      {}
+                      {
+		        $$.nextlist = NULL;
+		      }
 		      ;
 
 expression_opt: epsilon
@@ -261,8 +273,11 @@ expression_opt: epsilon
 		{}
 		;
 
-selection_statement : IF PARAN_OPEN expression PARAN_CLOSE statement %prec LOWER_THAN_ELSE
-                      {} 
+selection_statement : IF PARAN_OPEN expression PARAN_CLOSE M statement %prec LOWER_THAN_ELSE
+                      {
+		        qa.backpatch($3.truelist, $5);
+			$$.nextlist = merge($3.falselist, $6.nextlist);
+		      } 
 		      | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
                       {}
 		      | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
@@ -719,6 +734,7 @@ conditional_expression: logical_or_expression
 assignment_expression: conditional_expression 
 		       {
 		         //conversion function to be used here
+			 $$ = $1;
 		       }
                        | unary_expression assignment_operator assignment_expression
 	               {
@@ -733,6 +749,9 @@ assignment_operator: EQUAL
                      | STAREQUAL | BYEQUAL | MODEQUAL | PLUSEQUAL | MINUSEQUAL | SLEQUAL | SREQUAL | ANDEQUAL | CAPEQUAL | OREQUAL;
 
 expression: assignment_expression
+            {
+              $$ = $1; 
+	    }
             | expression COMMA assignment_expression
 	    ;
 

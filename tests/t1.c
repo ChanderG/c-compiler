@@ -1,20 +1,20 @@
 //Hi, simple test file.
 void main(){
   int a,b;
-  char c,d;
-  int e,f;
-  double g,h;
-  x = 2;
+  //char c,d;
+  //int e,f;
+  //double g,h;
+  //x = 2;
   //y = 5;
 
-  a = x*y;
+  //a = x*y;
   //a = x / y;
   //a = x + y;
   //a = x - y;
-  ++a;
+  //++a;
 
   //a = +x;
-  a = -x;
+  //a = -x;
 
   //a < x;
   //a > x;
@@ -24,7 +24,9 @@ void main(){
   //a != x;
 
   //(a<=x) && (a>=x) ;
-  a < x && a > x;
-  a < x || a > x;
+  //a < x && a > x;
+  //a < x || a > x;
+ 
+  //if(a < 3) a = b;
 
 }
