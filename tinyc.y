@@ -507,7 +507,21 @@ unary_expression: postfix_expression
                     $$.loc = $1.loc; 
 		  }
                   | INC unary_expression
+		  {
+                    $$.loc = current->gentemp();
+		    argtype n1 = new char[5];
+		    sprintf(n1, "%d",1);
+                    qa.emit($2.loc, $2.loc, OP_PLUS, n1);
+                    qa.emit($$.loc, $2.loc);
+		  }
 		  | DEC unary_expression
+		  {
+                    $$.loc = current->gentemp();
+		    argtype n1 = new char[5];
+		    sprintf(n1, "%d",1);
+                    qa.emit($2.loc, $2.loc, OP_MINUS, n1);
+                    qa.emit($$.loc, $2.loc);
+		  }
 		  | unary_operator cast_expression %prec U
 		  | SIZEOF unary_expression
 		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE %prec U
@@ -635,10 +649,8 @@ assignment_expression: conditional_expression
 	               {
 		         qa.emit($1.loc, $3.loc);
 		         //the value of the expression itself
-			 //$$.loc = current->gentemp();
-			 //argtype a1 = new char[5];
-			 //sprintf(a1, "%d",$1);
-			 //qa.emit($$.loc, a1);
+			 $$.loc = current->gentemp();
+			 qa.emit($$.loc, $1.loc);
 		       }
 		       ;
 

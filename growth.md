@@ -49,3 +49,6 @@ Some clean up.Also added div, mod.And plus, minus in expressions.
 
 ###After Added more binops;cleaned up a bit
 Going for assignment expression by considering all expression types as a new type with only loc. The Boolean capability is being ignored now.
+
+###After Added assignment expression as a statement
+Added inc, dec operators.
