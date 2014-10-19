@@ -1,5 +1,6 @@
 //File for global function prototypes and data structures
 #include<vector>
+#include<list>
 
 typedef struct symtabentry {
   char *name;
@@ -54,10 +55,12 @@ struct exp_ {  //for expressions
 
 struct bexp_ {  //for boolean expressions
   char *loc;   // the optional thingy.
+  std::list<int> *truelist;
+  std::list<int> *falselist;
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT}; 
 
 typedef char* argtype;
 
@@ -84,9 +87,14 @@ class QuadArray{
   }
 
   //adding a new entry to the quad array
-  void emit(argtype res, argtype arg1, opcode op, argtype arg2);  //binary
+  //for comparision based goto - use -1 for blank label 
+  void emit(argtype res, argtype arg1, opcode op, argtype arg2);  //binary, comparision goto
   void emit(argtype res, argtype arg1, opcode op);                //unary
   void emit(argtype res, argtype arg1);                           //copy assignment
+
+  //use - OP_GOTO and -1 for blank label
+  void emit(argtype res, opcode op);                              //unconditional goto etc 
+
 
   //Printing the entire quad array in table format
   void printTable();
@@ -99,3 +107,6 @@ class QuadArray{
 
 //for seeing type of the operator in unary_expressions
 enum unary_op { UN_PLUS, UN_MINUS};
+
+//global makelist function 
+std::list<int> *makelist(int); 

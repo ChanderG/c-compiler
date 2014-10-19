@@ -77,7 +77,7 @@ char* symboltable :: gentemp(){
 
 
 char* quad :: opToString(){
-  char* opString = new char[2];
+  char* opString = new char[6];
   switch(op){
     case OP_NULL: strcpy(opString, "");break;
     case OP_PLUS: strcpy(opString, "+");break;
@@ -85,6 +85,8 @@ char* quad :: opToString(){
     case OP_MULT: strcpy(opString, "*");break;
     case OP_BY: strcpy(opString, "/");break;
     case OP_PER: strcpy(opString, "%");break;
+    case OP_GOTO: strcpy(opString, "goto");break;
+    case OP_LT: strcpy(opString, "<");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -126,13 +128,28 @@ char* quad :: resToString(){
 //converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
-  if (arg2 == NULL){ //unary operators
+  if(op == OP_LT){        //comaprision based goto
+    strcpy(quadString, "if ");
+    strcat(quadString, arg1ToString());
+    strcat(quadString, " ");
+    strcat(quadString, opToString());
+    strcat(quadString, " ");
+    strcat(quadString, arg2ToString());
+    strcat(quadString, " goto ");
+    strcat(quadString, resToString());
+  }
+  else if (op == OP_GOTO){  //unconditional goto
+    strcpy(quadString, opToString());
+    strcat(quadString, " ");
+    strcat(quadString, resToString());
+  }
+  else if (arg2 == NULL){ //unary operators
     strcpy(quadString, resToString());
     strcat(quadString, " = ");
     strcat(quadString, opToString());
     strcat(quadString, arg1ToString());
   }
-  else {
+  else {  //binary operators
     strcpy(quadString, resToString());
     strcat(quadString, " = ");
     strcat(quadString, arg1ToString());
@@ -160,6 +177,14 @@ void QuadArray :: emit(argtype res, argtype arg1, opcode op){
 //for copy assignment operation
 void QuadArray :: emit(argtype res, argtype arg1){
   quad entry = { OP_NULL, arg1, NULL, res}; 
+  q.push_back(entry);
+}
+
+//unconditional goto etc 
+void QuadArray :: emit(argtype res, opcode op){
+  if (op != OP_GOTO) return;  //later use
+  //use -1 for indicating empty slot
+  quad entry = { op, NULL, NULL, res};
   q.push_back(entry);
 }
 
@@ -199,6 +224,16 @@ int QuadArray :: nextinstr(){
   return q.size();
 }
 
+
+//global makelist function 
+list<int> *makelist(int i){
+  list<int> *newlist = new list<int>;
+  newlist->push_back(i);
+  return newlist;
+}
+
+
+/****************************************************************************/
 //considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;

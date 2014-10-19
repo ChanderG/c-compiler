@@ -62,3 +62,5 @@ Simplified unary operator handling, changed printing method too.
 ###After Corrected unary -
 Working on &&. Added M transition. Going to use std::list for the lists. Need to add addiional classes of instructions in quad. Need to refine the printing method for code.
 
+###After added m transition
+Start from making boolean from relational operators. Added emit function for goto, makelist function using std::list. Added comparision based goto. Added < expression considered as a boolean expression. Successfully generated the required goto statements.

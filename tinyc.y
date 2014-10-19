@@ -473,7 +473,11 @@ primary_expression: IDENTIFIER
 		      sprintf(a1, "%d",$1);
 		      qa.emit($$.loc, a1);
 		    }
-		    | STRING_LITERAL | PARAN_OPEN expression PARAN_CLOSE;
+		    | STRING_LITERAL
+		    | PARAN_OPEN expression PARAN_CLOSE
+		    {
+		      //$$.loc = $2.loc; 
+		    };
 
 constant:  INTEGER_CONSTANT 
            { 
@@ -611,6 +615,12 @@ relational_expression: shift_expression
 			 $$.loc = $1.loc; 
 		       }
                        | relational_expression LT shift_expression
+		       {
+                         $$.truelist = makelist(qa.nextinstr());       
+                         $$.falselist = makelist(qa.nextinstr() + 1);       
+                         qa.emit("-1", $1.loc, OP_LT, $3.loc);
+			 qa.emit("-1", OP_GOTO);
+		       }
                        | relational_expression GT shift_expression
                        | relational_expression LTE shift_expression
                        | relational_expression GTE shift_expression
