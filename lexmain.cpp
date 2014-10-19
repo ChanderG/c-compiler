@@ -87,6 +87,11 @@ char* quad :: opToString(){
     case OP_PER: strcpy(opString, "%");break;
     case OP_GOTO: strcpy(opString, "goto");break;
     case OP_LT: strcpy(opString, "<");break;
+    case OP_GT: strcpy(opString, ">");break;
+    case OP_LTE: strcpy(opString, "<=");break;
+    case OP_GTE: strcpy(opString, ">=");break;
+    case OP_E: strcpy(opString, "==");break;
+    case OP_NE: strcpy(opString, "!=");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -128,7 +133,8 @@ char* quad :: resToString(){
 //converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
-  if(op == OP_LT){        //comaprision based goto
+  if((op == OP_LT) || (op == OP_GT) || (op == OP_LTE) || (op == OP_GTE)
+           || (op == OP_E) || (op == OP_NE) ){        //comaprision based goto
     strcpy(quadString, "if ");
     strcat(quadString, arg1ToString());
     strcat(quadString, " ");

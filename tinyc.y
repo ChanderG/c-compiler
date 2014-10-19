@@ -622,8 +622,26 @@ relational_expression: shift_expression
 			 qa.emit("-1", OP_GOTO);
 		       }
                        | relational_expression GT shift_expression
+		       {
+                         $$.truelist = makelist(qa.nextinstr());       
+                         $$.falselist = makelist(qa.nextinstr() + 1);       
+                         qa.emit("-1", $1.loc, OP_GT, $3.loc);
+			 qa.emit("-1", OP_GOTO);
+		       }
                        | relational_expression LTE shift_expression
+		       {
+                         $$.truelist = makelist(qa.nextinstr());       
+                         $$.falselist = makelist(qa.nextinstr() + 1);       
+                         qa.emit("-1", $1.loc, OP_LTE, $3.loc);
+			 qa.emit("-1", OP_GOTO);
+		       }
                        | relational_expression GTE shift_expression
+		       {
+                         $$.truelist = makelist(qa.nextinstr());       
+                         $$.falselist = makelist(qa.nextinstr() + 1);       
+                         qa.emit("-1", $1.loc, OP_GTE, $3.loc);
+			 qa.emit("-1", OP_GOTO);
+		       }
 		       ;
 
 equality_expression: relational_expression
@@ -631,7 +649,19 @@ equality_expression: relational_expression
 		       $$.loc = $1.loc; 
 		     }
                      | equality_expression E relational_expression
+		     {
+		       $$.truelist = makelist(qa.nextinstr());       
+		       $$.falselist = makelist(qa.nextinstr() + 1);       
+		       qa.emit("-1", $1.loc, OP_E, $3.loc);
+		       qa.emit("-1", OP_GOTO);
+		     }
 		     | equality_expression NE relational_expression
+		     {
+		       $$.truelist = makelist(qa.nextinstr());       
+		       $$.falselist = makelist(qa.nextinstr() + 1);       
+		       qa.emit("-1", $1.loc, OP_NE, $3.loc);
+		       qa.emit("-1", OP_GOTO);
+		     }
 		     ;
 
 and_expression: equality_expression

@@ -64,3 +64,7 @@ Working on &&. Added M transition. Going to use std::list for the lists. Need to
 
 ###After added m transition
 Start from making boolean from relational operators. Added emit function for goto, makelist function using std::list. Added comparision based goto. Added < expression considered as a boolean expression. Successfully generated the required goto statements.
+
+###After first boolean exp with reqd functions
+Added simillar expressions for >,<=, >=, ==, !=.
+
