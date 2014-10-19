@@ -11,4 +11,6 @@ void main(){
   //a = x + y;
   //a = x - y;
   ++a;
+  a = +x;
+  a = -x;
 }

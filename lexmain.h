@@ -93,3 +93,6 @@ class QuadArray{
   //in code form
   void print();
 };
+
+//for seeing type of the operator in unary_expressions
+enum unary_op { UN_PLUS, UN_MINUS};

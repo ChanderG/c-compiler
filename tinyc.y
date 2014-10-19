@@ -28,6 +28,7 @@
 
   struct exp_ exp; // for expressions
   struct bexp_ bexp; // for boolean expressions
+  unary_op unop;
 }
 
 %token <sval> IDENTIFIER
@@ -59,6 +60,8 @@
 %type <bexp> conditional_expression
 
 %type <exp> assignment_expression
+
+%type <unop> unary_operator
 
 %token WS
 
@@ -523,11 +526,32 @@ unary_expression: postfix_expression
                     qa.emit($$.loc, $2.loc);
 		  }
 		  | unary_operator cast_expression %prec U
+		  {
+                    //the operator returns an enum value
+                    switch($1){
+		      case UN_PLUS: $$.loc = $2.loc; break;
+		      case UN_MINUS: { $$.loc = current->gentemp();
+				     argtype n1 = new char[5];
+				     sprintf(n1, "%d",-1);
+				     qa.emit($$.loc, $2.loc, OP_MULT, n1);
+				     break;
+				     }
+		      default: break;	     
+		    }                    
+		  }
 		  | SIZEOF unary_expression
 		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE %prec U
 		  ;
 
-unary_operator: AND | STAR | PLUS | MINUS | TILDE | EX;
+unary_operator: AND | STAR | PLUS
+                {
+                  $$ = UN_PLUS; 
+		}
+		| MINUS
+                {
+                  $$ = UN_MINUS; 
+		}
+		| TILDE | EX;
 
 cast_expression: unary_expression
 		 {
