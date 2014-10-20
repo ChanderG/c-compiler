@@ -9,3 +9,4 @@ y.tab.c
 *.swo
 dist
 *.tar.gz
+.fuse*

@@ -62,6 +62,7 @@
 
 %type <bexp> assignment_expression
 %type <bexp> expression
+%type <bexp> expression_opt
 %type <unop> unary_operator
 %type <ival> M
 %type <s> N
@@ -310,8 +311,17 @@ iteration_statement : WHILE M PARAN_OPEN expression PARAN_CLOSE M statement
 			qa.backpatch($3.nextlist, $4);
 			$$.nextlist = $7.falselist;
 		      }
-		      | FOR PARAN_OPEN expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
-		      { }
+		      | FOR PARAN_OPEN expression_opt SEMI_COLON M expression_opt SEMI_COLON M expression_opt N PARAN_CLOSE M statement
+		      {
+		        qa.backpatch($6.truelist, $12);
+		        qa.backpatch($10.nextlist, $5);
+		        qa.backpatch($13.nextlist, $8);
+
+			char* label = new char[5];
+			sprintf(label, "%d", $8);
+			qa.emit(label, OP_GOTO);
+                        $$.nextlist = $6.falselist; 
+		      }
 		      | FOR PARAN_OPEN declaration SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
 		      {}
 		      ;

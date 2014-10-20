@@ -43,8 +43,15 @@ void main(){
   }
   */
 
+  /*
   do{
     b = a;
     //if(a < 3) a = b;
   }while(a < b);  
+  */
+
+  int i;
+  for(i = 0;i < 3;i = i + 1){
+    a = i;
+  }
 }

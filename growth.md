@@ -92,3 +92,6 @@ Corrected the flow of control in a body of stmts. Augmented the rule for compoun
 
 ###After Corrected flow between stmts
 added do while.
+
+###After Added do while loop
+Added for loop.
