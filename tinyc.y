@@ -278,7 +278,7 @@ selection_statement : IF PARAN_OPEN expression PARAN_CLOSE M statement %prec LOW
 		        qa.backpatch($3.truelist, $5);
 			$$.nextlist = merge($3.falselist, $6.nextlist);
 		      } 
-		      | IF PARAN_OPEN expression PARAN_CLOSE statement ELSE statement
+		      | IF PARAN_OPEN expression PARAN_CLOSE M statement ELSE statement
                       {}
 		      | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
 		      {}
