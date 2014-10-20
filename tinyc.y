@@ -236,8 +236,9 @@ labeled_statement : IDENTIFIER COLON statement
 		    }
 		    ;
 
-compound_statement : CURLY_OPEN block_item_list CURLY_CLOSE 
+compound_statement : CURLY_OPEN block_item_list M CURLY_CLOSE 
                      { //cout << "stmt" << endl;
+		       qa.backpatch($2.nextlist, $3);
 		       $$ = $2;
 		     }
 		     |
@@ -251,9 +252,11 @@ block_item_list: block_item
                  {
 		   $$ = $1;
 		 }
-		 | block_item_list block_item
+		 | block_item_list M block_item
 		 {
-		   $$.nextlist = merge($1.nextlist, $2.nextlist);
+		   //$$.nextlist = merge($1.nextlist, $2.nextlist);
+                   qa.backpatch($1.nextlist, $2);
+		   $$.nextlist = $3.nextlist;
 		 }
 		 ;
 
