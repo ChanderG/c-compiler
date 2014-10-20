@@ -80,3 +80,9 @@ Added ||.
 
 ###After Added || exp
 Question of type of expression. Right now just going with if loc == NULL. Starting work on if statements now.Cleaned code in statement section up a bit. IF code given, but not recogonized.
+
+###After Corrected if statement;working perfectly
+Adding N transition. Implemented if - else.A point of concern, all statements and compound blocks need to be given nextlist and *ALL nextlist needs to be taken care* of. Note that N position often makes/breaks the parser. Here it has been shifted one unit to the right.
+
+###After Added if -else stmt
+

@@ -64,6 +64,7 @@
 %type <bexp> expression
 %type <unop> unary_operator
 %type <ival> M
+%type <s> N
 
 %type <s> statement
 %type <s> selection_statement
@@ -189,6 +190,7 @@ declaration_list_opt : declaration_list
                        { }
 		       | epsilon
 		       ;
+
 epsilon : ;   //epsilon transition
 
 declaration_list : declaration
@@ -278,8 +280,12 @@ selection_statement : IF PARAN_OPEN expression PARAN_CLOSE M statement %prec LOW
 		        qa.backpatch($3.truelist, $5);
 			$$.nextlist = merge($3.falselist, $6.nextlist);
 		      } 
-		      | IF PARAN_OPEN expression PARAN_CLOSE M statement ELSE statement
-                      {}
+		      | IF PARAN_OPEN expression PARAN_CLOSE M statement ELSE N M statement
+                      {
+		        qa.backpatch($3.truelist, $5);
+		        qa.backpatch($3.falselist, $9);
+			$$.nextlist = merge(merge($6.nextlist, $8.nextlist), $10.nextlist);
+		      }
 		      | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
 		      {}
 		      ;
@@ -764,6 +770,12 @@ M : {
     }
     ;
 
+//empty transition with goto print
+N: {
+     $$.nextlist = makelist(qa.nextinstr());
+     qa.emit("-1", OP_GOTO);
+   }
+   ;
 %%
 //main section - not required now
 void yyerror(const char *s) {

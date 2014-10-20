@@ -1,6 +1,6 @@
 //Hi, simple test file.
 void main(){
-  int a,b;
+  int a,b,c;
   //char c,d;
   //int e,f;
   //double g,h;
@@ -27,6 +27,12 @@ void main(){
   //a < x && a > x;
   //a < x || a > x;
  
-  if(a < 3) a = b;
+  //if(a < 3) a = b;
+  
+  if(a < 3){
+    a = b; 
+  }else{
+    c = b;
+  }
 
 }
