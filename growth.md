@@ -85,4 +85,4 @@ Question of type of expression. Right now just going with if loc == NULL. Starti
 Adding N transition. Implemented if - else.A point of concern, all statements and compound blocks need to be given nextlist and *ALL nextlist needs to be taken care* of. Note that N position often makes/breaks the parser. Here it has been shifted one unit to the right.
 
 ###After Added if -else stmt
-
+Added while loop.Converted makefile to DEBUG mode.

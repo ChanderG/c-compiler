@@ -28,11 +28,16 @@ void main(){
   //a < x || a > x;
  
   //if(a < 3) a = b;
-  
+ 
+  /*
   if(a < 3){
     a = b; 
   }else{
     c = b;
   }
+  */
 
+  while(a < b){
+    b = a;
+  }
 }

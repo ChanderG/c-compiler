@@ -242,9 +242,10 @@ list<int> *makelist(int i){
 void QuadArray :: backpatch(list<int>* somelist, int ins){
   argtype ins_ = new char[5];
   sprintf(ins_, "%d", ins);
-  for(std::list<int>::iterator it = somelist->begin();it != somelist->end();it++){
-    q[*it].res = strdup(ins_);// ins_;
-  }
+  if (somelist != NULL)
+    for(std::list<int>::iterator it = somelist->begin();it != somelist->end();it++){
+      q[*it].res = strdup(ins_);// ins_;
+    }
 }
 
 //merge function

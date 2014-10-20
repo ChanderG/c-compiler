@@ -72,6 +72,7 @@
 %type <s> block_item
 %type <s> block_item_list
 %type <s> compound_statement
+%type <s> iteration_statement
 
 //tokens
 %token WS
@@ -216,7 +217,9 @@ statement :  labeled_statement
 	      $$ = $1;
 	    }
             | iteration_statement
-	    { }
+	    {
+	      $$ = $1;
+	    }
             | jump_statement
 	    { }
             ; 
@@ -289,8 +292,15 @@ selection_statement : IF PARAN_OPEN expression PARAN_CLOSE M statement %prec LOW
 		      | SWITCH PARAN_OPEN expression PARAN_CLOSE statement
 		      {}
 		      ;
-iteration_statement : WHILE PARAN_OPEN expression PARAN_CLOSE statement
-                      {} 
+iteration_statement : WHILE M PARAN_OPEN expression PARAN_CLOSE M statement
+                      {
+		        qa.backpatch($7.nextlist, $2);
+			qa.backpatch($4.truelist, $6);
+			$$.nextlist = $4.falselist;
+			char* label = new char[5];
+			sprintf(label, "%d", $2);
+			qa.emit(label, OP_GOTO);
+		      } 
 		      | DO statement WHILE PARAN_OPEN expression PARAN_CLOSE SEMI_COLON
 		      {}
 		      | FOR PARAN_OPEN expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
