@@ -772,9 +772,6 @@ assignment_expression: conditional_expression
                        | unary_expression assignment_operator assignment_expression
 	               {
 		         qa.emit($1.loc, $3.loc);
-		         //the value of the expression itself
-			 $$.loc = current->gentemp();
-			 qa.emit($$.loc, $1.loc);
 		       }
 		       ;
 
