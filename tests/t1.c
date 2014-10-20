@@ -27,7 +27,7 @@ void main(){
   //a < x && a > x;
   //a < x || a > x;
  
-  if(a < 3) a = b;
+  //if(a < 3) a = b;
  
   /*
   if(a < 3){
@@ -37,7 +37,14 @@ void main(){
   }
   */
 
+  /*
   while(a < b){
     b = a;
   }
+  */
+
+  do{
+    b = a;
+    //if(a < 3) a = b;
+  }while(a < b);  
 }

@@ -304,8 +304,12 @@ iteration_statement : WHILE M PARAN_OPEN expression PARAN_CLOSE M statement
 			sprintf(label, "%d", $2);
 			qa.emit(label, OP_GOTO);
 		      } 
-		      | DO statement WHILE PARAN_OPEN expression PARAN_CLOSE SEMI_COLON
-		      {}
+		      | DO M statement M WHILE PARAN_OPEN expression PARAN_CLOSE SEMI_COLON
+		      {
+		        qa.backpatch($7.truelist, $2);
+			qa.backpatch($3.nextlist, $4);
+			$$.nextlist = $7.falselist;
+		      }
 		      | FOR PARAN_OPEN expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
 		      { }
 		      | FOR PARAN_OPEN declaration SEMI_COLON expression_opt SEMI_COLON expression_opt PARAN_CLOSE statement
