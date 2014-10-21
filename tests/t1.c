@@ -1,7 +1,7 @@
 //Hi, simple test file.
 void main(){
-  int a,b,c;
-  //char c,d;
+  int a,*b;
+  char *c,d;
   //int e,f;
   //double g,h;
   //x = 2;
@@ -50,8 +50,10 @@ void main(){
   }while(a < b);  
   */
 
+  /*
   int i;
   for(i = 0;i < 3;i = i + 1){
     a = i;
   }
+  */
 }

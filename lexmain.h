@@ -12,6 +12,7 @@ typedef struct symtabentry {
 } symboltableentry;
 
 #define SYMBOLTABLE_SIZE 25
+const int SIZEOF_PTR = 4;
 
 //right now implemented as an array
 class symboltable{

@@ -75,6 +75,10 @@
 %type <s> compound_statement
 %type <s> iteration_statement
 
+%type <sval> direct_declarator
+%type <sval> declarator
+
+
 //tokens
 %token WS
 
@@ -376,7 +380,8 @@ init_declarator_list: init_declarator
 		      |
 		      init_declarator_list COMMA init_declarator
 		      ;
-		      
+
+//Add the additional equality action here
 init_declarator: declarator  
                  {}
 		 | declarator EQUAL initializer
@@ -435,16 +440,43 @@ type_qualifier: CONST | RESTRICT | VOLATILE;
 
 //function_specifier: INLINE;
 
+/*
 declarator: pointer_opt direct_declarator;
+*/
 
 pointer_opt: epsilon| pointer;
 
+//Maybe the adding to the symbol table should be done here.
+declarator: direct_declarator
+            {
+              $$ = $1;
+	      //add variable to symbol table
+	      //will get messed up if a varible of same name exists already
+	      current->update($1, ts_global.type, ts_global.width, ts_global.offset);
+	      ts_global.offset += ts_global.width; 
+	    }
+            | pointer direct_declarator 
+	    {
+	      //adding a pointer to ts_global.type
+              $$ = $2;
+	      char* ptr_type = new char[10];
+	      strcpy(ptr_type, "ptr(");
+	      strcat(ptr_type, ts_global.type);
+	      strcat(ptr_type, ")");
+	      current->update($2 ,ptr_type, SIZEOF_PTR, ts_global.offset); 
+	      ts_global.offset += SIZEOF_PTR; 
+	      delete(ptr_type);
+	    };
+
 direct_declarator: IDENTIFIER
                    {
+                     $$ = $1;
+		     /*
 		     //add variable to symbol table
 		     //will get messed up if a varible of same name exists already
 		     current->update($1, ts_global.type, ts_global.width, ts_global.offset);
 		     ts_global.offset += ts_global.width; 
+		     */
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 

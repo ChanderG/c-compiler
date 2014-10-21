@@ -98,3 +98,13 @@ Added for loop.
 
 ###After Added basic for loop
 Removed an overzealous action - of storing every assignment expression.
+
+###After Stopped storing the result of an assignment expression
+Important pathways:
+-pointer implementation
+-arrays 1d followed by multiple d
+-functions, defining multiple ones, calling one from another, managing symbol table
+-inital values in declarator
+-introducing doubles and char constants
+
+Working on functions.First step : changing declarator style. Moved creation of entry in symbol table to declrator rule.Added pointer creation.

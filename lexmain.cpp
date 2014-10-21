@@ -43,21 +43,21 @@ symboltable* symboltable :: updatef(char *name, char *type, int size, int offset
 }
 
 void symboltable :: print(){
-  cout << "**********START OF SYMBOL TABLE*********" << endl;
+  cout << "***************START OF SYMBOL TABLE**************" << endl;
   setw(10);
   cout << setw(10) << "Name";
-  cout << setw(10) << "Type";
+  cout << setw(20) << "Type";
   cout << setw(10) << "Size";
   cout << setw(10) << "Offset";
   cout << endl;
   for (int i=0;i<last;i++){
     cout << setw(10) << st[i].name;
-    cout << setw(10) << st[i].type;
+    cout << setw(20) << st[i].type;
     cout << setw(10) << st[i].size;
     cout << setw(10) << st[i].offset;
     cout << endl;
   }
-  cout << "**********END OF SYMBOL TABLE***********" << endl;
+  cout << "***************END OF SYMBOL TABLE****************" << endl;
 }
 
 char* symboltable :: gentemp(){
