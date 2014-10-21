@@ -31,18 +31,27 @@ class symboltable{
 
   //get the type of the name entry 
   char* getType(char* name);
+  //get the size of an entry
   int getSize(char* name);
 
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
   symboltable* updatef(char *name, char *type, int size, int offset);
 
+  //typical update to enter variables
   void update(char *name, char *type, int size, int offset); 
   //to be used to update an existing entry to ptr version
   void update(char *name, char *type, int size); 
+  //adding retVal to the table
+  void update(char *type);
+
+  //formatted ouptut of table contents
   void print();
 
   char* gentemp();
+
+  //get last offset from the symbol table
+  int lastOffset();
 };
 
 struct ts_ {    // for type_specifier

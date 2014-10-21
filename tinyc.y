@@ -174,15 +174,24 @@ external_declaration : function_definition
 		       //| declaration
 		       // {} 
 		       ;
-/*// temporarily over-ridden for simplification
+
 function_definition : {
                         cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 
 		      declaration_specifiers declarator
 		      {
-                        //at this point the void main has been mistakenly entered into the symbol table
-			current->update( 
+                        //at this point the <void> <main> has been mistakenly entered into the symbol table
+		        char* ret_type = current->getType($3); 
+		        int ret_size = current->getSize($3); 
+			ts_global.offset -= ret_size;
+		        current = global.updatef($3,"function", 0, global.lastOffset());
+                        //current now points to the new symbol table
+
+			//add the <void> return type to this table
+			current->update(ret_type);
+
+			//the declaration_list that follows will now be correctly added
 		      }
 		      declaration_list_opt compound_statement
 		      {
@@ -190,8 +199,8 @@ function_definition : {
                         current = &global;  
 		      }
 		      ;
-*/
 
+/*// temporarily over-ridden for simplification
 function_definition : { cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 
@@ -205,6 +214,8 @@ function_definition : { cout << "fn" << endl;
                         current = &global;  
 		      }
 		      ;
+*/
+
 declaration_list_opt : declaration_list 
                        { }
 		       | epsilon
@@ -402,7 +413,13 @@ init_declarator: declarator
 
 
 
-type_specifier: VOID |
+type_specifier: VOID
+		{
+                  $$.type = strdup("void"); $$.width = 0; 
+		  ts_global.type = strdup($$.type);
+		  ts_global.width = $$.width;
+		}
+                |
                 CHAR 
 		{
                   $$.type = strdup("char"); $$.width = 1; 

@@ -117,4 +117,8 @@ The base direct-declarator rule, creates the entry into the symbol table. All de
 The name of the variable gets passed around in the many non-terminals related to declaration.
 
 ###After Modified method to work in steps
-Adding multiple function functionality.Declarations first. First step - moved type saving to the point of seeing type.
+Adding multiple function functionality.Declarations first. First step - moved type saving to the point of seeing type. 
+
+Just realized, the global table`s offset once you come out of a program is off. Corrected somewhat by introducing st lastOffset function.
+
+Current setup not working with function parameters. Also possible error in declarator_list_opt.

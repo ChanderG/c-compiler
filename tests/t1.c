@@ -1,4 +1,10 @@
 //Hi, simple test file.
+
+int print(){
+  char b;  
+  double g,h;
+}
+
 void main(){
   int a,*b;
   char *c,d;

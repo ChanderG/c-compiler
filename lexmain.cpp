@@ -47,6 +47,20 @@ void symboltable :: update(char *name, char *type, int size){
   st[no].size = size;
 }
 
+//for adding return value of a function
+void symboltable :: update(char *type){
+  int no = lookup("retVal");
+  st[no].type = strdup(type);
+  st[no].size = 0;
+  st[no].offset = 0;
+  st[no].nestedTable = NULL;
+}
+
+//get last offset
+int symboltable :: lastOffset(){
+  return st[last-1].offset;
+}
+
 //for functions
 symboltable* symboltable :: updatef(char *name, char *type, int size, int offset){
   int no = lookup(name);
