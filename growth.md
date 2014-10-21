@@ -115,3 +115,6 @@ The entire declaration block is kind of weak. Adding arrays will require more ch
 The base direct-declarator rule, creates the entry into the symbol table. All declarator rules that follow modify the existing entry.
 
 The name of the variable gets passed around in the many non-terminals related to declaration.
+
+###After Modified method to work in steps
+Adding multiple function functionality.Declarations first. First step - moved type saving to the point of seeing type.

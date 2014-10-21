@@ -2,7 +2,7 @@
 void main(){
   int a,*b;
   char *c,d;
-  //int e,f;
+  int e,f;
   //double g,h;
   //x = 2;
   //y = 5;

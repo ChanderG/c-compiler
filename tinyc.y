@@ -175,7 +175,20 @@ external_declaration : function_definition
 		       // {} 
 		       ;
 /*// temporarily over-ridden for simplification
-function_definition : declaration_specifiers declarator declaration_list_opt compound_statement
+function_definition : {
+                        cout << "fn" << endl; 
+                        ts_global.offset = 0;
+                      } 
+		      declaration_specifiers declarator
+		      {
+                        //at this point the void main has been mistakenly entered into the symbol table
+			current->update( 
+		      }
+		      declaration_list_opt compound_statement
+		      {
+			current->print();
+                        current = &global;  
+		      }
 		      ;
 */
 
@@ -351,8 +364,6 @@ declaration: {
              }
              type_specifier
 	     {
-	       ts_global.type = strdup($2.type);
-	       ts_global.width = $2.width;
 	     }
 	     init_declarator_list_opt SEMI_COLON
              {
@@ -395,16 +406,22 @@ type_specifier: VOID |
                 CHAR 
 		{
                   $$.type = strdup("char"); $$.width = 1; 
+		  ts_global.type = strdup($$.type);
+		  ts_global.width = $$.width;
 		}
 		| // SHORT |
                 INT 
 		{ //next
                   $$.type = strdup("int"); $$.width = 4; 
+		  ts_global.type = strdup($$.type);
+		  ts_global.width = $$.width;
 		}
 		|// LONG | FLOAT |
 		DOUBLE 
 		{
                   $$.type = strdup("double"); $$.width = 8; 
+		  ts_global.type = strdup($$.type);
+		  ts_global.width = $$.width;
 		}
 		//| SIGNED | UNSIGNED | _BOOL | _COMPLEX | _IMAGINARY | enum_specifier;
                 ; 
