@@ -108,3 +108,10 @@ Important pathways:
 -introducing doubles and char constants
 
 Working on functions.First step : changing declarator style. Moved creation of entry in symbol table to declrator rule.Added pointer creation.
+
+###After Added pointer declaration
+The entire declaration block is kind of weak. Adding arrays will require more changes. The thrust should be to add the entry to the symbol table in the IDENTIFIER / array level and then modify/update() the existing entry with the changes. 
+
+The base direct-declarator rule, creates the entry into the symbol table. All declarator rules that follow modify the existing entry.
+
+The name of the variable gets passed around in the many non-terminals related to declaration.

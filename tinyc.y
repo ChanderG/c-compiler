@@ -450,33 +450,35 @@ pointer_opt: epsilon| pointer;
 declarator: direct_declarator
             {
               $$ = $1;
-	      //add variable to symbol table
-	      //will get messed up if a varible of same name exists already
-	      current->update($1, ts_global.type, ts_global.width, ts_global.offset);
-	      ts_global.offset += ts_global.width; 
 	    }
             | pointer direct_declarator 
 	    {
 	      //adding a pointer to ts_global.type
               $$ = $2;
+	      //create the ptr type from the existing type
 	      char* ptr_type = new char[10];
 	      strcpy(ptr_type, "ptr(");
-	      strcat(ptr_type, ts_global.type);
+	      strcat(ptr_type, current->getType($2));
 	      strcat(ptr_type, ")");
-	      current->update($2 ,ptr_type, SIZEOF_PTR, ts_global.offset); 
+	      //subtract the old size - repair offset
+	      ts_global.offset -= current->getSize($2); 
+	      //overloaded update function for updating the type and size
+	      //the offset, will be the same old value
+	      current->update($2 ,ptr_type, SIZEOF_PTR); 
+	      //add the new size - correct offset
 	      ts_global.offset += SIZEOF_PTR; 
 	      delete(ptr_type);
 	    };
 
+//we enter the variable into the symbol table
+//and make required corrections later
 direct_declarator: IDENTIFIER
                    {
                      $$ = $1;
-		     /*
 		     //add variable to symbol table
 		     //will get messed up if a varible of same name exists already
 		     current->update($1, ts_global.type, ts_global.width, ts_global.offset);
 		     ts_global.offset += ts_global.width; 
-		     */
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 

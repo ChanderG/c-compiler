@@ -23,12 +23,28 @@ int symboltable :: lookup(char *name){
   return last-1; 
 }
 
+char* symboltable :: getType(char* name){
+  int no = lookup(name);
+  return st[no].type;
+}
+
+int symboltable :: getSize(char* name){
+  int no = lookup(name);
+  return st[no].size;
+}
+
 void symboltable :: update(char *name, char *type, int size, int offset){
   int no = lookup(name);
   st[no].type = strdup(type);
   st[no].size = size;
   st[no].offset = offset;
   st[no].nestedTable = NULL;
+}
+
+void symboltable :: update(char *name, char *type, int size){
+  int no = lookup(name);
+  st[no].type = strdup(type);
+  st[no].size = size;
 }
 
 //for functions

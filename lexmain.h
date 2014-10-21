@@ -29,11 +29,17 @@ class symboltable{
   
   int lookup(char *name);
 
+  //get the type of the name entry 
+  char* getType(char* name);
+  int getSize(char* name);
+
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
   symboltable* updatef(char *name, char *type, int size, int offset);
 
   void update(char *name, char *type, int size, int offset); 
+  //to be used to update an existing entry to ptr version
+  void update(char *name, char *type, int size); 
   void print();
 
   char* gentemp();
