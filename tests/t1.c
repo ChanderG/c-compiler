@@ -3,6 +3,7 @@
 int print(int a,double c){
   char b;  
   //double g,h;
+  b = a / c;
 }
 
 void main(){
@@ -56,10 +57,10 @@ void main(){
   }while(a < b);  
   */
 
-  /*
+  
   int i;
   for(i = 0;i < 3;i = i + 1){
     a = i;
   }
-  */
+ 
 }

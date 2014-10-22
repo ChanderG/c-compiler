@@ -111,6 +111,9 @@ class QuadArray{
   //use - OP_GOTO and -1 for blank label
   void emit(argtype res, opcode op);                              //unconditional goto etc 
 
+  //for showing end of sections like functions
+  //right now an empty rule
+  void emit();
 
   //Printing the entire quad array in table format
   void printTable();

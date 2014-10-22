@@ -190,6 +190,8 @@ function_definition : {
 		      {
 			current->print();
                         current = &global;  
+			//section seperator
+			qa.emit();
 		      }
 		      ;
 

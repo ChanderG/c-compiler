@@ -163,7 +163,10 @@ char* quad :: resToString(){
 //converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
-  if((op == OP_LT) || (op == OP_GT) || (op == OP_LTE) || (op == OP_GTE)
+  if (op == OP_NULL && arg1 == NULL && arg2 == NULL && res == NULL){ //section seperator
+    strcpy(quadString, " ");
+  } 
+  else if((op == OP_LT) || (op == OP_GT) || (op == OP_LTE) || (op == OP_GTE)
            || (op == OP_E) || (op == OP_NE) ){        //comaprision based goto
     strcpy(quadString, "if ");
     strcat(quadString, arg1ToString());
@@ -224,6 +227,13 @@ void QuadArray :: emit(argtype res, opcode op){
   q.push_back(entry);
 }
 
+//for showing end of sections like functions
+//right now an empty rule
+void QuadArray :: emit(){
+  quad entry = { OP_NULL, NULL, NULL, NULL};
+  q.push_back(entry);
+}
+
 //print the quad array in a tabular form
 void QuadArray :: printTable(){
   cout << "****************QUAD ARRAY STARTS*****************" << endl;
@@ -250,7 +260,7 @@ void QuadArray :: print(){
   cout << endl;
   cout << "Generated Code: " << endl;
   for(int i=0;i<q.size();i++){
-    cout << "L" << i << " : " << q[i].toString() << endl;
+    cout << "L" << setw(3) << setfill('0') << i << " : " << q[i].toString() << endl;
   }
   cout << "End of generated code" << endl;
   cout << endl;

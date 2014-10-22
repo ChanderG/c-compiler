@@ -134,3 +134,10 @@ And analysis reveals a serious flaw in the grammar. The test case here compiles 
 The first declarator now uses the last rule of direct_declarator.
 This must mean some kind of error in declarator_list_opt.
 The entire function creation in table has been moved to a lower/deeper level.
+
+###After  Function definition perfected
+Created a section seperator. 
+
+Note: Need a way to make the program look for the variable in the parent symbol table if there is no such entry in current table.
+
+Also aligned the label to 2 digits.
