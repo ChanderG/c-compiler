@@ -74,6 +74,7 @@
 %type <s> block_item_list
 %type <s> compound_statement
 %type <s> iteration_statement
+%type <s> jump_statement
 
 %type <sval> direct_declarator
 %type <sval> declarator
@@ -245,7 +246,9 @@ statement :  labeled_statement
 	      $$ = $1;
 	    }
             | jump_statement
-	    { }
+	    { 
+	      $$ = $1;
+	    }
             ; 
 
 
@@ -301,8 +304,13 @@ expression_statement: expression_opt SEMI_COLON
 		      ;
 
 expression_opt: epsilon
+                {
+                  $$.loc = NULL; 
+		}
                 | expression
-		{}
+		{
+                  $$ = $1;  
+		}
 		;
 
 selection_statement : IF PARAN_OPEN expression PARAN_CLOSE M statement %prec LOWER_THAN_ELSE
@@ -356,7 +364,11 @@ jump_statement : GOTO IDENTIFIER SEMI_COLON
 		 | BREAK SEMI_COLON
 		 {}
 		 | RETURN expression_opt SEMI_COLON
-		 {}
+		 {
+		   //return statement
+		   qa.emit($2.loc, OP_RET);
+		   $$.nextlist = NULL;
+		 }
 		 ;
 
 constant_expression: {};

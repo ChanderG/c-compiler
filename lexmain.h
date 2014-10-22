@@ -76,7 +76,7 @@ struct bexp_ {  //for boolean expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET}; 
 
 typedef char* argtype;
 

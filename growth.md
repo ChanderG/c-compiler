@@ -146,3 +146,6 @@ Also aligned the label to 2 digits.
 Added pointer derefrencing and address of operator. 2 holes here:
 -no check for compatible types
 -pointer assignment not yet supported
+
+###After Added unary * and & operators
+Assuming that a return value is just a value and not a boolean expression.

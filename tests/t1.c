@@ -4,6 +4,7 @@ int print(int a,double c){
   //char b;  
   //double g,h;
   //b = a / c;
+  return 1;
 }
 
 void main(){
@@ -68,5 +69,5 @@ void main(){
     a = i;
   }
   */
- 
+  return; 
 }

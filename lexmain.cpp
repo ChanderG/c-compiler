@@ -124,6 +124,7 @@ char* quad :: opToString(){
     case OP_NE: strcpy(opString, "!=");break;
     case OP_STAR: strcpy(opString, "*");break;
     case OP_AND: strcpy(opString, "&");break;
+    case OP_RET: strcpy(opString, "return");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -179,7 +180,7 @@ char* quad :: toString(){
     strcat(quadString, " goto ");
     strcat(quadString, resToString());
   }
-  else if (op == OP_GOTO){  //unconditional goto
+  else if (op == OP_GOTO || op == OP_RET ){  //unconditional goto
     strcpy(quadString, opToString());
     strcat(quadString, " ");
     strcat(quadString, resToString());
@@ -221,9 +222,9 @@ void QuadArray :: emit(argtype res, argtype arg1){
   q.push_back(entry);
 }
 
-//unconditional goto etc 
+//unconditional goto, return etc 
 void QuadArray :: emit(argtype res, opcode op){
-  if (op != OP_GOTO) return;  //later use
+  if (!(op == OP_GOTO || op == OP_RET)) return;  //later use
   //use -1 for indicating empty slot
   quad entry = { op, NULL, NULL, res};
   q.push_back(entry);
