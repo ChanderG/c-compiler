@@ -1,14 +1,14 @@
 //Hi, simple test file.
 
-int print int x;{
+int print(int a,double c){
   char b;  
-  double g,h;
+  //double g,h;
 }
 
 void main(){
   int a,*b;
-  char *c,d;
-  int e,f;
+  //char *c,d;
+  //int e,f;
   //double g,h;
   //x = 2;
   //y = 5;

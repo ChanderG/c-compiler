@@ -129,3 +129,8 @@ This however does not handle the problem of parameter declarataion.
 Note: Pointer use has not been covered.
 
 And analysis reveals a serious flaw in the grammar. The test case here compiles flawlessly, showing the error in the grammar. The declarator_list_opt matches the one shown in t1.c . What we need is the parameter list rule limited to simple possibilities.
+
+###After Flaw in grammar of function header highlighted
+The first declarator now uses the last rule of direct_declarator.
+This must mean some kind of error in declarator_list_opt.
+The entire function creation in table has been moved to a lower/deeper level.

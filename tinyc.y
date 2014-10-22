@@ -175,25 +175,18 @@ external_declaration : function_definition
 		       // {} 
 		       ;
 
+//removing declaration_list_opt and considering the first part to be the entire function header
 function_definition : {
                         cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 
 		      declaration_specifiers declarator
 		      {
-                        //at this point the <void> <main> has been mistakenly entered into the symbol table
-		        char* ret_type = current->getType($3); 
-		        int ret_size = current->getSize($3); 
-			ts_global.offset -= ret_size;
-		        current = global.updatef($3,"function", 0, global.lastOffset());
-                        //current now points to the new symbol table
-
-			//add the <void> return type to this table
-			current->update(ret_type);
-
-			//the declaration_list that follows will now be correctly added
+		        //the required action for creating the function and associated symbol table has been moved to the last rule of direct_declarator.
+			//The declarator $2 consists of <main(int argc, char** argv)>
 		      }
-		      declaration_list_opt compound_statement
+		      //declaration_list_opt
+		      compound_statement
 		      {
 			current->print();
                         current = &global;  
@@ -519,7 +512,21 @@ direct_declarator: IDENTIFIER
 		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE
 		   | direct_declarator SQ_OPEN type_qualifier_list STATIC assignment_expression SQ_CLOSE
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
-		   | direct_declarator PARAN_OPEN param_or_identi PARAN_CLOSE
+		   | direct_declarator
+		   {
+		      //at this point the <void> <main> has been mistakenly entered into the symbol table
+		      char* ret_type = current->getType($1); 
+		      int ret_size = current->getSize($1); 
+		      ts_global.offset -= ret_size;
+		      current = global.updatef($1,"function", 0, global.lastOffset());
+		      //current now points to the new symbol table
+
+		      //add the <void> return type to this table
+		      current->update(ret_type);
+
+		      //the declaration_list that follows will now be correctly added
+		   }
+		   PARAN_OPEN param_or_identi PARAN_CLOSE
 		   ;
 
 param_or_identi: parameter_type_list | identifier_list_opt;
