@@ -200,7 +200,7 @@ function_definition : {
 		      }
 		      ;
 
-/*// temporarily over-ridden for simplification
+/*// the original main to handle the whole application
 function_definition : { cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 

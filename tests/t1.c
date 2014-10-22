@@ -1,6 +1,6 @@
 //Hi, simple test file.
 
-int print(){
+int print int x;{
   char b;  
   double g,h;
 }

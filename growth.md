@@ -122,3 +122,10 @@ Adding multiple function functionality.Declarations first. First step - moved ty
 Just realized, the global table`s offset once you come out of a program is off. Corrected somewhat by introducing st lastOffset function.
 
 Current setup not working with function parameters. Also possible error in declarator_list_opt.
+
+###After Empty parameter function declarataion working
+This however does not handle the problem of parameter declarataion.
+
+Note: Pointer use has not been covered.
+
+And analysis reveals a serious flaw in the grammar. The test case here compiles flawlessly, showing the error in the grammar. The declarator_list_opt matches the one shown in t1.c . What we need is the parameter list rule limited to simple possibilities.
