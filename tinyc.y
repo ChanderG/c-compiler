@@ -666,6 +666,14 @@ unary_expression: postfix_expression
 				       qa.emit($$.loc, $2.loc, OP_MINUS);
 				       break;
 				     }
+		      case UN_STAR: { $$.loc = current->gentemp();
+				       qa.emit($$.loc, $2.loc, OP_STAR);
+				       break;
+				     }
+		      case UN_AND: { $$.loc = current->gentemp();
+				       qa.emit($$.loc, $2.loc, OP_AND);
+				       break;
+				     }
 		      default: break;	     
 		    }                    
 		  }
@@ -673,7 +681,15 @@ unary_expression: postfix_expression
 		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE %prec U
 		  ;
 
-unary_operator: AND | STAR | PLUS
+unary_operator: AND
+                {
+                  $$ = UN_AND; 
+		}
+                | STAR
+                {
+                  $$ = UN_STAR; 
+		}
+                | PLUS
                 {
                   $$ = UN_PLUS; 
 		}

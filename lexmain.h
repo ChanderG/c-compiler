@@ -76,7 +76,7 @@ struct bexp_ {  //for boolean expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND}; 
 
 typedef char* argtype;
 
@@ -128,7 +128,7 @@ class QuadArray{
 };
 
 //for seeing type of the operator in unary_expressions
-enum unary_op { UN_PLUS, UN_MINUS};
+enum unary_op { UN_PLUS, UN_MINUS, UN_STAR, UN_AND};
 
 //global makelist function 
 std::list<int> *makelist(int); 

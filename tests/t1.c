@@ -1,13 +1,13 @@
 //Hi, simple test file.
 
 int print(int a,double c){
-  char b;  
+  //char b;  
   //double g,h;
-  b = a / c;
+  //b = a / c;
 }
 
 void main(){
-  int a,*b;
+  int a; //,*b;
   //char *c,d;
   //int e,f;
   //double g,h;
@@ -20,8 +20,13 @@ void main(){
   //a = x - y;
   //++a;
 
+  int x;
   //a = +x;
-  //a = -x;
+  a = -x;
+  a = *x;
+  a = &x;
+  //not yet supported
+  //*a = x;
 
   //a < x;
   //a > x;
@@ -57,10 +62,11 @@ void main(){
   }while(a < b);  
   */
 
-  
+  /* 
   int i;
   for(i = 0;i < 3;i = i + 1){
     a = i;
   }
+  */
  
 }

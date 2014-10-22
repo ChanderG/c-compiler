@@ -122,6 +122,8 @@ char* quad :: opToString(){
     case OP_GTE: strcpy(opString, ">=");break;
     case OP_E: strcpy(opString, "==");break;
     case OP_NE: strcpy(opString, "!=");break;
+    case OP_STAR: strcpy(opString, "*");break;
+    case OP_AND: strcpy(opString, "&");break;
     default: strcpy(opString, "");break;
   } 
   return opString;

@@ -141,3 +141,8 @@ Created a section seperator.
 Note: Need a way to make the program look for the variable in the parent symbol table if there is no such entry in current table.
 
 Also aligned the label to 2 digits.
+
+###After Tidied up emitted output
+Added pointer derefrencing and address of operator. 2 holes here:
+-no check for compatible types
+-pointer assignment not yet supported
