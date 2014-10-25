@@ -4,6 +4,8 @@ int print(int a,double c){
   //char b;  
   //double g,h;
   //b = a / c;
+  a = 5.37;
+  a = 'a';
   return 1;
 }
 

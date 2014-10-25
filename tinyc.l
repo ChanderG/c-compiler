@@ -133,6 +133,7 @@ auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for
                       return INTEGER_CONSTANT;
 		    }
 {fractional_constant}{exponential_part}?|{digit_sequence}{exponential_part}       { //cout << "FLOATING_CONSTANT" << endl;
+                      yylval.fval = atof(yytext);
                       return FLOATING_CONSTANT;
 		    }  
 \"{s_char}*\"         { //cout << "STRING_LITERAL" << endl;

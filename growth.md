@@ -149,3 +149,6 @@ Added pointer derefrencing and address of operator. 2 holes here:
 
 ###After Added unary * and & operators
 Assuming that a return value is just a value and not a boolean expression.
+
+###After Added return statement
+The idea is to encode the constants in a string. Not very neat but effective enough. Added floating point and char constants.

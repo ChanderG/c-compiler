@@ -41,7 +41,7 @@
 %token <sval> MULTI_LINE_COMMENT
 
 %type <ts> type_specifier
-%type <ival> constant //for now
+%type <sval> constant 
 
 %type <exp> primary_expression
 %type <exp> postfix_expression
@@ -606,9 +606,7 @@ primary_expression: IDENTIFIER
 		    | constant 
 		    {
                       $$.loc = current->gentemp();
-		      argtype a1 = new char[5];
-		      sprintf(a1, "%d",$1);
-		      qa.emit($$.loc, a1);
+		      qa.emit($$.loc, $1);
 		    }
 		    | STRING_LITERAL
 		    | PARAN_OPEN expression PARAN_CLOSE
@@ -618,9 +616,19 @@ primary_expression: IDENTIFIER
 
 constant:  INTEGER_CONSTANT 
            { 
-	     $$ = $1;
+             $$ = new char[10];  
+	     sprintf($$, "%d",$1);
            }
-           | FLOATING_CONSTANT | CHARACTER_CONSTANT;
+           | FLOATING_CONSTANT
+	   {
+             $$ = new char[10];  
+	     sprintf($$, "%f",$1);
+	   }
+	   |CHARACTER_CONSTANT
+	   {
+             $$ = new char[10];  
+	     sprintf($$, "'%c'",$1);
+	   };
 
 postfix_expression: primary_expression 
                    {
