@@ -644,8 +644,22 @@ postfix_expression: primary_expression
 		   postfix_expression DEREF IDENTIFIER
 		   | 
 		   postfix_expression INC
+		   {
+                     $$.loc = current->gentemp();
+                     qa.emit($$.loc, $1.loc);
+		     argtype n1 = new char[5];
+		     sprintf(n1, "%d",1);
+                     qa.emit($1.loc, $1.loc, OP_PLUS, n1);
+		   }
                    | 
 		   postfix_expression DEC
+		   {
+                     $$.loc = current->gentemp();
+                     qa.emit($$.loc, $1.loc);
+		     argtype n1 = new char[5];
+		     sprintf(n1, "%d",1);
+                     qa.emit($1.loc, $1.loc, OP_MINUS, n1);
+		   }
 		   | 
 		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
 		   |

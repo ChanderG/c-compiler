@@ -4,8 +4,9 @@ int print(int a,double c){
   //char b;  
   //double g,h;
   //b = a / c;
-  a = 5.37;
-  a = 'a';
+  //a = 5.37;
+  //a = 'a';
+  b = a++;
   return 1;
 }
 
