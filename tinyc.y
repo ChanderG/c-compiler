@@ -78,7 +78,7 @@
 
 %type <sval> direct_declarator
 %type <sval> declarator
-
+%type <sval> initializer
 
 //tokens
 %token WS
@@ -414,6 +414,11 @@ init_declarator_list: init_declarator
 init_declarator: declarator  
                  {}
 		 | declarator EQUAL initializer
+		 {
+		   current->update($1,current->getValue($3));
+		   current->removeConstantTemp();
+		   qa.demit();
+		 }
 		 ;
 
 //storage_class_specifier: EXTERN | STATIC | AUTO | REGISTER;
@@ -576,6 +581,9 @@ identifier_list: IDENTIFIER
 type_name: specifier_qualifier_list;
 
 initializer: assignment_expression 
+             {
+	       $$ = $1.loc;
+	     }
              | CURLY_OPEN initializer_list CURLY_CLOSE
 	     | CURLY_OPEN initializer_list COMMA CURLY_CLOSE
 	     ;
@@ -607,6 +615,7 @@ primary_expression: IDENTIFIER
 		    {
                       $$.loc = current->gentemp();
 		      qa.emit($$.loc, $1);
+		      current->update($$.loc, $1);
 		    }
 		    | STRING_LITERAL
 		    | PARAN_OPEN expression PARAN_CLOSE

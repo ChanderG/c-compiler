@@ -4,6 +4,7 @@ using namespace std;
 #include<iomanip>
 
 #include<stdio.h>
+#include<stdlib.h>
 
 #include"lexmain.h"
 #include"y.tab.h"
@@ -33,12 +34,19 @@ int symboltable :: getSize(char* name){
   return st[no].size;
 }
 
+//get the value of an entry
+char* symboltable :: getValue(char* name){
+  int no = lookup(name);
+  return st[no].value;
+}
+
 void symboltable :: update(char *name, char *type, int size, int offset){
   int no = lookup(name);
   st[no].type = strdup(type);
   st[no].size = size;
   st[no].offset = offset;
   st[no].nestedTable = NULL;
+  st[no].value = NULL;
 }
 
 void symboltable :: update(char *name, char *type, int size){
@@ -56,6 +64,23 @@ void symboltable :: update(char *type){
   st[no].nestedTable = NULL;
 }
 
+//for initial value
+void symboltable :: update(char *name, char *value){
+  int no = lookup(name);
+  st[no].value = strdup(value);
+}
+
+//remove last inserted constant temp -> used to remove the redundant entry created during variable creation
+void symboltable :: removeConstantTemp(){
+  free(st[last-1].name);
+  free(st[last-1].type);
+  free(st[last-1].value);
+  last--;
+
+  //temp label count
+  templast--;
+}
+
 //get last offset
 int symboltable :: lastOffset(){
   return st[last-1].offset;
@@ -67,27 +92,31 @@ symboltable* symboltable :: updatef(char *name, char *type, int size, int offset
   st[no].type = strdup(type);
   st[no].size = size;
   st[no].offset = offset;
+  st[no].value = NULL;
   //add other fields here
   st[no].nestedTable = new symboltable;
   return st[no].nestedTable;
 }
 
 void symboltable :: print(){
-  cout << "***************START OF SYMBOL TABLE**************" << endl;
+  cout << "********************START OF SYMBOL TABLE*******************" << endl;
   setw(10);
   cout << setw(10) << "Name";
   cout << setw(20) << "Type";
   cout << setw(10) << "Size";
   cout << setw(10) << "Offset";
+  cout << setw(10) << "Value";
   cout << endl;
   for (int i=0;i<last;i++){
     cout << setw(10) << st[i].name;
     cout << setw(20) << st[i].type;
     cout << setw(10) << st[i].size;
     cout << setw(10) << st[i].offset;
+    if(st[i].value == NULL) cout << setw(10) << "null";
+    else cout << setw(10) << st[i].value;
     cout << endl;
   }
-  cout << "***************END OF SYMBOL TABLE****************" << endl;
+  cout << "********************END OF SYMBOL TABLE*********************" << endl;
 }
 
 char* symboltable :: gentemp(){
@@ -99,6 +128,7 @@ char* symboltable :: gentemp(){
   st[last].type = strdup("Temp");
   st[last].size = 4;
   st[last].offset = st[last-1].offset + 4;
+  st[last].value = NULL;
   last++;
 
   templast++;
@@ -235,6 +265,12 @@ void QuadArray :: emit(argtype res, opcode op){
 void QuadArray :: emit(){
   quad entry = { OP_NULL, NULL, NULL, NULL};
   q.push_back(entry);
+}
+
+//de-emit
+//remove the last emited tac -> used in case of declaration
+void QuadArray :: demit(){
+  q.pop_back();
 }
 
 //print the quad array in a tabular form

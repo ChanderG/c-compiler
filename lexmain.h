@@ -4,7 +4,7 @@
 
 typedef struct symtabentry {
   char *name;
-  int value;
+  char * value;
   char *type;
   int size;
   int offset;
@@ -33,6 +33,8 @@ class symboltable{
   char* getType(char* name);
   //get the size of an entry
   int getSize(char* name);
+  //get the value of an entry
+  char* getValue(char* name);
 
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
@@ -44,6 +46,11 @@ class symboltable{
   void update(char *name, char *type, int size); 
   //adding retVal to the table
   void update(char *type);
+  //giving an initial value to a variable
+  void update(char *name, char *value);
+
+  //remove last inserted constant temp -> used to remove the redundant entry created during variable creation
+  void removeConstantTemp();
 
   //formatted ouptut of table contents
   void print();
@@ -125,6 +132,10 @@ class QuadArray{
 
   //backpatch function
   void backpatch(std::list<int>*, int);
+
+  //de-emit
+  //remove the last emited tac -> used in case of declaration
+  void demit();
 };
 
 //for seeing type of the operator in unary_expressions

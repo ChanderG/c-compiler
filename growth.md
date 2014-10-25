@@ -152,3 +152,6 @@ Assuming that a return value is just a value and not a boolean expression.
 
 ###After Added return statement
 The idea is to encode the constants in a string. Not very neat but effective enough. Added floating point and char constants.
+
+###After Added pre inc dec operators
+Now going to give a variable an initial value. The constant invlovled in the declration does not have an associated temporary or quad tac entry.

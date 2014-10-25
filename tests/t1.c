@@ -1,5 +1,6 @@
 //Hi, simple test file.
 
+/*
 int print(int a,double c){
   //char b;  
   //double g,h;
@@ -9,12 +10,13 @@ int print(int a,double c){
   b = a++;
   return 1;
 }
+*/
 
 void main(){
-  int a; //,*b;
+  int a = 3,*b,c = 5; //,*b;
   //char *c,d;
   //int e,f;
-  //double g,h;
+  double g,h = 6.7;
   //x = 2;
   //y = 5;
 
@@ -24,11 +26,11 @@ void main(){
   //a = x - y;
   //++a;
 
-  int x;
+  //int x;
   //a = +x;
-  a = -x;
-  a = *x;
-  a = &x;
+  //a = -x;
+  //a = *x;
+  //a = &x;
   //not yet supported
   //*a = x;
 
