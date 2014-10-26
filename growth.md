@@ -158,3 +158,6 @@ Now going to give a variable an initial value. The constant invlovled in the dec
 
 ###After Added initialization with declaration
 Added function call ability.
+
+###After Added array access
+Encoding the array property as a string.

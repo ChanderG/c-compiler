@@ -48,6 +48,8 @@ class symboltable{
   void update(char *type);
   //giving an initial value to a variable
   void update(char *name, char *value);
+  //for upgrading an entry to array 
+  void update(char *name, int nos);
 
   //remove last inserted constant temp -> used to remove the redundant entry created during variable creation
   void removeConstantTemp();

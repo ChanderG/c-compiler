@@ -70,6 +70,23 @@ void symboltable :: update(char *name, char *value){
   st[no].value = strdup(value);
 }
 
+//for upgrading an entry to array 
+void symboltable :: update(char *name, int nos){
+  int no = lookup(name);
+  char* array_spec = (char *)malloc(50*sizeof(char));
+  strcpy(array_spec,"array(");
+  char *strno = new char[5];
+  sprintf(strno, "%d", nos);
+  strcat(array_spec, st[no].type);
+  strcat(array_spec,", ");
+  strcat(array_spec, strno); 
+  strcat(array_spec,")");
+ 
+  free(st[no].type);
+  st[no].type = array_spec;
+  st[no].size *= nos;
+}
+
 //remove last inserted constant temp -> used to remove the redundant entry created during variable creation
 void symboltable :: removeConstantTemp(){
   free(st[last-1].name);
@@ -99,24 +116,24 @@ symboltable* symboltable :: updatef(char *name, char *type, int size, int offset
 }
 
 void symboltable :: print(){
-  cout << "********************START OF SYMBOL TABLE*******************" << endl;
+  cout << "*************************START OF SYMBOL TABLE************************" << endl;
   setw(10);
   cout << setw(10) << "Name";
-  cout << setw(20) << "Type";
+  cout << setw(30) << "Type";
   cout << setw(10) << "Size";
   cout << setw(10) << "Offset";
   cout << setw(10) << "Value";
   cout << endl;
   for (int i=0;i<last;i++){
     cout << setw(10) << st[i].name;
-    cout << setw(20) << st[i].type;
+    cout << setw(30) << st[i].type;
     cout << setw(10) << st[i].size;
     cout << setw(10) << st[i].offset;
     if(st[i].value == NULL) cout << setw(10) << "null";
     else cout << setw(10) << st[i].value;
     cout << endl;
   }
-  cout << "********************END OF SYMBOL TABLE*********************" << endl;
+  cout << "*************************END OF SYMBOL TABLE**************************" << endl;
 }
 
 char* symboltable :: gentemp(){

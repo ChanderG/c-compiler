@@ -1,5 +1,5 @@
 //Hi, simple test file.
-
+/*
 int print(int a,double c){
   //char b;  
   //double g,h;
@@ -9,12 +9,13 @@ int print(int a,double c){
   //b = a++;
   return 1;
 }
-
+*/
 void main(){
   //int a = 3,*b,c = 5; //,*b;
   //char *c,d;
   //int e,f;
   //double g,h = 6.7;
+
   //x = 2;
   //y = 5;
 
@@ -76,8 +77,10 @@ void main(){
   //hello(a,b);
 
   //c = hello(a);
+  //a = b[10][10];
   
-  a = b[10];
+  int a[10][5],b = 3;
+  char c;
 
   return; 
 }

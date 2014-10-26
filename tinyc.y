@@ -61,6 +61,7 @@
 %type <bexp> conditional_expression
 
 %type <bexp> assignment_expression
+%type <bexp> assignment_expression_opt
 %type <bexp> expression
 %type <bexp> expression_opt
 %type <unop> unary_operator
@@ -531,6 +532,22 @@ direct_declarator: IDENTIFIER
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
+		   {
+		     //$1 has already been entered into the table, just update it
+		     //here going to assume only known right types of inputs are given
+
+		     int nos = atoi(current->getValue($4.loc));
+		     //however the global offset has been given a wrong value
+		     ts_global.offset -= current->getSize($1); 
+
+		     current->update($1, nos);
+		     //update global offset once again 
+		     ts_global.offset += current->getSize($1); 
+
+		     //the constant used here is completely unecessary - so removing that entry and the associated quad
+		     current->removeConstantTemp();
+		     qa.demit();
+		   }
 		   | direct_declarator SQ_OPEN STATIC type_qualifier_list_opt assignment_expression SQ_CLOSE
 		   | direct_declarator SQ_OPEN type_qualifier_list STATIC assignment_expression SQ_CLOSE
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt STAR SQ_CLOSE
