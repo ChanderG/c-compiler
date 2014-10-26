@@ -155,3 +155,6 @@ The idea is to encode the constants in a string. Not very neat but effective eno
 
 ###After Added pre inc dec operators
 Now going to give a variable an initial value. The constant invlovled in the declration does not have an associated temporary or quad tac entry.
+
+###After Added initialization with declaration
+Added function call ability.

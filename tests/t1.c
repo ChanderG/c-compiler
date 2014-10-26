@@ -1,22 +1,20 @@
 //Hi, simple test file.
 
-/*
 int print(int a,double c){
   //char b;  
   //double g,h;
   //b = a / c;
   //a = 5.37;
   //a = 'a';
-  b = a++;
+  //b = a++;
   return 1;
 }
-*/
 
 void main(){
-  int a = 3,*b,c = 5; //,*b;
+  //int a = 3,*b,c = 5; //,*b;
   //char *c,d;
   //int e,f;
-  double g,h = 6.7;
+  //double g,h = 6.7;
   //x = 2;
   //y = 5;
 
@@ -74,5 +72,10 @@ void main(){
     a = i;
   }
   */
+
+  hello(a,b);
+
+  c = hello(a);
+
   return; 
 }

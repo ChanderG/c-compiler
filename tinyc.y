@@ -80,6 +80,9 @@
 %type <sval> declarator
 %type <sval> initializer
 
+%type <ival> argument_expression_list_opt 
+%type <ival> argument_expression_list
+
 //tokens
 %token WS
 
@@ -546,6 +549,8 @@ direct_declarator: IDENTIFIER
 		      //the declaration_list that follows will now be correctly added
 		   }
 		   PARAN_OPEN param_or_identi PARAN_CLOSE
+		   //| direct_declarator PARAN_OPEN identifier_list_opt PARAN_CLOSE
+
 		   ;
 
 param_or_identi: parameter_type_list | identifier_list_opt;
@@ -553,6 +558,7 @@ param_or_identi: parameter_type_list | identifier_list_opt;
 
 type_qualifier_list_opt: epsilon | type_qualifier_list;
 assignment_expression_opt: epsilon | assignment_expression;
+
 identifier_list_opt: epsilon | identifier_list;
 
 pointer: STAR type_qualifier_list_opt pointer_opt;
@@ -562,7 +568,8 @@ type_qualifier_list: type_qualifier
                      | type_qualifier_list type_qualifier
                      ;
 
-parameter_type_list: parameter_list
+parameter_type_list: //epsilon|
+                      parameter_list
                      | parameter_list COMMA ELIPSIS
 		     ;
 
@@ -575,7 +582,14 @@ parameter_declaration: declaration_specifiers declarator
 		       ;
 
 identifier_list: IDENTIFIER
+                 { 
+		   argtype n1 = strdup($1);
+		 }
                  | identifier_list COMMA IDENTIFIER
+                 {
+		   argtype n3 = strdup($3);
+		   qa.emit(n3, OP_PARAM);
+		 }
 		 ;
 
 type_name: specifier_qualifier_list;
@@ -647,6 +661,13 @@ postfix_expression: primary_expression
 		   postfix_expression SQ_OPEN expression SQ_CLOSE
 		   |
 		   postfix_expression PARAN_OPEN argument_expression_list_opt PARAN_CLOSE
+		   {
+                     $$.loc = current->gentemp();
+                     // $1.loc  
+		     argtype n1 = new char[5];
+		     sprintf(n1, "%d",$3);
+                     qa.emit($$.loc, $1.loc, OP_CALL, n1); 
+		   }
 		   |
                    postfix_expression DOT IDENTIFIER
 		   | 
@@ -674,10 +695,26 @@ postfix_expression: primary_expression
 		   |
 		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE;
 
-argument_expression_list_opt: epsilon | argument_expression_list;
+argument_expression_list_opt: epsilon
+                              {
+			        $$ = 0;
+			      }
+			      | argument_expression_list
+			      {
+			        $$ = $1;
+			      }
+			      ;
 
 argument_expression_list: assignment_expression
+			  {
+			    $$ = 1;
+			    qa.emit($1.loc, OP_PARAM);
+			  }
                           | argument_expression_list COMMA assignment_expression
+			  {
+			    $$ = $1 + 1;
+			    qa.emit($3.loc, OP_PARAM);
+			  }
 			  ;
 
 unary_expression: postfix_expression 

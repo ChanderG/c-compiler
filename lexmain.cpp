@@ -155,6 +155,8 @@ char* quad :: opToString(){
     case OP_STAR: strcpy(opString, "*");break;
     case OP_AND: strcpy(opString, "&");break;
     case OP_RET: strcpy(opString, "return");break;
+    case OP_PARAM: strcpy(opString, "param");break;
+    case OP_CALL: strcpy(opString, "call");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -210,7 +212,7 @@ char* quad :: toString(){
     strcat(quadString, " goto ");
     strcat(quadString, resToString());
   }
-  else if (op == OP_GOTO || op == OP_RET ){  //unconditional goto
+  else if ((op == OP_GOTO) || (op == OP_RET) || (op == OP_PARAM) ){  //unconditional goto,return,param
     strcpy(quadString, opToString());
     strcat(quadString, " ");
     strcat(quadString, resToString());
@@ -220,6 +222,15 @@ char* quad :: toString(){
     strcat(quadString, " = ");
     strcat(quadString, opToString());
     strcat(quadString, arg1ToString());
+  }
+  else if (op == OP_CALL) {  //function call
+    strcpy(quadString, resToString());
+    strcat(quadString, " = ");
+    strcat(quadString, opToString());
+    strcat(quadString, " ");
+    strcat(quadString, arg1ToString());
+    strcat(quadString, ", ");
+    strcat(quadString, arg2ToString());
   }
   else {  //binary operators
     strcpy(quadString, resToString());
@@ -234,7 +245,7 @@ char* quad :: toString(){
   return quadString;
 }
 
-//main binary operators
+//main binary operators and function call
 void QuadArray :: emit(argtype res, argtype arg1, opcode op, argtype arg2){
   quad entry = { op, arg1, arg2, res}; 
   q.push_back(entry);
@@ -252,9 +263,9 @@ void QuadArray :: emit(argtype res, argtype arg1){
   q.push_back(entry);
 }
 
-//unconditional goto, return etc 
+//unconditional goto, return, param etc 
 void QuadArray :: emit(argtype res, opcode op){
-  if (!(op == OP_GOTO || op == OP_RET)) return;  //later use
+  if (!((op == OP_GOTO) || (op == OP_RET) || (op == OP_PARAM))) return;  //later use
   //use -1 for indicating empty slot
   quad entry = { op, NULL, NULL, res};
   q.push_back(entry);
