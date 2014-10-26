@@ -4,18 +4,19 @@
 
 rm -rf dist
 mkdir dist
-cp tinyc.l dist/ass4_12CS30011.l
-cp tinyc.y dist/ass4_12CS30011.y
-cp lexmain.c dist/ass4_12CS30011.c
+cp tinyc.l dist/ass5_12CS30011.l
+cp tinyc.y dist/ass5_12CS30011.y
+cp lexmain.cpp dist/ass5_12CS30011_translator.cpp
+cp lexmain.h dist/ass5_12CS30011_translator.h
 cp Makefile dist/Makefile
 
 # need to manipulate the Makefile
-sed -i 's/tinyc/ass4_12CS30011/g' dist/Makefile
-sed -i 's/lexmain/ass4_12CS30011/g' dist/Makefile
+sed -i 's/tinyc/ass5_12CS30011/g' dist/Makefile
+sed -i 's/lexmain/ass5_12CS30011_translator/g' dist/Makefile
 
 #copy testfile
 #mkdir dist/tests
-cp tests/t1.c dist/ass4_12CS30011_test.c
+cp tests/t1.c dist/ass5_12CS30011_test.c
 #cp tests/res1.txt dist/tests/res1.txt
 
 #cp testrunner.sh dist/testrunner.sh
