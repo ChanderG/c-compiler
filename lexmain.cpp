@@ -223,6 +223,14 @@ char* quad :: toString(){
     strcat(quadString, opToString());
     strcat(quadString, arg1ToString());
   }
+  else if (op == OP_ARRAY_ACCESS) {  //array access
+    strcpy(quadString, resToString());
+    strcat(quadString, " = ");
+    strcat(quadString, arg1ToString());
+    strcat(quadString, "[");
+    strcat(quadString, arg2ToString());
+    strcat(quadString, "]");
+  }
   else if (op == OP_CALL) {  //function call
     strcpy(quadString, resToString());
     strcat(quadString, " = ");

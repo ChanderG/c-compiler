@@ -659,6 +659,10 @@ postfix_expression: primary_expression
 		   }
                    |
 		   postfix_expression SQ_OPEN expression SQ_CLOSE
+		   {
+                     $$.loc = current->gentemp();
+                     qa.emit($$.loc, $1.loc, OP_ARRAY_ACCESS, $3.loc); 
+		   }
 		   |
 		   postfix_expression PARAN_OPEN argument_expression_list_opt PARAN_CLOSE
 		   {

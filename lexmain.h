@@ -83,7 +83,7 @@ struct bexp_ {  //for boolean expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL, OP_ARRAY_ACCESS}; 
 
 typedef char* argtype;
 
@@ -111,7 +111,7 @@ class QuadArray{
 
   //adding a new entry to the quad array
   //for comparision based goto - use -1 for blank label 
-  void emit(argtype res, argtype arg1, opcode op, argtype arg2);  //binary, comparision goto
+  void emit(argtype res, argtype arg1, opcode op, argtype arg2);  //binary, comparision goto, array access
   void emit(argtype res, argtype arg1, opcode op);                //unary
   void emit(argtype res, argtype arg1);                           //copy assignment
 

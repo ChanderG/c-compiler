@@ -73,9 +73,11 @@ void main(){
   }
   */
 
-  hello(a,b);
+  //hello(a,b);
 
-  c = hello(a);
+  //c = hello(a);
+  
+  a = b[10];
 
   return; 
 }
