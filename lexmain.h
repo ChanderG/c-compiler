@@ -2,6 +2,8 @@
 #include<vector>
 #include<list>
 
+//each row of the symbol table
+//type and value are encoded as strings
 typedef struct symtabentry {
   char *name;
   char * value;
@@ -11,15 +13,15 @@ typedef struct symtabentry {
   class symboltable *nestedTable;
 } symboltableentry;
 
-#define SYMBOLTABLE_SIZE 25
+#define SYMBOLTABLE_SIZE 50     //number of entries in symbol table
 const int SIZEOF_PTR = 4;
 
-//right now implemented as an array
+// implemented as a simple array
 class symboltable{
 
-  symboltableentry st[SYMBOLTABLE_SIZE];
-  int last;
-  int templast;
+  symboltableentry st[SYMBOLTABLE_SIZE];       //actual array of symboltableentry structure
+  int last;                                    //no of elements filled in
+  int templast;                                //no of temporaries created
 
   public:
   symboltable(){
@@ -27,7 +29,8 @@ class symboltable{
     templast = 0;
   }
   
-  int lookup(char *name);
+  //given name of variable, the entry index is returned
+  int lookup(char *name);         
 
   //get the type of the name entry 
   char* getType(char* name);
@@ -38,6 +41,7 @@ class symboltable{
 
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
+  //used for function definition only
   symboltable* updatef(char *name, char *type, int size, int offset);
 
   //typical update to enter variables
@@ -57,6 +61,7 @@ class symboltable{
   //formatted ouptut of table contents
   void print();
 
+  //creates a new temporary entry and returns name
   char* gentemp();
 
   //get last offset from the symbol table
@@ -86,6 +91,7 @@ struct bexp_ {  //for boolean expressions
 
 //Quad management structures
 enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL, OP_ARRAY_ACCESS}; 
+
 
 typedef char* argtype;
 

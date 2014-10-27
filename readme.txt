@@ -18,5 +18,6 @@ make
 
 The expected output is in ass5_12CS30011_test<$>.out
 
-It does not print anything out if everything is fine.
-Else it prints "syntax error".
+BUGS:
+
+1.Declarations are allowed everywhere, but the scope is restricted to the function.If you declare something inside a compound block, it is entered into the above function's table.
