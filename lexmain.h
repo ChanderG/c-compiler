@@ -13,7 +13,7 @@ typedef struct symtabentry {
   class symboltable *nestedTable;
 } symboltableentry;
 
-#define SYMBOLTABLE_SIZE 50     //number of entries in symbol table
+#define SYMBOLTABLE_SIZE 300     //number of entries in symbol table
 const int SIZEOF_PTR = 4;
 
 // implemented as a simple array
