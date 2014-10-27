@@ -15,12 +15,19 @@ sed -i 's/tinyc/ass5_12CS30011/g' dist/Makefile
 sed -i 's/lexmain/ass5_12CS30011_translator/g' dist/Makefile
 
 #copy testfile
-#mkdir dist/tests
-cp tests/t1.c dist/ass5_12CS30011_test.c
-#cp tests/res1.txt dist/tests/res1.txt
+mkdir dist/tests
 
-#cp testrunner.sh dist/testrunner.sh
-#sed -i 's/t1/ass4_12CS30011_test/g' dist/testrunner.sh
+make
+
+for i in `seq 1 5`;
+do
+  cp tests/t$i.c dist/tests/ass5_12CS30011_test$i.c
+  /lib64/ld-linux-x86-64.so.2 ./a.out tests/t$i.c > res.out
+  mv res.out dist/tests/ass5_12CS30011_test$i.out
+done  
+
+#cp tests/t1.c dist/ass5_12CS30011_test.c
+#cp tests/res1.txt dist/tests/res1.txt
 
 #copy readme
 cp readme.txt dist/readme.txt
