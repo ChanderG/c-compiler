@@ -174,6 +174,7 @@ char* quad :: opToString(){
     case OP_RET: strcpy(opString, "return");break;
     case OP_PARAM: strcpy(opString, "param");break;
     case OP_CALL: strcpy(opString, "call");break;
+    case OP_SEC: strcpy(opString, "section");break;
     default: strcpy(opString, "");break;
   } 
   return opString;
@@ -215,7 +216,12 @@ char* quad :: resToString(){
 //converting one line of quad
 char* quad :: toString(){
   char* quadString = new char[15];
-  if (op == OP_NULL && arg1 == NULL && arg2 == NULL && res == NULL){ //section seperator
+  if(op == OP_SEC){
+    strcpy(quadString, opToString());
+    strcat(quadString, " ");
+    strcat(quadString, resToString());
+  }
+  else if (op == OP_NULL && arg1 == NULL && arg2 == NULL && res == NULL){ //section seperator
     strcpy(quadString, " ");
   } 
   else if((op == OP_LT) || (op == OP_GT) || (op == OP_LTE) || (op == OP_GTE)
@@ -298,8 +304,8 @@ void QuadArray :: emit(argtype res, opcode op){
 
 //for showing end of sections like functions
 //right now an empty rule
-void QuadArray :: emit(){
-  quad entry = { OP_NULL, NULL, NULL, NULL};
+void QuadArray :: emitSection(char* name){
+  quad entry = { OP_SEC, NULL, NULL, name};
   q.push_back(entry);
 }
 

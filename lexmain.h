@@ -90,7 +90,7 @@ struct bexp_ {  //for boolean expressions
 };  
 
 //Quad management structures
-enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL, OP_ARRAY_ACCESS}; 
+enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL, OP_ARRAY_ACCESS, OP_SEC}; 
 
 
 typedef char* argtype;
@@ -126,9 +126,8 @@ class QuadArray{
   //use - OP_GOTO and -1 for blank label
   void emit(argtype res, opcode op);                              //unconditional goto etc 
 
-  //for showing end of sections like functions
-  //right now an empty rule
-  void emit();
+  //for showing start of sections like functions
+  void emitSection(char*);
 
   //Printing the entire quad array in table format
   void printTable();

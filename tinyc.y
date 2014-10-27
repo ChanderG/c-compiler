@@ -191,12 +191,6 @@ function_definition : {
 		      }
 		      //declaration_list_opt
 		      compound_statement_or_semicolon
-		      {/*
-			current->print();
-                        current = &global;  
-			//section seperator
-			qa.emit();
-		      */}
 		      ;
 
 //only print if it is a full function definition
@@ -204,12 +198,12 @@ compound_statement_or_semicolon: compound_statement
 				 {
 				   current->print();
 				   current = &global;  
-				   //section seperator
-				   qa.emit();
 				 }
 				 | SEMI_COLON
 				 {
 				   current = &global;  
+				   //a section label has been mistakenly entered
+				   qa.demit();
 				 };
 
 /*// the original main to handle the whole application
@@ -576,6 +570,9 @@ direct_declarator: IDENTIFIER
 		      ts_global.offset -= ret_size;
 		      current = global.updatef($1,"function", 0, global.lastOffset());
 		      //current now points to the new symbol table
+		      
+		      //emit a section label at the start
+		      qa.emitSection($1);
 
 		      //add the <void> return type to this table
 		      current->update(ret_type);
