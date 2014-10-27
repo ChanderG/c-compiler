@@ -40,6 +40,7 @@ char* symboltable :: getValue(char* name){
   return st[no].value;
 }
 
+//simple update
 void symboltable :: update(char *name, char *type, int size, int offset){
   int no = lookup(name);
   st[no].type = strdup(type);
@@ -49,6 +50,7 @@ void symboltable :: update(char *name, char *type, int size, int offset){
   st[no].value = NULL;
 }
 
+//refer to header for use
 void symboltable :: update(char *name, char *type, int size){
   int no = lookup(name);
   st[no].type = strdup(type);
@@ -115,6 +117,7 @@ symboltable* symboltable :: updatef(char *name, char *type, int size, int offset
   return st[no].nestedTable;
 }
 
+//to print the symbol table except the nested pointer in a nice tabular fashion
 void symboltable :: print(){
   cout << "*************************START OF SYMBOL TABLE************************" << endl;
   setw(10);
@@ -136,6 +139,7 @@ void symboltable :: print(){
   cout << "*************************END OF SYMBOL TABLE**************************" << endl;
 }
 
+//create a new temporary and return the name
 char* symboltable :: gentemp(){
   char* tmp = new char[5];
   sprintf(tmp, "$t%d",templast);
@@ -152,7 +156,7 @@ char* symboltable :: gentemp(){
   return tmp;
 }
 
-
+//convert the opcode to string for pretty printing
 char* quad :: opToString(){
   char* opString = new char[6];
   switch(op){
@@ -180,6 +184,7 @@ char* quad :: opToString(){
   return opString;
 }
 
+//pretty print function
 char* quad :: arg1ToString(){
   if(arg1 == NULL){
     char* arg1String = new char[2];
@@ -191,6 +196,7 @@ char* quad :: arg1ToString(){
   }  
 }
 
+//pretty print function
 char* quad :: arg2ToString(){
   if(arg2 == NULL){
     char* arg2String = new char[2];
@@ -202,6 +208,7 @@ char* quad :: arg2ToString(){
   }  
 }
 
+//pretty print function
 char* quad :: resToString(){
   if(res == NULL){
     char* resString = new char[2];
@@ -213,7 +220,7 @@ char* quad :: resToString(){
   }  
 }
 
-//converting one line of quad
+//converting one line of quad to nice printable format
 char* quad :: toString(){
   char* quadString = new char[15];
   if(op == OP_SEC){
@@ -336,7 +343,7 @@ void QuadArray :: printTable(){
 }
 
 
-//print the generated code
+//print the generated code in TAC format
 void QuadArray :: print(){
   cout << endl;
   cout << "Generated Code: " << endl;
@@ -353,6 +360,7 @@ int QuadArray :: nextinstr(){
 }
 
 //global makelist function 
+//make a new list with one entry ie i and return a pointer to that list
 list<int> *makelist(int i){
   list<int> *newlist = new list<int>;
   newlist->push_back(i);
@@ -371,6 +379,7 @@ void QuadArray :: backpatch(list<int>* somelist, int ins){
 
 //merge function
 //copies each element manually
+//takes 2 lists and returns one with contents of both
 list<int> *merge(list<int>* a,list<int>* b){
   list<int> *c = new list<int>();
   //for safety going to copy each and every value

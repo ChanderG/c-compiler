@@ -28,9 +28,11 @@
 
   struct exp_ exp; // for expressions
   struct bexp_ bexp; // for boolean expressions
-  unary_op unop;
+  unary_op unop;     //for conveying type of unary expression
   struct s_ s;    //for statements of all kind
 }
+
+//look in the header file for the definitions of these types
 
 %token <sval> IDENTIFIER
 %token <ival> INTEGER_CONSTANT

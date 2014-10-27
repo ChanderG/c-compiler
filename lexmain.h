@@ -5,12 +5,12 @@
 //each row of the symbol table
 //type and value are encoded as strings
 typedef struct symtabentry {
-  char *name;
-  char * value;
-  char *type;
-  int size;
+  char *name;                              //name of variable/temporary
+  char * value;                            // value encoded in string format
+  char *type;                              // type encoded in string format
+  int size;                              
   int offset;
-  class symboltable *nestedTable;
+  class symboltable *nestedTable;          // pointer to the nested table - NULL for non functions
 } symboltableentry;
 
 #define SYMBOLTABLE_SIZE 500     //number of entries in symbol table
@@ -73,6 +73,7 @@ struct ts_ {    // for type_specifier
   int width;
 }; 
 
+//used as the global point of contact for the last seen type 
 struct ts_2 {    // for global value type_specifier
   char *type;
   int width;
@@ -89,10 +90,15 @@ struct bexp_ {  //for boolean expressions
   std::list<int> *falselist;
 };  
 
+//for statements
+struct s_{
+  std::list<int>* nextlist;
+};   
+
 //Quad management structures
 enum opcode {OP_NULL, OP_PLUS, OP_MINUS, OP_MULT, OP_BY, OP_PER, OP_GOTO, OP_LT, OP_GT, OP_LTE, OP_GTE, OP_E, OP_NE, OP_STAR, OP_AND, OP_RET, OP_PARAM, OP_CALL, OP_ARRAY_ACCESS, OP_SEC}; 
 
-
+//simple alias for the arguments in tac
 typedef char* argtype;
 
 typedef struct quad_ {
@@ -155,7 +161,3 @@ std::list<int> *makelist(int);
 //global merge function for list pointers - actually creates a new list
 std::list<int> *merge(std::list<int>* ,std::list<int>*);
 
-//for statements
-struct s_{
-  std::list<int>* nextlist;
-};   
