@@ -1,6 +1,5 @@
 //Fibonacci using recursion
 
-//not yet supported -??
 int Fibonacci(int a);
 
 int main()
@@ -21,14 +20,12 @@ int main()
 }
 
 //some problem here
-/*
 int Fibonacci(int n)
 {
   if ( n == 0 )
     return 0;
   else if ( n == 1 )
     return 1;
-  else
+  else //return (Fibonacci(n-1) + );
     return ( Fibonacci(n-1) + Fibonacci(n-2) );
 } 
-*/

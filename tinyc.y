@@ -675,7 +675,7 @@ primary_expression: IDENTIFIER
 		    | STRING_LITERAL
 		    | PARAN_OPEN expression PARAN_CLOSE
 		    {
-		      //$$.loc = $2.loc; 
+		      $$.loc = $2.loc; 
 		    };
 
 constant:  INTEGER_CONSTANT 
