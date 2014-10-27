@@ -84,5 +84,9 @@ void main(){
 
   //a = (i<3);
 
+  //print("Hello");
+
+  a = "Hello";
+
   return; 
 }

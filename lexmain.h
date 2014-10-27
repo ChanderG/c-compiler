@@ -13,7 +13,7 @@ typedef struct symtabentry {
   class symboltable *nestedTable;
 } symboltableentry;
 
-#define SYMBOLTABLE_SIZE 300     //number of entries in symbol table
+#define SYMBOLTABLE_SIZE 500     //number of entries in symbol table
 const int SIZEOF_PTR = 4;
 
 // implemented as a simple array
@@ -146,7 +146,8 @@ class QuadArray{
 };
 
 //for seeing type of the operator in unary_expressions
-enum unary_op { UN_PLUS, UN_MINUS, UN_STAR, UN_AND};
+//UN_NULL is for no operation
+enum unary_op { UN_PLUS, UN_MINUS, UN_STAR, UN_AND, UN_NULL};
 
 //global makelist function 
 std::list<int> *makelist(int); 

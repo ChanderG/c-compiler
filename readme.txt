@@ -23,3 +23,5 @@ The output has the symbol tables of all functions and main after complete functi
 BUGS:
 
 1.Declarations are allowed everywhere, but the scope is restricted to the function.If you declare something inside a compound block, it is entered into the above function's table.
+2.The params before function calls are not necessarily contiguous.
+3.The symbol table has a max aka hardcoded maximum number of entries at 500.Update if needed.

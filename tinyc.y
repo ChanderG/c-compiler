@@ -636,8 +636,8 @@ initializer: assignment_expression
              {
 	       $$ = $1.loc;
 	     }
-             | CURLY_OPEN initializer_list CURLY_CLOSE
-	     | CURLY_OPEN initializer_list COMMA CURLY_CLOSE
+             //| CURLY_OPEN initializer_list CURLY_CLOSE
+	     //| CURLY_OPEN initializer_list COMMA CURLY_CLOSE
 	     ;
 
 initializer_list: designation_opt initializer
@@ -670,6 +670,11 @@ primary_expression: IDENTIFIER
 		      current->update($$.loc, $1);
 		    }
 		    | STRING_LITERAL
+		    {
+                      $$.loc = current->gentemp();
+		      qa.emit($$.loc, $1);
+		      current->update($$.loc, $1);
+		    }
 		    | PARAN_OPEN expression PARAN_CLOSE
 		    {
 		      $$.loc = $2.loc; 
@@ -732,10 +737,15 @@ postfix_expression: primary_expression
 		     sprintf(n1, "%d",1);
                      qa.emit($1.loc, $1.loc, OP_MINUS, n1);
 		   }
-		   | 
-		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
-		   |
-		   PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE;
+		   | PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list CURLY_CLOSE
+		   { //simply to keep it quiet
+                     $$.loc = NULL; 
+		   }
+		   | PARAN_OPEN type_name PARAN_CLOSE CURLY_OPEN initializer_list COMMA CURLY_CLOSE
+		   {//simply to keep it quiet
+                     $$.loc = NULL; 
+		   }
+		  ;
 
 argument_expression_list_opt: epsilon
                               {
@@ -800,7 +810,13 @@ unary_expression: postfix_expression
 		    }                    
 		  }
 		  | SIZEOF unary_expression
+		  {
+		    $$.loc = NULL;
+		  }  
 		  | SIZEOF PARAN_OPEN type_name PARAN_CLOSE %prec U
+		  {
+		    $$.loc = NULL;
+		  }  
 		  ;
 
 unary_operator: AND
@@ -819,13 +835,24 @@ unary_operator: AND
                 {
                   $$ = UN_MINUS; 
 		}
-		| TILDE | EX;
+		| TILDE 
+                {
+                  $$ = UN_NULL; 
+		}
+		| EX
+                {
+                  $$ = UN_NULL; 
+		}
+		;
 
 cast_expression: unary_expression
 		 {
 		   $$.loc = $1.loc; 
 		 }
                  | PARAN_OPEN type_name PARAN_CLOSE cast_expression
+		 {
+		   $$.loc = NULL;
+		 }
 		 ;
 
 multiplicative_expression: cast_expression
