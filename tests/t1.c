@@ -81,7 +81,8 @@ void main(){
   
   //int a[10][5],b = 3;
   //char c;
-  a = (i<3);
+
+  //a = (i<3);
 
   return; 
 }

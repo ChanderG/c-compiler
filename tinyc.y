@@ -190,14 +190,27 @@ function_definition : {
 			//The declarator $2 consists of <main(int argc, char** argv)>
 		      }
 		      //declaration_list_opt
-		      compound_statement
-		      {
+		      compound_statement_or_semicolon
+		      {/*
 			current->print();
                         current = &global;  
 			//section seperator
 			qa.emit();
-		      }
+		      */}
 		      ;
+
+//only print if it is a full function definition
+compound_statement_or_semicolon: compound_statement 
+				 {
+				   current->print();
+				   current = &global;  
+				   //section seperator
+				   qa.emit();
+				 }
+				 | SEMI_COLON
+				 {
+				   current = &global;  
+				 };
 
 /*// the original main to handle the whole application
 function_definition : { 
