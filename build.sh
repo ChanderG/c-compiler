@@ -12,9 +12,11 @@ cp Makefile dist/Makefile
 
 # need to manipulate the Makefile
 sed -i 's/tinyc/ass5_12CS30011/g' dist/Makefile
-sed -i 's/lexmain/ass5_12CS30011_translator/g' dist/Makefile
 
-#copy testfile
+#update lexmain in all associated files
+sed -i 's/lexmain/ass5_12CS30011_translator/g' dist/Makefile dist/ass5_12CS30011.l dist/ass5_12CS30011.y dist/ass5_12CS30011_translator.cpp 
+
+#copy testfiles
 mkdir dist/tests
 
 make

@@ -164,3 +164,5 @@ Encoding the array property as a string.
 
 ###After  paran enclosed expressions taken care of
 The symbol table uses a static array instead of a vector, needs to be upgraded.
+
+END of TAC translation phase.
