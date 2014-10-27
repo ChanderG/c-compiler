@@ -18,6 +18,8 @@ make
 
 The expected output is in ass5_12CS30011_test<$>.out
 
+The output has the symbol tables of all functions and main after complete function.Then the Quad array and the Quads in TAC format are printed.
+
 BUGS:
 
 1.Declarations are allowed everywhere, but the scope is restricted to the function.If you declare something inside a compound block, it is entered into the above function's table.

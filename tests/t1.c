@@ -79,8 +79,9 @@ void main(){
   //c = hello(a);
   //a = b[10][10];
   
-  int a[10][5],b = 3;
-  char c;
+  //int a[10][5],b = 3;
+  //char c;
+  a = (i<3);
 
   return; 
 }

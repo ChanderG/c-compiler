@@ -182,7 +182,6 @@ external_declaration : function_definition
 
 //removing declaration_list_opt and considering the first part to be the entire function header
 function_definition : {
-                        cout << "fn" << endl; 
                         ts_global.offset = 0;
                       } 
 		      declaration_specifiers declarator
@@ -201,7 +200,7 @@ function_definition : {
 		      ;
 
 /*// the original main to handle the whole application
-function_definition : { cout << "fn" << endl; 
+function_definition : { 
                         ts_global.offset = 0;
                       } 
                       type_specifier IDENTIFIER PARAN_OPEN PARAN_CLOSE
@@ -216,18 +215,20 @@ function_definition : { cout << "fn" << endl;
 		      ;
 */
 
+/*
 declaration_list_opt : declaration_list 
                        { }
 		       | epsilon
 		       ;
-
-epsilon : ;   //epsilon transition
 
 declaration_list : declaration
                    { }
 		   | declaration_list declaration
 		   { }
 		   ;
+*/
+
+epsilon : ;   //epsilon transition
 
 //Section 3:  Statements
 
@@ -531,6 +532,9 @@ direct_declarator: IDENTIFIER
 		     ts_global.offset += ts_global.width; 
 		   }
                    | PARAN_OPEN declarator PARAN_CLOSE 
+		   {
+                     $$ = $2; 
+		   }
 		   | direct_declarator SQ_OPEN type_qualifier_list_opt assignment_expression_opt SQ_CLOSE 
 		   {
 		     //$1 has already been entered into the table, just update it
@@ -574,7 +578,14 @@ param_or_identi: parameter_type_list | identifier_list_opt;
 
 
 type_qualifier_list_opt: epsilon | type_qualifier_list;
-assignment_expression_opt: epsilon | assignment_expression;
+assignment_expression_opt: epsilon 
+                           {
+			     $$.loc = NULL;
+			   }
+			   | assignment_expression
+                           {
+			     $$ = $1;
+			   };
 
 identifier_list_opt: epsilon | identifier_list;
 
