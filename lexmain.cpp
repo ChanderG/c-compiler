@@ -1,4 +1,4 @@
-#include<iostream>
+#include<fstream>
 using namespace std;
 
 #include<iomanip>
@@ -8,8 +8,12 @@ using namespace std;
 
 #include"lexmain.h"
 #include"y.tab.h"
+
 extern int yyparse();
 extern "C" FILE* yyin;
+
+//#include"translator.cpp"
+extern ofstream fout;
 
 #include<cstring>
 
@@ -119,24 +123,24 @@ symboltable* symboltable :: updatef(char *name, char *type, int size, int offset
 
 //to print the symbol table except the nested pointer in a nice tabular fashion
 void symboltable :: print(){
-  cout << "*************************START OF SYMBOL TABLE************************" << endl;
+  fout << "*************************START OF SYMBOL TABLE************************" << endl;
   setw(10);
-  cout << setw(10) << "Name";
-  cout << setw(30) << "Type";
-  cout << setw(10) << "Size";
-  cout << setw(10) << "Offset";
-  cout << setw(10) << "Value";
-  cout << endl;
+  fout << setw(10) << "Name";
+  fout << setw(30) << "Type";
+  fout << setw(10) << "Size";
+  fout << setw(10) << "Offset";
+  fout << setw(10) << "Value";
+  fout << endl;
   for (int i=0;i<last;i++){
-    cout << setw(10) << st[i].name;
-    cout << setw(30) << st[i].type;
-    cout << setw(10) << st[i].size;
-    cout << setw(10) << st[i].offset;
-    if(st[i].value == NULL) cout << setw(10) << "null";
-    else cout << setw(10) << st[i].value;
-    cout << endl;
+    fout << setw(10) << st[i].name;
+    fout << setw(30) << st[i].type;
+    fout << setw(10) << st[i].size;
+    fout << setw(10) << st[i].offset;
+    if(st[i].value == NULL) fout << setw(10) << "null";
+    else fout << setw(10) << st[i].value;
+    fout << endl;
   }
-  cout << "*************************END OF SYMBOL TABLE**************************" << endl;
+  fout << "*************************END OF SYMBOL TABLE**************************" << endl;
 }
 
 //create a new temporary and return the name
@@ -324,34 +328,35 @@ void QuadArray :: demit(){
 
 //print the quad array in a tabular form
 void QuadArray :: printTable(){
-  cout << "****************QUAD ARRAY STARTS*****************" << endl;
-  cout << setw(10) << "INDEX"; 
-  cout << setw(10) << "op";
-  cout << setw(10) << "arg 1";
-  cout << setw(10) << "arg 2";
-  cout << setw(10) << "result";
-  cout << endl;
+  fout << setfill(' ');
+  fout << "****************QUAD ARRAY STARTS*****************" << endl;
+  fout << setw(10) << "INDEX"; 
+  fout << setw(10) << "op";
+  fout << setw(10) << "arg 1";
+  fout << setw(10) << "arg 2";
+  fout << setw(10) << "result";
+  fout << endl;
   for(int i=0;i<q.size();i++){
-    cout << setw(10) << i;
-    cout << setw(10) << q[i].opToString();
-    cout << setw(10) << q[i].arg1ToString();
-    cout << setw(10) << q[i].arg2ToString();
-    cout << setw(10) << q[i].resToString();
-    cout << endl;
+    fout << setw(10) << i;
+    fout << setw(10) << q[i].opToString();
+    fout << setw(10) << q[i].arg1ToString();
+    fout << setw(10) << q[i].arg2ToString();
+    fout << setw(10) << q[i].resToString();
+    fout << endl;
   }
-  cout << "*****************QUAD ARRAY ENDS******************" << endl;
+  fout << "*****************QUAD ARRAY ENDS******************" << endl;
 }
 
 
 //print the generated code in TAC format
 void QuadArray :: print(){
-  cout << endl;
-  cout << "Generated Code: " << endl;
+  fout << endl;
+  fout << "Generated Code: " << endl;
   for(int i=0;i<q.size();i++){
-    cout << "L" << setw(3) << setfill('0') << i << " : " << q[i].toString() << endl;
+    fout << "L" << setw(3) << setfill('0') << i << " : " << q[i].toString() << endl;
   }
-  cout << "End of generated code" << endl;
-  cout << endl;
+  fout << "End of generated code" << endl;
+  fout << endl;
 }
 
 //next instr

@@ -6,6 +6,7 @@
   extern int yylex();  
   void yyerror(const char *s);
 
+  
   #include"lexmain.h"
 
   #include<cstring>  //for strdup
@@ -155,15 +156,15 @@
 //rules section - for now printing correct is used
 
 program: {
-           cout << "Start of program" << endl;
+           //cout << "Start of program" << endl;
 	   current  = &global;
 	 } 
 	 translation_unit 
 	 {
 	   current->print();
-	   qa.printTable();
-	   qa.print();
-           cout << "End of program" << endl;
+	   //qa.printTable();
+	   //qa.print();
+           //cout << "End of program" << endl;
 	 }
 	 ;
 
@@ -1048,7 +1049,7 @@ N: {
 //main section - not required now
 void yyerror(const char *s) {
   //cout << "ERROR" << endl;
-  cout << s << endl;
+  //cout << s << endl;
   // might as well halt now:
   //exit(-1);
 }

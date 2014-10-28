@@ -11,6 +11,12 @@ extern "C" FILE* yyin;
 //for file open etc
 #include<stdio.h>
 
+//the quad array
+extern QuadArray qa;            
+
+#include<fstream>
+ofstream fout;   //for the .out file containing the TAC
+
 //considers first argument as input file name
 int main(int argc, char* argv[]){
   argv++;
@@ -27,6 +33,7 @@ int main(int argc, char* argv[]){
     cout << "\t./a.out <name of file>" << endl; 
   }
   else {
+
     FILE *inp = fopen(argv[0], "r");
     if (!inp) {
       cout << "Can't open file" << endl;
@@ -34,10 +41,25 @@ int main(int argc, char* argv[]){
     }
     
     yyin = inp;
+    
+    //open the out file for input
+    //replace name with a input based one
+    fout.open("res.out");
+    fout << "TAC of program " << argv[0] << endl;
 
+    //else where each symbol table is sent to this file - all are pointing towards fout
     do{
       yyparse();
     }while(!feof(yyin));
+
+    //print the quads and the tac
+    qa.print();
+    fout << endl;
+    qa.printTable();
+    fout.close();
+
+    //call the function for m/c dependent translation here and send to the .asm file
+
   }
 
   //include verbose mode too
