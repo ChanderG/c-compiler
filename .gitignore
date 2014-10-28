@@ -10,3 +10,4 @@ y.tab.c
 dist
 *.tar.gz
 .fuse*
+*.s

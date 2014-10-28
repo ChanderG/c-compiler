@@ -166,3 +166,10 @@ Encoding the array property as a string.
 The symbol table uses a static array instead of a vector, needs to be upgraded.
 
 END of TAC translation phase.
+
+# Machine Dependent translation phase
+
+###After updated build script 
+Analysing for plan of action. First step is to compare our programs output gcc`s output for some simple c programs.
+
+Right now the idea seems to be to convert the symbol table to an Activation Record and then walk through the quad array and convert it into the x86 equivalent line by line. Something like the existing toString function.
