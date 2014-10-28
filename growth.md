@@ -173,3 +173,6 @@ END of TAC translation phase.
 Analysing for plan of action. First step is to compare our programs output gcc`s output for some simple c programs.
 
 Right now the idea seems to be to convert the symbol table to an Activation Record and then walk through the quad array and convert it into the x86 equivalent line by line. Something like the existing toString function.
+
+###After plans begin for mc indep
+The main thrust now is to move control to main. We may have to output the tac and the asm code into multiple files.
