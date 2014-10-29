@@ -11,4 +11,5 @@ dist
 *.tar.gz
 .fuse*
 *.s
+*.asm
 static

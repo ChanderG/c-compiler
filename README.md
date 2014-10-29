@@ -44,3 +44,6 @@ From the third stage onwards, the file "growth.md" documents the progress in a m
 
 ###Learning
 The folder learning contains the practice done to understand m/c dependent translation.
+
+###Compiling....
+After the 5th stage, the actual output .s file totally compiles to binary.Remember to use 32 bit option though. 

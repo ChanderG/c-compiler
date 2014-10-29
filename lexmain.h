@@ -149,6 +149,9 @@ class QuadArray{
   //de-emit
   //remove the last emited tac -> used in case of declaration
   void demit();
+  
+  //m/c dependent code 
+  void genCode(char* filename);
 };
 
 //for seeing type of the operator in unary_expressions
