@@ -11,14 +11,7 @@ Use the Makefile.
 make
 ```
 
-To test use the testrunner script:
-
-```
-bash ./testrunner.sh
-```
-If there are no problems it will output nothing.
-Basically it looks into the tests folder for all files like "t$.c" , use it as an input to the compiler and expect the output to match the one pre filled in the corresponding "res$.txt" file.
-
+The required compiler is: "compiler"
 
 The build script is to wrestle the same code into a format required by my university.
 
@@ -47,3 +40,20 @@ The folder learning contains the practice done to understand m/c dependent trans
 
 ###Compiling....
 After the 5th stage, the actual output .s file totally compiles to binary.Remember to use 32 bit option though. 
+
+On running the created compiler "compiler"
+
+```
+./compiler testfile.c
+```
+
+right now two files are created in the current directory:
+
+a) res.out -> containing the TAC and the Symbol tables
+b) res.s -> a specific x86-32 assembly code that can be compiled with gcc like so:
+
+```
+cc -m32 res.s 
+```
+
+again creating a.out that is a runnable code.

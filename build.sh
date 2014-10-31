@@ -24,7 +24,7 @@ make
 for i in `seq 1 5`;
 do
   cp tests/t$i.c dist/tests/ass5_12CS30011_test$i.c
-  /lib64/ld-linux-x86-64.so.2 ./a.out tests/t$i.c > res.out
+  /lib64/ld-linux-x86-64.so.2 ./compiler tests/t$i.c > res.out
   mv res.out dist/tests/ass5_12CS30011_test$i.out
 done  
 

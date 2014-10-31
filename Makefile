@@ -2,8 +2,8 @@
 #-Wno-write-strings for conversion of "strings" to char*
 CFLAGS = -g -Wno-write-strings
 
-a.out: lex.yy.o y.tab.o tac.o main.o
-	g++ lex.yy.o y.tab.o tac.o main.o -lfl $(CFLAGS)
+compiler: lex.yy.o y.tab.o tac.o main.o
+	g++ lex.yy.o y.tab.o tac.o main.o -o compiler -lfl $(CFLAGS)
 lex.yy.c: tinyc.l y.tab.h
 	flex tinyc.l
 lex.yy.o: lex.yy.c
@@ -17,4 +17,4 @@ tac.o: lexmain.cpp y.tab.h lexmain.h
 main.o: translator.cpp
 	g++ -c translator.cpp -o main.o $(CFLAGS)
 clean:
-	rm -rf dist lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o tac.o main.o a.out y.output
+	rm -rf dist lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o tac.o main.o compiler y.output
