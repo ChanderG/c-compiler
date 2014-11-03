@@ -193,6 +193,20 @@ map<char*, int>* symboltable :: createAR(){
     AR->insert(pair<char*, int>(st[i].name, 8 + (i-1)*4));    
     i++;
   }
+
+  //now for the local variables
+  i = last-1;
+  int k = -4; // start value of offset for the local variables
+  while(strcmp(st[i].name, "null") != 0){
+    //if not a temporary
+    if(st[i].name[0] != '$'){
+      AR->insert(pair<char*, int>(st[i].name, k));    
+      //assuming only int
+      k -= 4;
+    }
+    i--;
+  }
+
   return AR;
 }
 

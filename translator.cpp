@@ -23,6 +23,11 @@ ofstream fout;   //for the .out file containing the TAC
 
 #include<map>
 
+//register and operation strings
+const char* BP = "%ebp";
+const char* SP = "%esp";
+
+
 //main function for the m/c dependent translation - here x86
 void QuadArray :: genCode(char* filename){
   //enter code here
@@ -31,26 +36,53 @@ void QuadArray :: genCode(char* filename){
  
   //the single pointer to the current AR
   map<char*, int> *AR;
+  char* currentFunction = NULL; //name of the current function
 
   //exhaustively counter each type of quad entry 
   //file opening
   rout << "\t" << setw(8) << left << ".file " << "\"" << filename << "\"" << endl; 
   //rout << "\t" << ".text" << endl;
 
+
   for(int i = 0;i < q.size();i++){
    
     //actaully it is a function implying the need of a full activation record
     if(q[i].op == OP_SEC){
+
+      //check if some function was on previously - if so complete it
+      if(currentFunction != NULL){
+	rout << "\t" << setw(8) << left << "leave" << endl;
+	rout << "\t" << setw(8) << left << "ret" << endl;
+	rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
+      } 
+
       rout << "\t" << setw(8) << left << ".global " << q[i].res << endl;
       rout << "\t" << setw(8) << left << ".type " << q[i].res << ", @function" << endl;
       rout << q[i].res << ":" << endl;
 
+      currentFunction = q[i].res;
+
       //at this point look at the symbol table and create the AR
-      AR = (global.getNST(q[i].res))->createAR();
+      AR = (global.getNST(currentFunction))->createAR();
+      //printing to stdout for debugging
       for (map<char*,int>::iterator it=AR->begin(); it!=AR->end(); ++it)
           cout << it->first << " => " << it->second << '\n';
+
+      
+      //now for the standard function opening
+      rout << "\t" << setw(8) << left << "pushl" << BP << endl; 
+      rout << "\t" << setw(8) << left << "movl" << SP << ", " << BP << endl; 
     }
+    //else if(){}
+    else {}
   }
+
+  //the conclusion for the last function
+  rout << "\t" << setw(8) << left << "leave" << endl;
+  rout << "\t" << setw(8) << left << "ret" << endl;
+  rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
+
+  rout << "\t" << setw(8) << left << ".ident" << "\"Chander G : c compiler\"" << endl;
 
   rout.close();
   return;
