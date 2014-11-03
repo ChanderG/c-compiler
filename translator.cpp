@@ -152,12 +152,23 @@ void QuadArray :: genCode(char* filename){
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp
-	cout << (tempReg.find(string(q[i].arg1)))->second;
 	rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
       }
       else{
+	//var = var
+        rout << "\t" << setw(8) << left << "movl" << (AR->find(string(q[i].arg1)))->second << "(" << BP << "), " << "%eax" << endl; 
+        rout << "\t" << setw(8) << left << "movl" << "%eax, " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl; 
+
 	//var = const
+	//this category is actually never used
+	//maybe needed when code is optimized
+	/*
+	rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
+	*/
       }
+    }
+    else if(q[i].op == OP_PLUS){
+      //OP_PLUS
     }
   }
 
