@@ -21,6 +21,7 @@ extern symboltable global;
 #include<fstream>
 ofstream fout;   //for the .out file containing the TAC
 
+//several data structures built using map to ease translation
 #include<map>
 
 //register and operation strings
@@ -43,12 +44,19 @@ void QuadArray :: genCode(char* filename){
   rout << "\t" << setw(8) << left << ".file " << "\"" << filename << "\"" << endl; 
   //rout << "\t" << ".text" << endl;
 
+  int j,maxk;
+  map<int, int> paramOffsets;  //for getting the offsets of each parameter from SP
+  //for now the map is going to almost use only %eax
+  map<char*, char> tempReg;    // map from temporaries to registers
 
   for(int i = 0;i < q.size();i++){
    
-    //actaully it is a function implying the need of a full activation record
+    //function
     if(q[i].op == OP_SEC){
 
+      //clear existing offset map
+      paramOffsets.clear();
+ 
       //check if some function was on previously - if so complete it
       if(currentFunction != NULL){
 	rout << "\t" << setw(8) << left << "leave" << endl;
@@ -56,6 +64,7 @@ void QuadArray :: genCode(char* filename){
 	rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
       } 
 
+      //function start lines
       rout << "\t" << setw(8) << left << ".global " << q[i].res << endl;
       rout << "\t" << setw(8) << left << ".type " << q[i].res << ", @function" << endl;
       rout << q[i].res << ":" << endl;
@@ -75,10 +84,42 @@ void QuadArray :: genCode(char* filename){
 
       //allocating space in the stack for the local variables
       //not very clear - going to go with additional 8 memory after that actually required
+      //it needs to accomodate every function call that occurs
+      //need to go through the entire quad array -> and create a meta data table for function calls atleast
+    
+      //everything is being done for integers only
+
+      //Go to the end of the section and come back o as to give the param of each call the right amount of offset
+      j = i+1;
+      while(q[j].op != OP_RET){
+        j++;
+      }
+      j -= 1;
+      int k = 0;
+      maxk = 0;
+      for(;j>i;j--){
+        if(q[j].op == OP_CALL){ 
+	  maxk = (maxk > k)?maxk:k;
+	  k = 0;
+	}  
+	else if(q[j].op == OP_PARAM){
+	  paramOffsets.insert(pair<int,int>(j, k));
+	  k += 4;
+        }
+	else;
+      }
+
+      //for the first function call
+      maxk = (maxk > k)?maxk:k;
+
+      //stack size required for the variables
       int ss = global.getNST(currentFunction)->getStackSize();
-      // adjust exact size of stack here
+      // adding a buffer of 8 bytes
       ss += 8;
-      if(ss%8 != 0) ss += ss%8;
+
+      //maximum space required by any function call in this section
+      ss += maxk;
+
       rout << "\t" << setw(8) << left << "subl" << "$" << ss << ", " << SP << endl; 
 
       //may be also store some local variables that are initialized at declaration
@@ -89,8 +130,33 @@ void QuadArray :: genCode(char* filename){
       }
       delete valMap;
     }
-    //else if(){}
-    else {}
+    else if(q[i].op == OP_PARAM){
+       
+    }
+    else if(q[i].op == OP_CALL){
+       
+    }
+    else if(q[i].op == OP_NULL){ // direct assignment 
+	//temp = const
+      if(q[i].res[0] == '$'){
+	if(tempReg.count(q[i].res) != 0){
+	  //already exists
+	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	}
+	else{
+          //enter into the mapping
+	  tempReg.insert(pair<char*,char>(q[i].res, 'a'));
+	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	}
+      }
+      else if(q[i].arg1[0] == '$'){
+	//var = temp
+
+      }
+      else{
+	//var = const
+      }
+    }
   }
 
   //the conclusion for the last function
@@ -98,6 +164,7 @@ void QuadArray :: genCode(char* filename){
   rout << "\t" << setw(8) << left << "ret" << endl;
   rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
 
+  //end of file
   rout << "\t" << setw(8) << left << ".ident" << "\"Chander G : c compiler\"" << endl;
 
   rout.close();
