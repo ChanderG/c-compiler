@@ -43,7 +43,7 @@ void QuadArray :: genCode(char* filename){
   //exhaustively counter each type of quad entry 
   //file opening
   rout << "\t" << setw(8) << left << ".file " << "\"" << filename << "\"" << endl; 
-  //rout << "\t" << ".text" << endl;
+  rout << "\t" << ".text" << endl;
 
   int j,maxk;
   map<int, int> paramOffsets;  //for getting the offsets of each parameter from SP
@@ -66,7 +66,7 @@ void QuadArray :: genCode(char* filename){
       } 
 
       //function start lines
-      rout << "\t" << setw(8) << left << ".global " << q[i].res << endl;
+      rout << "\t" << setw(8) << left << ".globl " << q[i].res << endl;
       rout << "\t" << setw(8) << left << ".type " << q[i].res << ", @function" << endl;
       rout << q[i].res << ":" << endl;
 
@@ -132,7 +132,20 @@ void QuadArray :: genCode(char* filename){
       delete valMap;
     }
     else if(q[i].op == OP_PARAM){
-       
+      if(q[i].res[0] == '$'){
+	//param is a temporary
+	rout << "\t" << setw(8) << left << "movl" << "%eax, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+        //paramOffsets.find(i)->second
+      }
+      else if(AR->count(q[i].res) != 0){
+	//if the param is a variable       
+	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl; 
+	rout << "\t" << setw(8) << left << "movl" << "%eax, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+      }
+      else{
+	//param is a constant
+	rout << "\t" << setw(8) << left << "movl" << "$" << q[i].res << ", " << paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+      }
     }
     else if(q[i].op == OP_CALL){
        

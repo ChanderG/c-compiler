@@ -176,3 +176,6 @@ Right now the idea seems to be to convert the symbol table to an Activation Reco
 
 ###After plans begin for mc indep
 The main thrust now is to move control to main. We may have to output the tac and the asm code into multiple files.
+
+###After  Added var eq var exp
+To simplify matters, all temporaries are used with eax.The tempReg will be used to its full potential later on.
