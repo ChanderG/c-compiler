@@ -24,10 +24,13 @@ class symboltable{
   int last;                                    //no of elements filled in
   int templast;                                //no of temporaries created
 
+  int stackSize;     // for the actual size required on the stack
+
   public:
   symboltable(){
     last = 0;
     templast = 0;
+    stackSize = 0;
   }
   
   //given name of variable, the entry index is returned
@@ -41,6 +44,8 @@ class symboltable{
   char* getValue(char* name);
   //get the nested table of an entry
   symboltable* getNST(char* name);
+  //get the stack size of this function
+  int getStackSize();
 
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
@@ -75,6 +80,10 @@ class symboltable{
 
   //create AR
   std::map<char*, int> *createAR();
+
+  //initial value setup
+  //assuming only int now
+  std::map<char*, int> *getInitialValues();
 };
 
 struct ts_ {    // for type_specifier

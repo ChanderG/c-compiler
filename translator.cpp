@@ -72,6 +72,23 @@ void QuadArray :: genCode(char* filename){
       //now for the standard function opening
       rout << "\t" << setw(8) << left << "pushl" << BP << endl; 
       rout << "\t" << setw(8) << left << "movl" << SP << ", " << BP << endl; 
+
+      //allocating space in the stack for the local variables
+      //not very clear - going to go with additional 8 memory after that actually required
+      int ss = global.getNST(currentFunction)->getStackSize();
+      // adjust exact size of stack here
+      ss += 8;
+      if(ss%8 != 0) ss += ss%8;
+      rout << "\t" << setw(8) << left << "subl" << "$" << ss << ", " << SP << endl; 
+
+      //may be also store some local variables that are initialized at declaration
+      map<char*,int>* valMap = global.getNST(currentFunction)->getInitialValues();          
+      //write the corresponding code statements
+      for (map<char*,int>::iterator it=valMap->begin(); it!=valMap->end(); ++it){
+	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << SP << ")" << endl; 
+      }
+      delete valMap;
+    
     }
     //else if(){}
     else {}

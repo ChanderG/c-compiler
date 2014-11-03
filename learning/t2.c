@@ -7,8 +7,7 @@ int addTwo(int a, int b){
 }
 
 int main(){
-  int a,b;
-  a = 3;
+  int a=3,b;
   b = addTwo(a, 3);
   return 0;
 }

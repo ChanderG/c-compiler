@@ -50,6 +50,11 @@ symboltable* symboltable :: getNST(char* name){
   return st[no].nestedTable;
 }
 
+//get the Stack Size
+int symboltable :: getStackSize(){
+  return stackSize;
+}
+
 //simple update
 void symboltable :: update(char *name, char *type, int size, int offset){
   int no = lookup(name);
@@ -207,7 +212,27 @@ map<char*, int>* symboltable :: createAR(){
     i--;
   }
 
+  stackSize = -1*k;
+
   return AR;
+}
+
+//initial value setup
+//assuming only int now
+map<char*, int>* symboltable :: getInitialValues(){
+  map<char*, int>* valMap = new map<char*, int>();
+
+  int i = last-1;
+  while(strcmp(st[i].name, "null") != 0){
+    //if not a temporary
+    if(st[i].name[0] != '$'){
+      if(st[i].value != NULL)
+	valMap->insert(pair<char*, int>(st[i].name, atoi(st[i].value)));    
+    }
+    i--;
+  }
+
+  return valMap;
 }
 
 //convert the opcode to string for pretty printing
