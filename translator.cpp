@@ -15,16 +15,23 @@ extern "C" FILE* yyin;
 
 //the quad array
 extern QuadArray qa;            
+extern symboltable global;            
+
 
 #include<fstream>
 ofstream fout;   //for the .out file containing the TAC
 
+#include<map>
+
 //main function for the m/c dependent translation - here x86
 void QuadArray :: genCode(char* filename){
   //enter code here
-  ofstream rout;  //result out
+  ofstream rout;  //result out for the .s file
   rout.open("res.s");
-  
+ 
+  //the single pointer to the current AR
+  map<char*, int> *AR;
+
   //exhaustively counter each type of quad entry 
   //file opening
   rout << "\t" << setw(8) << left << ".file " << "\"" << filename << "\"" << endl; 
@@ -37,6 +44,11 @@ void QuadArray :: genCode(char* filename){
       rout << "\t" << setw(8) << left << ".global " << q[i].res << endl;
       rout << "\t" << setw(8) << left << ".type " << q[i].res << ", @function" << endl;
       rout << q[i].res << ":" << endl;
+
+      //at this point look at the symbol table and create the AR
+      AR = (global.getNST(q[i].res))->createAR();
+      for (map<char*,int>::iterator it=AR->begin(); it!=AR->end(); ++it)
+          cout << it->first << " => " << it->second << '\n';
     }
   }
 

@@ -44,6 +44,12 @@ char* symboltable :: getValue(char* name){
   return st[no].value;
 }
 
+//get the nested table of an entry
+symboltable* symboltable :: getNST(char* name){
+  int no = lookup(name);
+  return st[no].nestedTable;
+}
+
 //simple update
 void symboltable :: update(char *name, char *type, int size, int offset){
   int no = lookup(name);
@@ -173,6 +179,21 @@ void symboltable :: genBreak(){
   st[last].value = NULL;
   last++;
 
+}
+
+//create AR
+map<char*, int>* symboltable :: createAR(){
+  map<char*, int>* AR = new map<char*, int>();
+
+  //starting from the item after the retVal
+  int i = 1;
+  //while name is not null => all the args
+  while(strcmp(st[i].name, "null") != 0){
+    //for now assuming only ints
+    AR->insert(pair<char*, int>(st[i].name, 8 + (i-1)*4));    
+    i++;
+  }
+  return AR;
 }
 
 //convert the opcode to string for pretty printing

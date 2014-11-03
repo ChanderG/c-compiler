@@ -1,6 +1,7 @@
 //File for global function prototypes and data structures
 #include<vector>
 #include<list>
+#include<map>
 
 //each row of the symbol table
 //type and value are encoded as strings
@@ -38,6 +39,8 @@ class symboltable{
   int getSize(char* name);
   //get the value of an entry
   char* getValue(char* name);
+  //get the nested table of an entry
+  symboltable* getNST(char* name);
 
   //going to set a pointer to the nested table if it exists and null else
   //meant to be used carefully
@@ -69,6 +72,9 @@ class symboltable{
 
   //get last offset from the symbol table
   int lastOffset();
+
+  //create AR
+  std::map<char*, int> *createAR();
 };
 
 struct ts_ {    // for type_specifier
