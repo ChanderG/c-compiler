@@ -20,6 +20,8 @@ The y.output file is created when the -v flag is used with debug option. The fil
 ###Issues
 **As it was primarily done for my university specifications(requirements and deadlines), the test files are a very bad examples in the phase 2. I really apologize for that and warn everyone to never use that kind of linear, single file, unorganized and "happy path only" testing approach.**
 
+
+As of now, declrations cannot be done with initial value from function calls.
 ###Build through:
 
 Starting phase 2: Parser generation

@@ -191,6 +191,9 @@ function_definition : {
 		      {
 		        //the required action for creating the function and associated symbol table has been moved to the last rule of direct_declarator.
 			//The declarator $2 consists of <main(int argc, char** argv)>
+
+			//Additionally create an empty line to distinguish between arguments and local variables
+                        current->genBreak(); 
 		      }
 		      //declaration_list_opt
 		      compound_statement_or_semicolon

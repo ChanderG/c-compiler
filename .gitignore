@@ -13,3 +13,4 @@ dist
 *.s
 *.asm
 static
+compiler

@@ -160,6 +160,21 @@ char* symboltable :: gentemp(){
   return tmp;
 }
 
+//enter a section break
+void symboltable :: genBreak(){
+  char* tmp = new char[5];
+  sprintf(tmp, "null");
+
+  //Assuming only integer temporaries
+  st[last].name = strdup(tmp);
+  st[last].type = strdup("null");
+  st[last].size = 0;
+  st[last].offset = st[last-1].offset + 0;
+  st[last].value = NULL;
+  last++;
+
+}
+
 //convert the opcode to string for pretty printing
 char* quad :: opToString(){
   char* opString = new char[6];

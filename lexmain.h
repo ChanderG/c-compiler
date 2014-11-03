@@ -64,6 +64,9 @@ class symboltable{
   //creates a new temporary entry and returns name
   char* gentemp();
 
+  //creates a section break inside the st
+  void genBreak();
+
   //get last offset from the symbol table
   int lastOffset();
 };
