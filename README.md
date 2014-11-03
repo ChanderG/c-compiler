@@ -59,3 +59,19 @@ cc -m32 res.s
 ```
 
 again creating a.out that is a runnable code.
+
+###Linking for I/O
+myl.c contains a simple library for I/O.
+
+First make the library:
+```
+make library
+```
+
+To use the library and link it correctly, run gcc with the generated "res.s" as follows:
+```
+cc -m32 res.s -L. -lmyl 
+```
+Note the order of the terms, putting the .c/.s file at the last will fail to compile.
+
+If the program is being compiled in the same folder, you don't have to include any header to use the functions.

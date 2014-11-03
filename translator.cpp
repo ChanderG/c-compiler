@@ -88,7 +88,6 @@ void QuadArray :: genCode(char* filename){
 	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << SP << ")" << endl; 
       }
       delete valMap;
-    
     }
     //else if(){}
     else {}

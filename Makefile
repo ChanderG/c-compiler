@@ -16,5 +16,11 @@ tac.o: lexmain.cpp y.tab.h lexmain.h
 	g++ -c lexmain.cpp -o tac.o $(CFLAGS)
 main.o: translator.cpp
 	g++ -c translator.cpp -o main.o $(CFLAGS)
+library: myl.o
+	ar -rcs libmyl.a myl.o
+myl.o: myl.c myl.h	
+	cc -Wall -m32 -c myl.c -g
 clean:
 	rm -rf dist lex.yy.c y.tab.h y.tab.c lex.yy.o y.tab.o tac.o main.o compiler y.output
+clean2:
+	rm myl.o libmyl.a

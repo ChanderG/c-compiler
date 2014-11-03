@@ -9,6 +9,7 @@ int addTwo(int a, int b){
 int main(){
   int a=3,b;
   b = addTwo(a, 3);
+  printi(b);
   return 0;
 }
 
