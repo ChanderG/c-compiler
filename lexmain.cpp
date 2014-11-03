@@ -187,15 +187,15 @@ void symboltable :: genBreak(){
 }
 
 //create AR
-map<char*, int>* symboltable :: createAR(){
-  map<char*, int>* AR = new map<char*, int>();
+map<string, int>* symboltable :: createAR(){
+  map<string, int>* AR = new map<string, int>();
 
   //starting from the item after the retVal
   int i = 1;
   //while name is not null => all the args
   while(strcmp(st[i].name, "null") != 0){
     //for now assuming only ints
-    AR->insert(pair<char*, int>(st[i].name, 8 + (i-1)*4));    
+    AR->insert(pair<string, int>(st[i].name, 8 + (i-1)*4));    
     i++;
   }
 
@@ -205,7 +205,7 @@ map<char*, int>* symboltable :: createAR(){
   while(strcmp(st[i].name, "null") != 0){
     //if not a temporary
     if(st[i].name[0] != '$'){
-      AR->insert(pair<char*, int>(st[i].name, k));    
+      AR->insert(pair<string, int>(st[i].name, k));    
       //assuming only int
       k -= 4;
     }
@@ -219,15 +219,15 @@ map<char*, int>* symboltable :: createAR(){
 
 //initial value setup
 //assuming only int now
-map<char*, int>* symboltable :: getInitialValues(){
-  map<char*, int>* valMap = new map<char*, int>();
+map<string, int>* symboltable :: getInitialValues(){
+  map<string, int>* valMap = new map<string, int>();
 
   int i = last-1;
   while(strcmp(st[i].name, "null") != 0){
     //if not a temporary
     if(st[i].name[0] != '$'){
       if(st[i].value != NULL)
-	valMap->insert(pair<char*, int>(st[i].name, atoi(st[i].value)));    
+	valMap->insert(pair<string, int>(st[i].name, atoi(st[i].value)));    
     }
     i--;
   }

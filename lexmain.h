@@ -79,11 +79,11 @@ class symboltable{
   int lastOffset();
 
   //create AR
-  std::map<char*, int> *createAR();
+  std::map<string, int> *createAR();
 
   //initial value setup
   //assuming only int now
-  std::map<char*, int> *getInitialValues();
+  std::map<string, int> *getInitialValues();
 };
 
 struct ts_ {    // for type_specifier

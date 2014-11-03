@@ -23,6 +23,7 @@ ofstream fout;   //for the .out file containing the TAC
 
 //several data structures built using map to ease translation
 #include<map>
+#include<string>
 
 //register and operation strings
 const char* BP = "%ebp";
@@ -36,7 +37,7 @@ void QuadArray :: genCode(char* filename){
   rout.open("res.s");
  
   //the single pointer to the current AR
-  map<char*, int> *AR;
+  map<string, int> *AR;
   char* currentFunction = NULL; //name of the current function
 
   //exhaustively counter each type of quad entry 
@@ -47,7 +48,7 @@ void QuadArray :: genCode(char* filename){
   int j,maxk;
   map<int, int> paramOffsets;  //for getting the offsets of each parameter from SP
   //for now the map is going to almost use only %eax
-  map<char*, char> tempReg;    // map from temporaries to registers
+  map<string, char> tempReg;    // map from temporaries to registers
 
   for(int i = 0;i < q.size();i++){
    
@@ -74,7 +75,7 @@ void QuadArray :: genCode(char* filename){
       //at this point look at the symbol table and create the AR
       AR = (global.getNST(currentFunction))->createAR();
       //printing to stdout for debugging
-      for (map<char*,int>::iterator it=AR->begin(); it!=AR->end(); ++it)
+      for (map<string,int>::iterator it=AR->begin(); it!=AR->end(); ++it)
           cout << it->first << " => " << it->second << '\n';
 
       
@@ -123,9 +124,9 @@ void QuadArray :: genCode(char* filename){
       rout << "\t" << setw(8) << left << "subl" << "$" << ss << ", " << SP << endl; 
 
       //may be also store some local variables that are initialized at declaration
-      map<char*,int>* valMap = global.getNST(currentFunction)->getInitialValues();          
+      map<string,int>* valMap = global.getNST(currentFunction)->getInitialValues();          
       //write the corresponding code statements
-      for (map<char*,int>::iterator it=valMap->begin(); it!=valMap->end(); ++it){
+      for (map<string,int>::iterator it=valMap->begin(); it!=valMap->end(); ++it){
 	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << SP << ")" << endl; 
       }
       delete valMap;
@@ -145,13 +146,14 @@ void QuadArray :: genCode(char* filename){
 	}
 	else{
           //enter into the mapping
-	  tempReg.insert(pair<char*,char>(q[i].res, 'a'));
+	  tempReg.insert(pair<string, char>(q[i].res, 'a'));
 	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
 	}
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp
-
+	cout << (tempReg.find(string(q[i].arg1)))->second;
+	rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
       }
       else{
 	//var = const
