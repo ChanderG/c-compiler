@@ -131,6 +131,7 @@ void QuadArray :: genCode(char* filename){
       }
       delete valMap;
     }
+    //next section**********************************************************************
     else if(q[i].op == OP_PARAM){
       if(q[i].res[0] == '$'){
 	//param is a temporary
@@ -147,9 +148,21 @@ void QuadArray :: genCode(char* filename){
 	rout << "\t" << setw(8) << left << "movl" << "$" << q[i].res << ", " << paramOffsets.find(i)->second << "(" << SP << ")" << endl;
       }
     }
+    //next section**********************************************************************
     else if(q[i].op == OP_CALL){
-       
+      rout << "\t" << setw(8) << left << "call" << q[i].arg1 << endl;   
+      tempReg.insert(pair<string, char>(q[i].res, 'a'));
     }
+    //next section**********************************************************************
+    else if(q[i].op == OP_RET){
+      if(q[i].res[0] != '$'){
+        rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl;
+      }
+      else{
+        //move the item from whatever register to %eax 
+      }
+    }
+    //next section**********************************************************************
     else if(q[i].op == OP_NULL){ // direct assignment 
 	//temp = const
       if(q[i].res[0] == '$'){
