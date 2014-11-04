@@ -75,3 +75,6 @@ cc -m32 res.s -L. -lmyl
 Note the order of the terms, putting the .c/.s file at the last will fail to compile.
 
 If the program is being compiled in the same folder, you don't have to include any header to use the functions.
+
+###Some additional comments
+As the project started out as a C project char* was extensively used. Now to simplify as more and more C++ features are being used, the migration to std::string is slowly being done. 

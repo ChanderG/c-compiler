@@ -90,15 +90,9 @@ void QuadArray :: genCode(char* filename){
     
       //everything is being done for integers only
 
-      //Go to the end of the section and come back o as to give the param of each call the right amount of offset
-      j = i+1;
-      while(q[j].op != OP_RET){
-        j++;
-      }
-      j -= 1;
       int k = 0;
       maxk = 0;
-      for(;j>i;j--){
+      for(j=i+1;q[j].op != OP_RET;j++){
         if(q[j].op == OP_CALL){ 
 	  maxk = (maxk > k)?maxk:k;
 	  k = 0;
@@ -127,7 +121,7 @@ void QuadArray :: genCode(char* filename){
       map<string,int>* valMap = global.getNST(currentFunction)->getInitialValues();          
       //write the corresponding code statements
       for (map<string,int>::iterator it=valMap->begin(); it!=valMap->end(); ++it){
-	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << SP << ")" << endl; 
+	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << BP << ")" << endl; 
       }
       delete valMap;
     }
