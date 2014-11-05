@@ -50,6 +50,8 @@ void QuadArray :: genCode(char* filename){
   //for now the map is going to almost use only %eax
   map<string, char> tempReg;    // map from temporaries to registers
 
+  char freeReg = 'a';
+
   for(int i = 0;i < q.size();i++){
    
     //function
@@ -57,6 +59,10 @@ void QuadArray :: genCode(char* filename){
 
       //clear existing offset map
       paramOffsets.clear();
+      //clear existing tempReg map
+      tempReg.clear();
+      //reset the freeReg variable 
+      freeReg = 'a';
  
       //check if some function was on previously - if so complete it
       if(currentFunction != NULL){
@@ -129,8 +135,10 @@ void QuadArray :: genCode(char* filename){
     else if(q[i].op == OP_PARAM){
       if(q[i].res[0] == '$'){
 	//param is a temporary
-	rout << "\t" << setw(8) << left << "movl" << "%eax, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
-        //paramOffsets.find(i)->second
+	rout << "\t" << setw(8) << left << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+	//assuming that this implies an use of the temporary -> so we 
+	tempReg.erase(q[i].res);
+	freeReg--;
       }
       else if(AR->count(q[i].res) != 0){
 	//if the param is a variable       
@@ -145,39 +153,52 @@ void QuadArray :: genCode(char* filename){
     //next section**********************************************************************
     else if(q[i].op == OP_CALL){
       rout << "\t" << setw(8) << left << "call" << q[i].arg1 << endl;   
-      tempReg.insert(pair<string, char>(q[i].res, 'a'));
+      tempReg.insert(pair<string, char>(string(q[i].res), 'a'));
+      if(freeReg == 'a')  freeReg++;
     }
     //next section**********************************************************************
     else if(q[i].op == OP_RET){
       if(q[i].res[0] != '$'){
+        //aka a variable
         rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl;
       }
       else{
-        //move the item from whatever register to %eax 
+        //aka a temporary
+        //move the item from whatever register to %eax if not already in eax
+	if((tempReg.find(q[i].res))->second != 'a'){
+        rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(q[i].res))->second << "x, " << "%eax" << endl;
+	}
       }
     }
     //next section**********************************************************************
     else if(q[i].op == OP_NULL){ // direct assignment 
 	//temp = const
       if(q[i].res[0] == '$'){
+        /*
 	if(tempReg.count(q[i].res) != 0){
 	  //already exists
 	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
 	}
-	else{
+	*/
+	//else{
           //enter into the mapping
-	  tempReg.insert(pair<string, char>(q[i].res, 'a'));
+	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
+	  freeReg++;  //the next register
 	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
-	}
+       //}
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp
 	rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
+	//assuming that this implies an use of the temporary -> so we 
+	tempReg.erase(q[i].arg1);
+	//problem here
+	freeReg--;
       }
       else{
 	//var = var
-        rout << "\t" << setw(8) << left << "movl" << (AR->find(string(q[i].arg1)))->second << "(" << BP << "), " << "%eax" << endl; 
-        rout << "\t" << setw(8) << left << "movl" << "%eax, " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl; 
+        rout << "\t" << setw(8) << left << "movl" << (AR->find(string(q[i].arg1)))->second << "(" << BP << "), " << "%e" << freeReg << "x" << endl; 
+        rout << "\t" << setw(8) << left << "movl" << "%e" << freeReg << "x, " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl; 
 
 	//var = const
 	//this category is actually never used
@@ -187,8 +208,9 @@ void QuadArray :: genCode(char* filename){
 	*/
       }
     }
+    //next section**********************************************************************
     else if(q[i].op == OP_PLUS){
-      //OP_PLUS
+      //one or more may be temporaries
     }
   }
 

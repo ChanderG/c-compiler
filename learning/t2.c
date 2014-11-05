@@ -2,7 +2,7 @@
 
 int addTwo(int a, int b){
   int c;
-  c = a;
+  c = 4 + 2;
   return c;
 }
 

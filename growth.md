@@ -179,3 +179,10 @@ The main thrust now is to move control to main. We may have to output the tac an
 
 ###After  Added var eq var exp
 To simplify matters, all temporaries are used with eax.The tempReg will be used to its full potential later on.
+
+###After Added testsuite and runner
+We need to manage the register allocation to temporaries properly.
+
+Now to do that: I am going to take the simplistic assumption that each temporary has one use. So in TAC that uses a temporary, I am going to remove it`s register allocation from the table.Simillarly the last register used is going to be stored in  global variable. And this is going to be assigned to the temporary.
+
+Note this has a problem -> when a if freed and b is not, the entire setup breaks.

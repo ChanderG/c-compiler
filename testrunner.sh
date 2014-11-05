@@ -10,10 +10,11 @@ do
 if [ -f "testsuite/t$n.c" ]
 then
 #run the compiler
+rm res.s
 echo "Runnng the compiler..."
 /lib64/ld-linux-x86-64.so.2 ./compiler testsuite/t$n.c 
 
-#mv res.s testsuite/res.s
+rm a.out
 
 cc -m32 res.s -L. -lmyl
 
