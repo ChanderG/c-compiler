@@ -210,7 +210,69 @@ void QuadArray :: genCode(char* filename){
     }
     //next section**********************************************************************
     else if(q[i].op == OP_PLUS){
-      //one or more may be temporaries
+      //there cannot be a constant involved by design 
+
+      //using addl defn of x86-32
+      char resReg;   //holds the result register
+      char opReg2;   //the operand 2 as the first operand is same as result
+
+      //examine the first operand
+      if(q[i].arg1[0] == '$'){
+        //temporary
+	resReg = (tempReg.find(q[i].arg1))->second;
+      }
+      else{
+        //variable
+	//=>load it in a temporary and set this new temp as the result
+	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+        resReg = freeReg; 
+	freeReg++;  
+      }
+
+      //examine the second operand
+      if(q[i].arg2[0] == '$'){
+        //temporary
+	opReg2 = (tempReg.find(q[i].arg2))->second;
+      }
+      else{
+        //variable
+	//=>load it in a temporary and set this new temp as the argument
+	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+        opReg2 = freeReg; 
+	freeReg++;  
+      }
+
+      //now the actual addition operation
+      rout << "\t" << setw(8) << left << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+      //freeReg--;
+    
+      //Now to move the result to the correct place
+      if(q[i].res[0] == '$'){
+        //the destination is a temporary
+	tempReg.insert(pair<string,char>(q[i].res,resReg));
+	//freeReg++;
+
+	//rout << "\t" << setw(8) << left << "movl" << "%e" << resReg << "x" << ", %e" << (tempReg.find(q[i].res))->second << "x" << endl;
+      }
+      else{
+        //the destination is a variable
+	rout << "\t" << setw(8) << left << "movl" << "%e" << resReg << "x" << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
+
+      }
+
+      //we can afford to let both go away
+      //ideally freeReg is decremented twice
+      freeReg--;
+
+      //instead 
+      //freeReg = 'b';
+
+      //These are the cases handled above
+
+      //both temporary
+      //only one temporary and other variable
+      //both variable
+
     }
   }
 
