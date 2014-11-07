@@ -29,6 +29,7 @@ ofstream fout;   //for the .out file containing the TAC
 const char* BP = "%ebp";
 const char* SP = "%esp";
 
+#define ROUT rout << "\t" << setw(8) << left
 
 //main function for the m/c dependent translation - here x86
 void QuadArray :: genCode(char* filename){
@@ -42,7 +43,7 @@ void QuadArray :: genCode(char* filename){
 
   //exhaustively counter each type of quad entry 
   //file opening
-  rout << "\t" << setw(8) << left << ".file " << "\"" << filename << "\"" << endl; 
+  ROUT << ".file " << "\"" << filename << "\"" << endl; 
   rout << "\t" << ".text" << endl;
 
   int j,maxk;
@@ -66,14 +67,14 @@ void QuadArray :: genCode(char* filename){
  
       //check if some function was on previously - if so complete it
       if(currentFunction != NULL){
-	rout << "\t" << setw(8) << left << "leave" << endl;
-	rout << "\t" << setw(8) << left << "ret" << endl;
-	rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
+	ROUT << "leave" << endl;
+	ROUT << "ret" << endl;
+	ROUT << ".size " << currentFunction << ", .-" << currentFunction << endl;
       } 
 
       //function start lines
-      rout << "\t" << setw(8) << left << ".globl " << q[i].res << endl;
-      rout << "\t" << setw(8) << left << ".type " << q[i].res << ", @function" << endl;
+      ROUT << ".globl " << q[i].res << endl;
+      ROUT << ".type " << q[i].res << ", @function" << endl;
       rout << q[i].res << ":" << endl;
 
       currentFunction = q[i].res;
@@ -86,8 +87,8 @@ void QuadArray :: genCode(char* filename){
 
       
       //now for the standard function opening
-      rout << "\t" << setw(8) << left << "pushl" << BP << endl; 
-      rout << "\t" << setw(8) << left << "movl" << SP << ", " << BP << endl; 
+      ROUT << "pushl" << BP << endl; 
+      ROUT << "movl" << SP << ", " << BP << endl; 
 
       //allocating space in the stack for the local variables
       //not very clear - going to go with additional 8 memory after that actually required
@@ -121,13 +122,13 @@ void QuadArray :: genCode(char* filename){
       //maximum space required by any function call in this section
       ss += maxk;
 
-      rout << "\t" << setw(8) << left << "subl" << "$" << ss << ", " << SP << endl; 
+      ROUT << "subl" << "$" << ss << ", " << SP << endl; 
 
       //may be also store some local variables that are initialized at declaration
       map<string,int>* valMap = global.getNST(currentFunction)->getInitialValues();          
       //write the corresponding code statements
       for (map<string,int>::iterator it=valMap->begin(); it!=valMap->end(); ++it){
-	rout << "\t" << setw(8) << left << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << BP << ")" << endl; 
+	ROUT << "movl" << "$" << it->second << ", " << AR->find(it->first)->second << "(" << BP << ")" << endl; 
       }
       delete valMap;
     }
@@ -135,24 +136,24 @@ void QuadArray :: genCode(char* filename){
     else if(q[i].op == OP_PARAM){
       if(q[i].res[0] == '$'){
 	//param is a temporary
-	rout << "\t" << setw(8) << left << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+	ROUT << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
 	//assuming that this implies an use of the temporary -> so we 
 	tempReg.erase(q[i].res);
 	freeReg--;
       }
       else if(AR->count(q[i].res) != 0){
 	//if the param is a variable       
-	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl; 
-	rout << "\t" << setw(8) << left << "movl" << "%eax, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+	ROUT << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl; 
+	ROUT << "movl" << "%eax, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
       }
       else{
 	//param is a constant
-	rout << "\t" << setw(8) << left << "movl" << "$" << q[i].res << ", " << paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+	ROUT << "movl" << "$" << q[i].res << ", " << paramOffsets.find(i)->second << "(" << SP << ")" << endl;
       }
     }
     //next section**********************************************************************
     else if(q[i].op == OP_CALL){
-      rout << "\t" << setw(8) << left << "call" << q[i].arg1 << endl;   
+      ROUT << "call" << q[i].arg1 << endl;   
       tempReg.insert(pair<string, char>(string(q[i].res), 'a'));
       if(freeReg == 'a')  freeReg++;
     }
@@ -160,13 +161,13 @@ void QuadArray :: genCode(char* filename){
     else if(q[i].op == OP_RET){
       if(q[i].res[0] != '$'){
         //aka a variable
-        rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl;
+        ROUT << "movl" << (AR->find(q[i].res))->second << "(" << BP << "), " << "%eax" << endl;
       }
       else{
         //aka a temporary
         //move the item from whatever register to %eax if not already in eax
 	if((tempReg.find(q[i].res))->second != 'a'){
-        rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(q[i].res))->second << "x, " << "%eax" << endl;
+        ROUT << "movl" << "%e" << (tempReg.find(q[i].res))->second << "x, " << "%eax" << endl;
 	}
       }
     }
@@ -177,19 +178,19 @@ void QuadArray :: genCode(char* filename){
         /*
 	if(tempReg.count(q[i].res) != 0){
 	  //already exists
-	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	  ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
 	}
 	*/
 	//else{
           //enter into the mapping
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
-	  rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	  ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
        //}
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp
-	rout << "\t" << setw(8) << left << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
+	ROUT << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
 	//assuming that this implies an use of the temporary -> so we 
 	tempReg.erase(q[i].arg1);
 	//problem here
@@ -197,14 +198,14 @@ void QuadArray :: genCode(char* filename){
       }
       else{
 	//var = var
-        rout << "\t" << setw(8) << left << "movl" << (AR->find(string(q[i].arg1)))->second << "(" << BP << "), " << "%e" << freeReg << "x" << endl; 
-        rout << "\t" << setw(8) << left << "movl" << "%e" << freeReg << "x, " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl; 
+        ROUT << "movl" << (AR->find(string(q[i].arg1)))->second << "(" << BP << "), " << "%e" << freeReg << "x" << endl; 
+        ROUT << "movl" << "%e" << freeReg << "x, " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl; 
 
 	//var = const
 	//this category is actually never used
 	//maybe needed when code is optimized
 	/*
-	rout << "\t" << setw(8) << left << "movl" << "$" << q[i].arg1 << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
+	ROUT << "movl" << "$" << q[i].arg1 << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
 	*/
       }
     }
@@ -224,7 +225,7 @@ void QuadArray :: genCode(char* filename){
       else{
         //variable
 	//=>load it in a temporary and set this new temp as the result
-	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+	ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         resReg = freeReg; 
 	freeReg++;  
       }
@@ -237,13 +238,13 @@ void QuadArray :: genCode(char* filename){
       else{
         //variable
 	//=>load it in a temporary and set this new temp as the argument
-	rout << "\t" << setw(8) << left << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+	ROUT << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         opReg2 = freeReg; 
 	freeReg++;  
       }
 
       //now the actual addition operation
-      rout << "\t" << setw(8) << left << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+      ROUT << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
       //freeReg--;
     
       //Now to move the result to the correct place
@@ -252,11 +253,11 @@ void QuadArray :: genCode(char* filename){
 	tempReg.insert(pair<string,char>(q[i].res,resReg));
 	//freeReg++;
 
-	//rout << "\t" << setw(8) << left << "movl" << "%e" << resReg << "x" << ", %e" << (tempReg.find(q[i].res))->second << "x" << endl;
+	//ROUT << "movl" << "%e" << resReg << "x" << ", %e" << (tempReg.find(q[i].res))->second << "x" << endl;
       }
       else{
         //the destination is a variable
-	rout << "\t" << setw(8) << left << "movl" << "%e" << resReg << "x" << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
+	ROUT << "movl" << "%e" << resReg << "x" << ", " << (AR->find(q[i].res))->second << "(" << BP << ")" << endl;
 
       }
 
@@ -277,12 +278,12 @@ void QuadArray :: genCode(char* filename){
   }
 
   //the conclusion for the last function
-  rout << "\t" << setw(8) << left << "leave" << endl;
-  rout << "\t" << setw(8) << left << "ret" << endl;
-  rout << "\t" << setw(8) << left << ".size " << currentFunction << ", .-" << currentFunction << endl;
+  ROUT << "leave" << endl;
+  ROUT << "ret" << endl;
+  ROUT << ".size " << currentFunction << ", .-" << currentFunction << endl;
 
   //end of file
-  rout << "\t" << setw(8) << left << ".ident" << "\"Chander G : c compiler\"" << endl;
+  ROUT << ".ident" << "\"Chander G : c compiler\"" << endl;
 
   rout.close();
   return;
