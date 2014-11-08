@@ -2,6 +2,7 @@
 using namespace std;
 
 #include<cstring>
+#include<cstdlib> //for atoi
 
 #include"lexmain.h"
 #include"y.tab.h"
@@ -55,6 +56,7 @@ void QuadArray :: genCode(char* filename){
   //we observe that strings are always involved in assignments to temporaries
   //map from quad number to the string label
   map<int, int> stringAssignments;
+  //label values
   int str = 0; 
 
   ROUT << ".section";
@@ -91,9 +93,34 @@ void QuadArray :: genCode(char* filename){
     } 
   }
 
-  rout << "\t" << ".text" << endl;
+  //to handle labels
+  //go throught the entire qa and map destination of each to a label
+  //only applicable for the jmp type instructions
+  map<int, int> jumpDestination;
+
+  //have another map for target labels generation
+  map<int, int> labelValue;
+
+  //pre pass for this purpose
   for(int i = 0;i < q.size();i++){
-   
+    if((q[i].op == OP_GOTO) || (q[i].op == OP_LT) || (q[i].op == OP_GT) || (q[i].op == OP_LTE) || (q[i].op == OP_GTE) || (q[i].op == OP_E) || (q[i].op == OP_NE)){
+      int target = atoi(q[i].res);
+      jumpDestination.insert(pair<int,int>(i, str));
+      labelValue.insert(pair<int,int>(target, str));
+      str++;
+    }
+  }
+
+  rout << "\t" << ".text" << endl;
+
+  for(int i = 0;i < q.size();i++){
+  
+    //label generation
+    if(labelValue.count(i) != 0){
+      rout << ".L" << (labelValue.find(i))->second << ":" << endl;
+    }
+
+  
     //function
     if(q[i].op == OP_SEC){
 
@@ -172,7 +199,6 @@ void QuadArray :: genCode(char* filename){
       }
       delete valMap;
     }
-    //next section**********************************************************************
     else if(q[i].op == OP_PARAM){
       if(q[i].res[0] == '$'){
 	//param is a temporary
@@ -202,13 +228,11 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << "$" << q[i].res << ", " << paramOffsets.find(i)->second << "(" << SP << ")" << endl;
       }
     }
-    //next section**********************************************************************
     else if(q[i].op == OP_CALL){
       ROUT << "call" << q[i].arg1 << endl;   
       tempReg.insert(pair<string, char>(string(q[i].res), 'a'));
       if(freeReg == 'a')  freeReg++;
     }
-    //next section**********************************************************************
     else if(q[i].op == OP_RET){
       if(q[i].res[0] != '$'){
         //aka a variable
@@ -222,7 +246,6 @@ void QuadArray :: genCode(char* filename){
 	}
       }
     }
-    //next section**********************************************************************
     else if(q[i].op == OP_NULL){ // direct assignment 
 	//temp = const
       if(q[i].res[0] == '$'){
@@ -256,7 +279,10 @@ void QuadArray :: genCode(char* filename){
 	*/
       }
     }
-    //next section**********************************************************************
+    else if(q[i].op == OP_STAR){  
+      //for the pointers
+
+    }
     else if(q[i].op == OP_PLUS || q[i].op == OP_MINUS || q[i].op == OP_MULT){
       //there cannot be a constant involved by design 
 
@@ -325,7 +351,6 @@ void QuadArray :: genCode(char* filename){
       //both variable
 
     }
-    //next section**********************************************************************
     else if(q[i].op == OP_AND){
       //pointer address assignment
       //assuming the rhs will be a variable
@@ -334,7 +359,68 @@ void QuadArray :: genCode(char* filename){
       freeReg++;
       ROUT << "leal" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << (tempReg.find(q[i].res))->second << "x" << endl;
     }
+    else if(q[i].op == OP_GOTO){
+      ROUT << "jmp" << ".L" << (jumpDestination.find(i))->second << endl;
+    }
+    else if((q[i].op == OP_LT) || (q[i].op == OP_GT) || (q[i].op == OP_LTE) || (q[i].op == OP_GTE) || (q[i].op == OP_E)|| (q[i].op == OP_NE)){
+
+      //Logic from the ADD section copied verbatim
+
+      //there cannot be a constant involved by design 
+      //using addl defn of x86-32
+      char resReg;   //holds the result register
+      char opReg2;   //the operand 2 as the first operand is same as result
+
+      //examine the first operand
+      if(q[i].arg1[0] == '$'){
+        //temporary
+	resReg = (tempReg.find(q[i].arg1))->second;
+      }
+      else{
+        //variable
+	//=>load it in a temporary and set this new temp as the result
+	ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+        resReg = freeReg; 
+	freeReg++;  
+      }
+
+      //examine the second operand
+      if(q[i].arg2[0] == '$'){
+        //temporary
+	opReg2 = (tempReg.find(q[i].arg2))->second;
+      }
+      else{
+        //variable
+	//=>load it in a temporary and set this new temp as the argument
+	ROUT << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
+        opReg2 = freeReg; 
+	freeReg++;  
+      }
+
+      //for all this do the same compl calculation
+      ROUT << "cmpl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl; 
+      freeReg--;
+      freeReg--;
+ 
+      //and then the specific instr
+      string instr;
+      switch(q[i].op){
+          case OP_E: instr = "je";break;
+          case OP_NE: instr = "jne";break;
+          case OP_LT: instr = "jl";break;
+          case OP_GT: instr = "jg";break;
+          case OP_LTE: instr = "jle";break;
+          case OP_GTE: instr = "jge";break;
+          default: break;
+      }
+      ROUT << instr << ".L" << (jumpDestination.find(i))->second << endl;
+    }
+    else{
+
+    }
   }
+
+//    if((q[i].op == OP_GOTO) || (op == OP_LT) || (op == OP_GT) || (op == OP_LTE) || (op == OP_GTE)){
 
   //the conclusion for the last function
   ROUT << "leave" << endl;

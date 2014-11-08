@@ -193,3 +193,9 @@ By observation, all strings come before params with them. There is really no oth
 
 ###After Added string printing capability
 Wanted to add integer input. But this needs pointers.
+
+###After  Improved readi functionality
+Need some rewrite in terms of pointer setting. May need to see gcc`s route and may even need to change the tac generation.
+
+Going to focus on labels now.
+For goto and the conditional version.

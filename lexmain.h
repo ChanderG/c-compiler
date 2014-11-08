@@ -1,5 +1,6 @@
 //File for global function prototypes and data structures
 #include<vector>
+#include<string>
 #include<list>
 #include<map>
 
@@ -82,11 +83,11 @@ class symboltable{
   int lastOffset();
 
   //create AR
-  std::map<string, int> *createAR();
+  std::map<std::string, int> *createAR();
 
   //initial value setup
   //assuming only int now
-  std::map<string, int> *getInitialValues();
+  std::map<std::string, int> *getInitialValues();
 };
 
 struct ts_ {    // for type_specifier

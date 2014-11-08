@@ -6,5 +6,7 @@ int main()
   p = &a;
   b = readi(p); 
   printi(b);
+  *p = 10;
+  printi(a);
   return 0;
 }
