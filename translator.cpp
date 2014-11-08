@@ -44,7 +44,6 @@ void QuadArray :: genCode(char* filename){
   //exhaustively counter each type of quad entry 
   //file opening
   ROUT << ".file " << "\"" << filename << "\"" << endl; 
-  rout << "\t" << ".text" << endl;
 
   int j,maxk;
   map<int, int> paramOffsets;  //for getting the offsets of each parameter from SP
@@ -53,6 +52,46 @@ void QuadArray :: genCode(char* filename){
 
   char freeReg = 'a';
 
+  //we observe that strings are always involved in assignments to temporaries
+  //map from quad number to the string label
+  map<int, int> stringAssignments;
+  int str = 0; 
+
+  ROUT << ".section";
+  ROUT << ".rodata" << endl;
+
+  //points to current symbol table
+  symboltable* c = &global; 
+
+  //some what brute force, but simple
+  for(int i = 0;i < q.size();i++){
+    if(q[i].op == OP_SEC){
+      //going into new function
+      c = global.getNST(q[i].res);
+  
+    }
+  
+
+    if(q[i].op == OP_NULL){
+      int j = 0;
+      //if the item exists in the symbol table already
+      //that is this
+      if(c->isThere(q[i].arg1)) continue;
+      for(;q[i].arg1[j] != '\0';j++){ 
+	if(isdigit(q[i].arg1[j]) || q[i].arg1[j] == '.' || q[i].arg1[j] == '-');
+	else break;
+      }
+      if(q[i].arg1[j] != '\0'){
+        //indeed a string
+	rout << ".LC" << str << ":" << endl;
+	ROUT << ".string" << q[i].arg1 << endl;
+        stringAssignments.insert(pair<int,int>(i,str)); 
+	str++;
+      }
+    } 
+  }
+
+  rout << "\t" << ".text" << endl;
   for(int i = 0;i < q.size();i++){
    
     //function
@@ -137,10 +176,21 @@ void QuadArray :: genCode(char* filename){
     else if(q[i].op == OP_PARAM){
       if(q[i].res[0] == '$'){
 	//param is a temporary
-	ROUT << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
-	//assuming that this implies an use of the temporary -> so we 
-	tempReg.erase(q[i].res);
-	freeReg--;
+	//hopefully this assumption holds
+
+        //the map is from quads that get assigned with the string
+	//this param is however the next instruction
+
+	if(stringAssignments.count(i-1) != 0){
+	  //if the const is a string
+          ROUT << "movl" << "$.LC" << (stringAssignments.find(i))->second << ", (" << SP << ")" << endl; 
+	}
+	else{
+	  ROUT << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;
+	  //assuming that this implies an use of the temporary -> so we 
+	  tempReg.erase(q[i].res);
+	  freeReg--;
+	}
       }
       else if(AR->count(q[i].res) != 0){
 	//if the param is a variable       
@@ -176,18 +226,14 @@ void QuadArray :: genCode(char* filename){
     else if(q[i].op == OP_NULL){ // direct assignment 
 	//temp = const
       if(q[i].res[0] == '$'){
-        /*
-	if(tempReg.count(q[i].res) != 0){
-	  //already exists
-	  ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
-	}
-	*/
-	//else{
+        //do nothing if it is a string
+	if(stringAssignments.count(i) != 0){ }
+	else{
           //enter into the mapping
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
 	  ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
-       //}
+       }
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp

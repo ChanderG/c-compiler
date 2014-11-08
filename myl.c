@@ -1,6 +1,6 @@
 //ChanderG - basic I/O functions 
 #include "myl.h"
-#define BUFF 20
+#define BUFF 50
 
 int printi(int n){
   char buff[BUFF], zero='0';

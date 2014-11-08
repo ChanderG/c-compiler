@@ -36,6 +36,9 @@ class symboltable{
   //given name of variable, the entry index is returned
   int lookup(char *name);         
 
+  //return 1 if name exists in the ST; 0 else 
+  int isThere(char* name);
+
   //get the type of the name entry 
   char* getType(char* name);
   //get the size of an entry

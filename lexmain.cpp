@@ -28,6 +28,15 @@ int symboltable :: lookup(char *name){
   return last-1; 
 }
 
+//return 1 if name exists in the ST; 0 else 
+int symboltable :: isThere(char* name){
+  for(int i = 0;i< last;i++){
+    if(strcmp(st[i].name, name) == 0)
+      return 1;
+  }
+  return 0;
+}
+
 char* symboltable :: getType(char* name){
   int no = lookup(name);
   return st[no].type;

@@ -186,3 +186,7 @@ We need to manage the register allocation to temporaries properly.
 Now to do that: I am going to take the simplistic assumption that each temporary has one use. So in TAC that uses a temporary, I am going to remove it`s register allocation from the table.Simillarly the last register used is going to be stored in  global variable. And this is going to be assigned to the temporary.
 
 Note this has a problem -> when a if freed and b is not, the entire setup breaks.
+
+###After Multiplication added
+Adding Strings.
+By observation, all strings come before params with them. There is really no other use for them.
