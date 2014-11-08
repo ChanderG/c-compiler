@@ -1,9 +1,8 @@
 int main(){
   int i = 10;
-  do{  
+  while(i > 0){
     prints("Hello\n");
     i--;
   }
-  while(i > 0);
   return 0;
 }

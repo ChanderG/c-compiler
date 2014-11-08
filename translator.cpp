@@ -216,6 +216,7 @@ void QuadArray :: genCode(char* filename){
 	  //assuming that this implies an use of the temporary -> so we 
 	  tempReg.erase(q[i].res);
 	  freeReg--;
+	  if(freeReg < 'a') freeReg = 'a';
 	}
       }
       else if(AR->count(q[i].res) != 0){
@@ -255,6 +256,7 @@ void QuadArray :: genCode(char* filename){
           //temp = var 
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
+	  if(freeReg == 'e') freeReg = 'a';
 	  ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << tempReg.find(q[i].res)->second << "x" << endl;
 	}
 	else{
@@ -272,6 +274,7 @@ void QuadArray :: genCode(char* filename){
 	tempReg.erase(q[i].arg1);
 	//problem here
 	freeReg--;
+	  if(freeReg < 'a') freeReg = 'a';
       }
       else{
 	//var = var
@@ -308,6 +311,7 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         resReg = freeReg; 
 	freeReg++;  
+	  if(freeReg == 'e') freeReg = 'a';
       }
 
       //examine the second operand
@@ -320,6 +324,7 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << "$" <<  q[i].arg2 << ", %e" << freeReg  << "x" << endl;
         opReg2 = freeReg; 
 	freeReg++;
+	  if(freeReg == 'e') freeReg = 'a';
       }
       else{
         //variable
@@ -327,6 +332,7 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         opReg2 = freeReg; 
 	freeReg++;  
+	  if(freeReg == 'e') freeReg = 'a';
       }
 
       //now the actual operation
@@ -356,6 +362,7 @@ void QuadArray :: genCode(char* filename){
       //we can afford to let both go away
       //ideally freeReg is decremented twice
       freeReg--;
+	  if(freeReg < 'a') freeReg = 'a';
 
       //These are the cases handled above
 
@@ -370,6 +377,7 @@ void QuadArray :: genCode(char* filename){
 
       tempReg.insert(pair<string, char>(q[i].res, freeReg));
       freeReg++;
+	  if(freeReg == 'e') freeReg = 'a';
       ROUT << "leal" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << (tempReg.find(q[i].res))->second << "x" << endl;
     }
     else if(q[i].op == OP_GOTO){
@@ -395,6 +403,7 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         resReg = freeReg; 
 	freeReg++;  
+	  if(freeReg == 'e') freeReg = 'a';
       }
 
       //examine the second operand
@@ -408,12 +417,14 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "movl" << (AR->find(q[i].arg2))->second << "(" << BP << "), %e" << freeReg  << "x" << endl;
         opReg2 = freeReg; 
 	freeReg++;  
+	  if(freeReg == 'e') freeReg = 'a';
       }
 
       //for all this do the same compl calculation
       ROUT << "cmpl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl; 
       freeReg--;
       freeReg--;
+	  if(freeReg < 'a') freeReg = 'a';
  
       //and then the specific instr
       string instr;
