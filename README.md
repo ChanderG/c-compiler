@@ -78,3 +78,6 @@ If the program is being compiled in the same folder, you don't have to include a
 
 ###Some additional comments
 As the project started out as a C project char* was extensively used. Now to simplify as more and more C++ features are being used, the migration to std::string is slowly being done. 
+
+###Problems in the Testrunner
+As the programs being fed in use a custom library, they do not accept pipelined input correctly.While this may be rectified later on, for now to test IO, the only way is the manual way.

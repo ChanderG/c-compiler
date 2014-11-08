@@ -183,7 +183,7 @@ void QuadArray :: genCode(char* filename){
 
 	if(stringAssignments.count(i-1) != 0){
 	  //if the const is a string
-          ROUT << "movl" << "$.LC" << (stringAssignments.find(i))->second << ", (" << SP << ")" << endl; 
+          ROUT << "movl" << "$.LC" << (stringAssignments.find(i-1))->second << ", (" << SP << ")" << endl; 
 	}
 	else{
 	  ROUT << "movl" << "%e" << tempReg.find(q[i].res)->second << "x, " <<  paramOffsets.find(i)->second << "(" << SP << ")" << endl;

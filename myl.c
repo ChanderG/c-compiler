@@ -75,7 +75,8 @@ int readi(int *eP){  // *eP is for error, if the input is not an integer
   char zero = '0';
 
   for(;buff[i] != '\0';i++){
-    if(buff[i] == '\n') continue;
+    //if(buff[i] == '\n') continue;
+    if(buff[i] == '\n') break;
     dig = buff[i] - zero;
     if((dig < 0) || (dig > 9)){
       //error case  ERR = 1
