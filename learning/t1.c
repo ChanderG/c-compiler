@@ -8,7 +8,9 @@ int multTwo(int a, int b){
 
 int main(){
   int a,b,c;
-  a = 3;b = 3;
+  int *pa,*pb;
+  a = readi(pa);
+  b = readi(pb);
   c = multTwo(a,b);
   printi(c);
   return 0;

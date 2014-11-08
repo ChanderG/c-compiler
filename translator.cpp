@@ -325,6 +325,15 @@ void QuadArray :: genCode(char* filename){
       //both variable
 
     }
+    //next section**********************************************************************
+    else if(q[i].op == OP_AND){
+      //pointer address assignment
+      //assuming the rhs will be a variable
+
+      tempReg.insert(pair<string, char>(q[i].res, freeReg));
+      freeReg++;
+      ROUT << "leal" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << (tempReg.find(q[i].res))->second << "x" << endl;
+    }
   }
 
   //the conclusion for the last function

@@ -190,3 +190,6 @@ Note this has a problem -> when a if freed and b is not, the entire setup breaks
 ###After Multiplication added
 Adding Strings.
 By observation, all strings come before params with them. There is really no other use for them.
+
+###After Added string printing capability
+Wanted to add integer input. But this needs pointers.

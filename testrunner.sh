@@ -19,8 +19,14 @@ rm a.out
 
 cc -m32 res.s -L. -lmyl
 
-/lib/ld-linux.so.2 ./a.out > testsuite/temp.txt
-
+#some tests need input and output
+if [ -f "testsuite/i$n.txt" ]
+then
+  /lib/ld-linux.so.2 ./a.out < testsuite/i$n.txt  > testsuite/temp.txt
+else
+  /lib/ld-linux.so.2 ./a.out > testsuite/temp.txt
+  
+fi
 
 # final version : with only yes/no response
 if diff -q testsuite/temp.txt testsuite/res$n.txt
