@@ -199,3 +199,8 @@ Need some rewrite in terms of pointer setting. May need to see gcc`s route and m
 
 Going to focus on labels now.
 For goto and the conditional version.
+
+###After Gotos handled; if tested thoroughly
+Bug found. Increment is not handled correctly.
+
+The quad entry : i = i + 1, messes up.

@@ -251,7 +251,14 @@ void QuadArray :: genCode(char* filename){
       if(q[i].res[0] == '$'){
         //do nothing if it is a string
 	if(stringAssignments.count(i) != 0){ }
+	else if(AR->count(q[i].arg1) != 0){
+          //temp = var 
+	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
+	  freeReg++;  //the next register
+	  ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	}
 	else{
+	  //temp = const
           //enter into the mapping
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
@@ -307,6 +314,12 @@ void QuadArray :: genCode(char* filename){
       if(q[i].arg2[0] == '$'){
         //temporary
 	opReg2 = (tempReg.find(q[i].arg2))->second;
+      }
+      else if(AR->count(q[i].arg2) == 0){
+        //constant -> in case of inc and dec
+	ROUT << "movl" << "$" <<  q[i].arg2 << ", %e" << freeReg  << "x" << endl;
+        opReg2 = freeReg; 
+	freeReg++;
       }
       else{
         //variable
