@@ -211,7 +211,7 @@ void QuadArray :: genCode(char* filename){
       }
     }
     //next section**********************************************************************
-    else if(q[i].op == OP_PLUS || q[i].op == OP_MINUS){
+    else if(q[i].op == OP_PLUS || q[i].op == OP_MINUS || q[i].op == OP_MULT){
       //there cannot be a constant involved by design 
 
       //using addl defn of x86-32
@@ -249,6 +249,8 @@ void QuadArray :: genCode(char* filename){
 	ROUT << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
       else if(q[i].op == OP_MINUS)
 	ROUT << "subl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+      else if(q[i].op == OP_MULT)
+	ROUT << "imull" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
 
       //freeReg--;
     
