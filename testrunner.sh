@@ -3,6 +3,7 @@
 #This is a simple testrunner script to take all files in "testsuite" folder and run it against the code. It then compares the result with the preset result and prints match/fail.
 
 #compile the compiler
+echo "Creating the compiler....."
 make
 
 for ((n = 0;;n++))

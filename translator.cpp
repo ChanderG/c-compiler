@@ -82,9 +82,10 @@ void QuadArray :: genCode(char* filename){
       //at this point look at the symbol table and create the AR
       AR = (global.getNST(currentFunction))->createAR();
       //printing to stdout for debugging
+      /*
       for (map<string,int>::iterator it=AR->begin(); it!=AR->end(); ++it)
           cout << it->first << " => " << it->second << '\n';
-
+      */
       
       //now for the standard function opening
       ROUT << "pushl" << BP << endl; 
@@ -210,7 +211,7 @@ void QuadArray :: genCode(char* filename){
       }
     }
     //next section**********************************************************************
-    else if(q[i].op == OP_PLUS){
+    else if(q[i].op == OP_PLUS || q[i].op == OP_MINUS){
       //there cannot be a constant involved by design 
 
       //using addl defn of x86-32
@@ -243,8 +244,12 @@ void QuadArray :: genCode(char* filename){
 	freeReg++;  
       }
 
-      //now the actual addition operation
-      ROUT << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+      //now the actual operation
+      if(q[i].op == OP_PLUS)
+	ROUT << "addl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+      else if(q[i].op == OP_MINUS)
+	ROUT << "subl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl;
+
       //freeReg--;
     
       //Now to move the result to the correct place
@@ -264,9 +269,6 @@ void QuadArray :: genCode(char* filename){
       //we can afford to let both go away
       //ideally freeReg is decremented twice
       freeReg--;
-
-      //instead 
-      //freeReg = 'b';
 
       //These are the cases handled above
 
