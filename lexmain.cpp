@@ -214,9 +214,11 @@ map<string, int>* symboltable :: createAR(){
   while(strcmp(st[i].name, "null") != 0){
     //if not a temporary
     if(st[i].name[0] != '$'){
+      k -= st[i].size;
       AR->insert(pair<string, int>(st[i].name, k));    
       //assuming only int
-      k -= 4;
+      //k -= 4;
+      //get size from the ST
     }
     i--;
   }

@@ -10,8 +10,5 @@ int main()
   p[b] = a;
   printi(p[b]);
   printi(b);
-  a = 3;
-  a = p[b];
-  printi(a);
   return 0;
 }

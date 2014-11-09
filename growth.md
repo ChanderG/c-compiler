@@ -210,3 +210,6 @@ Facing pointers.
 Idea is to first for the temp = pointer quad face simillarly.
 Then change the assignment section to check for pointer links in temporaries.
 Act differently for accessing and assignment.
+
+###After Added pointer assignment
+Added arrays access and assignment.Works only for single dimension arrays.
