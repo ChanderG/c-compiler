@@ -25,6 +25,7 @@ ofstream fout;   //for the .out file containing the TAC
 //several data structures built using map to ease translation
 #include<map>
 #include<string>
+#include<set>
 
 //register and operation strings
 const char* BP = "%ebp";
@@ -110,6 +111,9 @@ void QuadArray :: genCode(char* filename){
       str++;
     }
   }
+
+  //list of pointers expression temporaries
+  set<int> tempPointers;
 
   rout << "\t" << ".text" << endl;
 
@@ -269,11 +273,17 @@ void QuadArray :: genCode(char* filename){
       }
       else if(q[i].arg1[0] == '$'){
 	//var = temp
-	ROUT << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
-	//assuming that this implies an use of the temporary -> so we 
-	tempReg.erase(q[i].arg1);
-	//problem here
-	freeReg--;
+	if(tempPointers.count(q[i].arg1[2]) != 0){
+          //var  = temp when the temp is pointer
+	  ROUT << "movl" << "(%e" << (tempReg.find(q[i].arg1))->second << "x), %e" << (tempReg.find(q[i].arg1))->second << "x" << endl;
+	  //after this additional calaulation continue with same logic
+	}
+	  //var = temp ordinary case
+	  ROUT << "movl" << "%e" << (tempReg.find(string(q[i].arg1)))->second << "x" <<  ", " << (AR->find(string(q[i].res)))->second << "(" << BP << ")" << endl;
+	  //assuming that this implies an use of the temporary -> so we 
+	  tempReg.erase(q[i].arg1);
+	  //problem here
+	  freeReg--;
 	  if(freeReg < 'a') freeReg = 'a';
       }
       else{
@@ -290,8 +300,14 @@ void QuadArray :: genCode(char* filename){
       }
     }
     else if(q[i].op == OP_STAR){  
-      //for the pointers
-
+      //for the pointers start quad
+      //move the pointer value to the temporary
+      ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg << "x" << endl;
+      tempReg.insert(pair<string, char>(q[i].res, freeReg));
+      freeReg++;
+      if(freeReg == 'e') freeReg = 'a';
+      //also add it to the list of temporaries involved in a pointer expression
+      tempPointers.insert(q[i].res[2]);
     }
     else if(q[i].op == OP_PLUS || q[i].op == OP_MINUS || q[i].op == OP_MULT){
       //there cannot be a constant involved by design 

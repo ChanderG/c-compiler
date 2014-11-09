@@ -204,3 +204,9 @@ For goto and the conditional version.
 Bug found. Increment is not handled correctly.
 
 The quad entry : i = i + 1, messes up.
+
+###After  Added while,do while tests
+Facing pointers.
+Idea is to first for the temp = pointer quad face simillarly.
+Then change the assignment section to check for pointer links in temporaries.
+Act differently for accessing and assignment.
