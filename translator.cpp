@@ -134,6 +134,8 @@ void QuadArray :: genCode(char* filename){
       tempReg.clear();
       //reset the freeReg variable 
       freeReg = 'a';
+      //clear pointer temporaries
+      tempPointers.clear();
  
       //check if some function was on previously - if so complete it
       if(currentFunction != NULL){
@@ -261,14 +263,28 @@ void QuadArray :: genCode(char* filename){
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
 	  if(freeReg == 'e') freeReg = 'a';
+	  //if the lhs were involved in a pointer assignment
+	  if(tempPointers.count(q[i].res[2]) != 0){
+	  ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << freeReg << "x" << endl;
+	  ROUT << "movl" << "%e" << freeReg << "x, (%e" << (tempReg.find(q[i].res))->second << "x)" << endl;
+	  }
+	  else{
+	  //normal case
 	  ROUT << "movl" << (AR->find(q[i].arg1))->second << "(" << BP << "), %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	  }
 	}
 	else{
 	  //temp = const
           //enter into the mapping
 	  tempReg.insert(pair<string, char>(q[i].res, freeReg));
 	  freeReg++;  //the next register
-	  ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	  if(tempPointers.count(q[i].res[2]) != 0){
+	    ROUT << "movl" << "$" << q[i].arg1 << ", (%e" << tempReg.find(q[i].res)->second << "x)" << endl;
+	  }
+	  else{
+	    //normal case
+	    ROUT << "movl" << "$" << q[i].arg1 << ", %e" << tempReg.find(q[i].res)->second << "x" << endl;
+	  }
        }
       }
       else if(q[i].arg1[0] == '$'){
