@@ -1,0 +1,2 @@
+Enter two integers to add
+Sum of entered numbers = 4

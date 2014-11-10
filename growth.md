@@ -213,3 +213,6 @@ Act differently for accessing and assignment.
 
 ###After Added pointer assignment
 Added arrays access and assignment.Works only for single dimension arrays.
+
+###After Overhaul to build script
+The use of pointers can be anywhere. In all those places, we would have to ensure that before being used in LHS, we need to read the data into the same register. Now added for SUM et al, but have to check for params etc. Also the same fears may be applicable for arrays.

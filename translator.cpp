@@ -389,6 +389,10 @@ void QuadArray :: genCode(char* filename){
       //examine the first operand
       if(q[i].arg1[0] == '$'){
 	//temporary
+	//if it were a pointer
+	if(tempPointers.count(q[i].arg1[2]) != 0)
+	  ROUT << "movl" << "(%e" << tempReg.find(q[i].arg1)->second << "x), %e" << tempReg.find(q[i].arg1)->second << "x" << endl; 
+
 	resReg = (tempReg.find(q[i].arg1))->second;
       }
       else{
@@ -403,6 +407,9 @@ void QuadArray :: genCode(char* filename){
       //examine the second operand
       if(q[i].arg2[0] == '$'){
 	//temporary
+	//if it were a pointer
+	if(tempPointers.count(q[i].arg2[2]) != 0)
+	  ROUT << "movl" << "(%e" << tempReg.find(q[i].arg2)->second << "x), %e" << tempReg.find(q[i].arg2)->second << "x" << endl; 
 	opReg2 = (tempReg.find(q[i].arg2))->second;
       }
       else if(AR->count(q[i].arg2) == 0){
