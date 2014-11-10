@@ -242,8 +242,15 @@ void QuadArray :: genCode(char* filename){
     }
     else if(q[i].op == OP_CALL){
       ROUT << "call" << q[i].arg1 << endl;   
+       
+      //if eax is used move it to some other register
+      for (map<string,char>::iterator it=tempReg.begin(); it!=tempReg.end(); ++it){
+        if(it->second == 'a')    
+          it->second = freeReg;    
+      }
+      freeReg++;
+      if(freeReg == 'e') freeReg = 'b';
       tempReg.insert(pair<string, char>(string(q[i].res), 'a'));
-      if(freeReg == 'a')  freeReg++;
     }
     else if(q[i].op == OP_RET){
       if(q[i].res[0] != '$'){
@@ -515,6 +522,7 @@ void QuadArray :: genCode(char* filename){
 
       //for all this do the same compl calculation
       ROUT << "cmpl" << "%e" << opReg2 << "x" << ", %e" << resReg << "x" << endl; 
+      freeReg--;
       freeReg--;
       freeReg--;
       if(freeReg < 'a') freeReg = 'a';

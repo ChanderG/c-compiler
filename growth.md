@@ -216,3 +216,8 @@ Added arrays access and assignment.Works only for single dimension arrays.
 
 ###After Overhaul to build script
 The use of pointers can be anywhere. In all those places, we would have to ensure that before being used in LHS, we need to read the data into the same register. Now added for SUM et al, but have to check for params etc. Also the same fears may be applicable for arrays.
+
+###After  Added pointers in algebra
+The entire register temporary management is fragile. Having multiple function calls puts eax in pressure. Either a better system for managing temporaries is needed or clearing of registers needs to be verified.
+
+Another option start of all calculations with ebx. 

@@ -4,11 +4,15 @@
 int main()
 {
   int n, first = 0, second = 1, next, c;
+  int *eP, pointer;
+  eP = &pointer;
 
-  printf("Enter the number of terms\n");
-  scanf("%d",&n);
+  prints("Enter the number of terms\n");
+  n = readi(eP);
 
-  printf("First %d terms of Fibonacci series are :-\n",n);
+  prints("First ");
+  printi(n);
+  prints(" terms of Fibonacci series are :-\n");
 
   for ( c = 0 ; c < n ; c++ )
   {
@@ -20,7 +24,8 @@ int main()
       first = second;
       second = next;
     }
-    printf("%d\n",next);
+    printi(next);
+    prints("\n");
   }
 
   return 0;

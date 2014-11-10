@@ -1,0 +1,8 @@
+Enter the number of terms
+First 6 terms of Fibonacci series are :-
+0
+1
+1
+2
+3
+5
