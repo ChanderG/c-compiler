@@ -36,5 +36,6 @@ Some sample test files are given in the test folder. The input and corresponding
 BUGS:
 
 1.See specs carefully.
-2.Char is not yet supported.
-3.The symbol table has a max aka hardcoded maximum number of entries at 500.Update if needed.
+2.Char is not supported.
+3.Division and Modulus operator are not provided intentionally as they involve fractional terms and shift operators.
+4.The symbol table has a max aka hardcoded maximum number of entries at 500.Update if needed.

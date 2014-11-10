@@ -1,9 +1,8 @@
 int main(){
-  int i = 10;
-  do{  
-    prints("Hello\n");
-    i--;
-  }
-  while(i > 0);
+  int a,b,c;
+  a = 9;
+  b = 4;
+  c = a%b;
   return 0;
 }
+
